@@ -1,0 +1,229 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package entidades;
+
+import java.time.LocalDate;
+
+/**
+ * Clase Usuario.
+ * Maneja la entidad Paciente, usado para guardar los datos de un paciente.
+ * 
+ * @author 00000207653 Jesus Octavio Amarillas Amaya 
+ * @autor 00000252574 Jose Luis Islas Molina 
+ * @author 00000253301 Isabel Valenzuela Rocha 
+ */
+public class Paciente {
+    private int idPaciente;
+    private String nombre;
+    private String apellidoPaterno;
+    private String apellidoMaterno;
+    private LocalDate fechaNacimiento;
+    private String email;
+    private String telefono;
+    private int idUsuario;
+    
+    /**
+     * Constructor vacío.
+     */
+    public Paciente() {
+    }
+    
+    /**
+     * Constructor de la clase.
+     * Establece todos los atributos de la clase al valor de sus parámetros.
+     * @param idPaciente id del paciente
+     * @param nombre nombre del paciente
+     * @param apellidoPaterno apellido paterno del paciente
+     * @param apellidoMaterno apellido materno del paciente
+     * @param fechaNacimiento fecha de nacimiento del paciente
+     * @param email correo electrónico del paciente
+     * @param telefono teléfono del paciente
+     * @param idUsuario id de usuario del paciente
+     */
+    public Paciente(int idPaciente, String nombre, String apellidoPaterno, String apellidoMaterno, LocalDate fechaNacimiento, String email, String telefono, int idUsuario) {
+        this.idPaciente = idPaciente;
+        this.nombre = nombre;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.fechaNacimiento = fechaNacimiento;
+        this.email = email;
+        this.telefono = telefono;
+        this.idUsuario = idUsuario;
+    }
+    
+    /**
+     * Contructor de la clase.
+     * Establece los atributos de la clase al valor de sus parámetros, exceptio idPaciente.
+     * @param nombre nombre del paciente
+     * @param apellidoPaterno apellido paterno del paciente
+     * @param apellidoMaterno apellido materno del paciente
+     * @param fechaNacimiento fecha de nacimiento del paciente
+     * @param email correo electrónico del paciente
+     * @param telefono teléfono del paciente
+     * @param idUsuario id de usuario del paciente 
+     */
+    public Paciente(String nombre, String apellidoPaterno, String apellidoMaterno, LocalDate fechaNacimiento, String email, String telefono, int idUsuario) {
+        this.nombre = nombre;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.fechaNacimiento = fechaNacimiento;
+        this.email = email;
+        this.telefono = telefono;
+        this.idUsuario = idUsuario;
+    }
+    
+    /**
+     * Método getIdPaciente().
+     * Obtiene el id del paciente
+     * @return id del paciente
+     */
+    public int getIdPaciente() {
+        return idPaciente;
+    }
+    
+    /**
+     * Método setIdPaciente(int idPaciente).
+     * Establece el idPaciente al valor de su parámetro
+     * @param idPaciente valor de idPaciente para actualizar
+     */
+    public void setIdPaciente(int idPaciente) {
+        this.idPaciente = idPaciente;
+    }
+    
+    /**
+     * Método getNombre().
+     * Obtiene el nombre del paciente
+     * @return nombre del paciente
+     */
+    public String getNombre() {
+        return nombre;
+    }
+    
+    /**
+     * Método setNombre(String nombre).
+     * Establece el nombre al valor de su parámetro
+     * @param nombre valor de nombre para actualizar
+     */
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+    
+    /**
+     * Método getApellidoPaterno().
+     * Obtiene el apellido paterno del paciente
+     * @return apellido paterno del paciente
+     */
+    public String getApellidoPaterno() {
+        return apellidoPaterno;
+    }
+    
+    /**
+     * Método setApellidoPaterno(String apellidoPaterno).
+     * Establece el apellidoPaterno al valor de su parámetro
+     * @param apellidoPaterno valor de apellidoPaterno para actualizar
+     */
+    public void setApellidoPaterno(String apellidoPaterno) {
+        this.apellidoPaterno = apellidoPaterno;
+    }
+    
+    /**
+     * Método getApellidoMaterno().
+     * Obtiene el apellido materno del paciente
+     * @return apellido materno del paciente
+     */
+    public String getApellidoMaterno() {
+        return apellidoMaterno;
+    }
+    
+    /**
+     * Método setApellidoMaterno(String apellidoMaterno).
+     * Establece el apellidoMaterno al valor de su parámetro
+     * @param apellidoMaterno valor de apellidoMaterno para actualizar
+     */
+    public void setApellidoMaterno(String apellidoMaterno) {
+        this.apellidoMaterno = apellidoMaterno;
+    }
+    
+    /**
+     * Método getFechaNacimiento().
+     * Obtiene la fecha de nacimuento del paciente
+     * @return fecha de nacimuento del paciente
+     */
+    public LocalDate getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+    
+    /**
+     * Método setFechaNacimiento(LocalDate fechaNacimiento).
+     * Establece la fechaNacimiento al valor de su parámetro
+     * @param fechaNacimiento valor de fechaNacimiento para actualizar
+     */
+    public void setFechaNacimiento(LocalDate fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
+    
+    /**
+     * Método getEmail().
+     * Obtiene el correo electrónico del paciente
+     * @return correo electrónico del paciente
+     */
+    public String getEmail() {
+        return email;
+    }
+    
+    /**
+     * Método setEmail(String email).
+     * Establece el email al valor de su parámetro
+     * @param email valor de email para actualizar
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
+    /**
+     * Método getTelefono().
+     * Obtiene el teléfono del paciente
+     * @return teléfono del paciente
+     */
+    public String getTelefono() {
+        return telefono;
+    }
+    
+    /**
+     * Método setTelefono(String telefono).
+     * Establece el telefono al valor de su parámetro
+     * @param telefono valor de telefono para actualizar
+     */
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+    
+    /**
+     * Método getIdUsuario().
+     * Obtiene el id de usuario del paciente
+     * @return id de usuario del paciente
+     */
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+    
+    /**
+     * Método setIdUsuario(int idUsuario).
+     * Establece el idUsuario al valor de su parámetro
+     * @param idUsuario valor de idUsuario para actualizar
+     */
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+    
+    /**
+     * Método toString().
+     * @return String con detalles de los atributos de la clase
+     */
+    @Override
+    public String toString() {
+        return "Paciente{" + "idPaciente=" + idPaciente + ", nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", fechaNacimiento=" + fechaNacimiento + ", email=" + email + ", telefono=" + telefono + ", idUsuario=" + idUsuario + '}';
+    }
+}
