@@ -25,4 +25,10 @@ public interface IPacienteDAO {
      */
     public boolean registrarPaciente(Paciente paciente) throws PersistenciaException;
     
+    public Paciente consultarPacientePorId(int id) throws PersistenciaException;
+    
+    public boolean editarDatosPaciente(Paciente paciente) throws PersistenciaException;
+    
+    public Paciente verPerfilPaciente(int id) throws PersistenciaException;
+    
 }
