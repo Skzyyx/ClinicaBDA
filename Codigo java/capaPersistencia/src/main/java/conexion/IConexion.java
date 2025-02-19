@@ -12,7 +12,7 @@ import java.sql.Connection;
  * Interfaz para implementar en clases de conexión
  * 
  * @author 00000207653 Jesus Octavio Amarillas Amaya 
- * @autor 00000252574 Jose Luis Islas Molina 
+ * @author 00000252574 Jose Luis Islas Molina 
  * @author 00000253301 Isabel Valenzuela Rocha 
  */
 public interface IConexion {

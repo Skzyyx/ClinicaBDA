@@ -9,7 +9,7 @@ package entidades;
  * Maneja la entidad Direccion, usado para guardar los datos de dirección de un paciente.
  * 
  * @author 00000207653 Jesus Octavio Amarillas Amaya 
- * @autor 00000252574 Jose Luis Islas Molina 
+ * @author 00000252574 Jose Luis Islas Molina 
  * @author 00000253301 Isabel Valenzuela Rocha 
  */
 public class Direccion {
@@ -18,7 +18,6 @@ public class Direccion {
     private String numero;
     private String colonia;
     private String codigoPostal;
-    private int idPaciente;
     
     /**
      * Constructor vacío.
@@ -34,17 +33,15 @@ public class Direccion {
      * @param numero componente número de casa
      * @param colonia componente colonia
      * @param codigoPostal componente código postal
-     * @param idPaciente id del paciente asociado a la dirección
      */
-    public Direccion(int idDireccion, String calle, String numero, String colonia, String codigoPostal, int idPaciente) {
+    public Direccion(int idDireccion, String calle, String numero, String colonia, String codigoPostal) {    
         this.idDireccion = idDireccion;
         this.calle = calle;
         this.numero = numero;
         this.colonia = colonia;
         this.codigoPostal = codigoPostal;
-        this.idPaciente = idPaciente;
     }
-    
+
     /**
      * Constructor de la clase.
      * Establece los atributos de la clase al valor de sus parámetros, excepto el atributo idDireccion.
@@ -52,16 +49,15 @@ public class Direccion {
      * @param numero componente número de casa
      * @param colonia componente colonia
      * @param codigoPostal componente código postal
-     * @param idPaciente id del paciente asociado a la dirección
+     * @param paciente paciente asociado a la dirección
      */
-    public Direccion(String calle, String numero, String colonia, String codigoPostal, int idPaciente) {
+    public Direccion(String calle, String numero, String colonia, String codigoPostal) {
         this.calle = calle;
         this.numero = numero;
         this.colonia = colonia;
         this.codigoPostal = codigoPostal;
-        this.idPaciente = idPaciente;
     }
-    
+
     /**
      * Método getIdDireccion().
      * Obtiene el id de la dirección
@@ -137,29 +133,11 @@ public class Direccion {
     }
     
     /**
-     * Método getIdPaciente().
-     * Obtiene el id del paciente asociado a la dirección
-     * @return id del paciente asociado
-     */
-    public int getIdPaciente() {
-        return idPaciente;
-    }
-    
-    /**
-     * Método setIdPaciente(int idPaciente).
-     * Establece el idPaciente al valor de su parámetro
-     * @param idPaciente valor de idPaciente para actualizar
-     */
-    public void setIdPaciente(int idPaciente) {
-        this.idPaciente = idPaciente;
-    }
-    
-    /**
      * Método toString().
      * @return String con detalles de los atributos de la clase
      */
     @Override
     public String toString() {
-        return "Direccion{" + "idDireccion=" + idDireccion + ", calle=" + calle + ", numero=" + numero + ", colonia=" + colonia + ", codigoPostal=" + codigoPostal + ", idPaciente=" + idPaciente + '}';
+        return "Direccion{" + "idDireccion=" + idDireccion + ", calle=" + calle + ", numero=" + numero + ", colonia=" + colonia + ", codigoPostal=" + codigoPostal + '}';
     }
 }

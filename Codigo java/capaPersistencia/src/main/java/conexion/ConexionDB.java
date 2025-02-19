@@ -16,12 +16,18 @@ import java.util.logging.Logger;
  * Crear y maneja la conexión con la base de datos
  * 
  * @author 00000207653 Jesus Octavio Amarillas Amaya 
- * @autor 00000252574 Jose Luis Islas Molina 
+ * @author 00000252574 Jose Luis Islas Molina 
  * @author 00000253301 Isabel Valenzuela Rocha 
  */
 public class ConexionDB implements IConexion {
-    final String URL ="jdbc:mysql://localhost:3306/clinicabda";
+    
+    /** URL de conexión a la base de datos MySQL. */
+    final String URL = "jdbc:mysql://localhost:3306/clinicabda";
+    
+    /** Usuario para la autenticación en la base de datos. */
     final String USER = "root";
+    
+    /** Contraseña para la autenticación en la base de datos. */
     final String PASS = "itson";
     
     /**

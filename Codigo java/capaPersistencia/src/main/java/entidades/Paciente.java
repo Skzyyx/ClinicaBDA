@@ -11,18 +11,29 @@ import java.time.LocalDate;
  * Maneja la entidad Paciente, usado para guardar los datos de un paciente.
  * 
  * @author 00000207653 Jesus Octavio Amarillas Amaya 
- * @autor 00000252574 Jose Luis Islas Molina 
+ * @author 00000252574 Jose Luis Islas Molina 
  * @author 00000253301 Isabel Valenzuela Rocha 
  */
 public class Paciente {
+    
+    /* Identificador único del paciente. */
     private int idPaciente;
+    /* Nombre del paciente. */
     private String nombre;
+    /* Apellido paterno del paciente. */
     private String apellidoPaterno;
+    /* Apellido materno del paciente. */
     private String apellidoMaterno;
+    /* Fecha de nacimiento del paciente. */
     private LocalDate fechaNacimiento;
+    /* Correo electrónico del paciente. */
     private String email;
+    /* Teléfono del paciente. */
     private String telefono;
-    private int idUsuario;
+    /* Usuario asociado al paciente. */
+    private Usuario usuario;
+    /* Dirección del paciente. */
+    private Direccion direccion;
     
     /**
      * Constructor vacío.
@@ -40,9 +51,10 @@ public class Paciente {
      * @param fechaNacimiento fecha de nacimiento del paciente
      * @param email correo electrónico del paciente
      * @param telefono teléfono del paciente
-     * @param idUsuario id de usuario del paciente
+     * @param usuario usuario del paciente
+     * @param direccion direccion del paciente
      */
-    public Paciente(int idPaciente, String nombre, String apellidoPaterno, String apellidoMaterno, LocalDate fechaNacimiento, String email, String telefono, int idUsuario) {
+    public Paciente(int idPaciente, String nombre, String apellidoPaterno, String apellidoMaterno, LocalDate fechaNacimiento, String email, String telefono, Usuario usuario, Direccion direccion) {
         this.idPaciente = idPaciente;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
@@ -50,7 +62,8 @@ public class Paciente {
         this.fechaNacimiento = fechaNacimiento;
         this.email = email;
         this.telefono = telefono;
-        this.idUsuario = idUsuario;
+        this.usuario = usuario;
+        this.direccion = direccion;
     }
     
     /**
@@ -62,16 +75,18 @@ public class Paciente {
      * @param fechaNacimiento fecha de nacimiento del paciente
      * @param email correo electrónico del paciente
      * @param telefono teléfono del paciente
-     * @param idUsuario id de usuario del paciente 
+     * @param usuario usuario del paciente
+     * @param direccion direccion del paciente
      */
-    public Paciente(String nombre, String apellidoPaterno, String apellidoMaterno, LocalDate fechaNacimiento, String email, String telefono, int idUsuario) {
+    public Paciente(String nombre, String apellidoPaterno, String apellidoMaterno, LocalDate fechaNacimiento, String email, String telefono, Usuario usuario, Direccion direccion) {
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
         this.fechaNacimiento = fechaNacimiento;
         this.email = email;
         this.telefono = telefono;
-        this.idUsuario = idUsuario;
+        this.usuario = usuario;
+        this.direccion = direccion;
     }
     
     /**
@@ -201,29 +216,49 @@ public class Paciente {
     }
     
     /**
-     * Método getIdUsuario().
-     * Obtiene el id de usuario del paciente
-     * @return id de usuario del paciente
+     * Método getUsuario().
+     * Obtiene el usuario del paciente
+     * @return Usuario del paciente
      */
-    public int getIdUsuario() {
-        return idUsuario;
+    public Usuario getUsuario() {
+        return usuario;
     }
     
     /**
-     * Método setIdUsuario(int idUsuario).
-     * Establece el idUsuario al valor de su parámetro
-     * @param idUsuario valor de idUsuario para actualizar
+     * Método setUsuario(int idUsuario).
+     * Establece el Usuario a la instancia del su parámetro
+     * @param usuario instancia del usuario para actualizar
      */
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    /**
+     * Método getDireccion().
+     * Obtiene la direccion del paciente
+     * @return Direccion del paciente
+     */
+    public Direccion getDireccion() {
+        return direccion;
+    }
+
+    /**
+     * Método setDireccion(Direccion direccion).
+     * Establece la direccion a la instancia del su parámetro
+     * @param direccion instancia de la direccion para actualizar
+     */
+    public void setDireccion(Direccion direccion) {
+        this.direccion = direccion;
     }
     
+    
+
     /**
      * Método toString().
      * @return String con detalles de los atributos de la clase
      */
     @Override
     public String toString() {
-        return "Paciente{" + "idPaciente=" + idPaciente + ", nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", fechaNacimiento=" + fechaNacimiento + ", email=" + email + ", telefono=" + telefono + ", idUsuario=" + idUsuario + '}';
+        return "Paciente{" + "idPaciente=" + idPaciente + ", nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", fechaNacimiento=" + fechaNacimiento + ", email=" + email + ", telefono=" + telefono + ", usuario=" + usuario + '}';
     }
 }
