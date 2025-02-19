@@ -9,14 +9,14 @@ import entidades.Usuario;
 import java.time.LocalDate;
 
 /**
- * Clase PacienteRequestDTO.
+ * Clase PacienteViejoDTO.
  * Este DTO representa los datos del paciente que se van a mostrar o utilizar para realizar peticiones.
  * 
  * @author 00000207653 Jesus Octavio Amarillas Amaya 
  * @author 00000252574 Jose Luis Islas Molina 
  * @author 00000253301 Isabel Valenzuela Rocha 
  */
-public class PacienteRequestDTO {
+public class PacienteViejoDTO {
     
     /* Identificador único del paciente. */
     private String idPaciente;
@@ -38,7 +38,7 @@ public class PacienteRequestDTO {
     private Direccion direccion;
     
     /**
-     * Constructor de la clase PacienteRequestDTO con todos los atributos, incluido el ID del paciente.
+     * Constructor de la clase PacienteViejoDTO con todos los atributos, incluido el ID del paciente.
      * 
      * @param idPaciente El identificador único del paciente.
      * @param nombre El nombre del paciente.
@@ -51,7 +51,7 @@ public class PacienteRequestDTO {
      * @param direccion El objeto Direccion relacionado con el paciente.
      */
 
-    public PacienteRequestDTO(String idPaciente, String nombre, String apellidoPaterno, String apellidoMaterno, LocalDate fechaNacimiento, String email, String telefono, Usuario usuario, Direccion direccion) {
+    public PacienteViejoDTO(String idPaciente, String nombre, String apellidoPaterno, String apellidoMaterno, LocalDate fechaNacimiento, String email, String telefono, Usuario usuario, Direccion direccion) {
         this.idPaciente = idPaciente;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
@@ -64,7 +64,7 @@ public class PacienteRequestDTO {
     }
 
     /**
-     * Constructor de la clase PacienteRequestDTO sin el atributo ID del paciente.
+     * Constructor de la clase PacienteViejoDTO sin el atributo ID del paciente.
      * 
      * @param nombre El nombre del paciente.
      * @param apellidoPaterno El apellido paterno del paciente.
@@ -75,7 +75,7 @@ public class PacienteRequestDTO {
      * @param usuario El objeto Usuario relacionado con el paciente.
      * @param direccion El objeto Direccion relacionado con el paciente.
      */
-    public PacienteRequestDTO(String nombre, String apellidoPaterno, String apellidoMaterno, LocalDate fechaNacimiento, String email, String telefono, Usuario usuario, Direccion direccion) {
+    public PacienteViejoDTO(String nombre, String apellidoPaterno, String apellidoMaterno, LocalDate fechaNacimiento, String email, String telefono, Usuario usuario, Direccion direccion) {
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
@@ -249,12 +249,12 @@ public class PacienteRequestDTO {
     }
 
     /**
-     * Devuelve una representación en cadena de texto del objeto PacienteRequestDTO.
+     * Devuelve una representación en cadena de texto del objeto PacienteViejoDTO.
      * 
-     * @return Una cadena que representa el objeto PacienteRequestDTO
+     * @return Una cadena que representa el objeto PacienteViejoDTO
      */
     @Override
     public String toString() {
-        return "PacienteRequestDTO{" + "idPaciente=" + idPaciente + ", nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", fechaNacimiento=" + fechaNacimiento + ", email=" + email + ", telefono=" + telefono + ", usuario=" + usuario + ", direccion=" + direccion + '}';
+        return "PacienteViejoDTO{" + "idPaciente=" + idPaciente + ", nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", fechaNacimiento=" + fechaNacimiento + ", email=" + email + ", telefono=" + telefono + ", usuario=" + usuario + ", direccion=" + direccion + '}';
     }
 }

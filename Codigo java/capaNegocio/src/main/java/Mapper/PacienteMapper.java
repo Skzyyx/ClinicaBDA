@@ -4,8 +4,8 @@
  */
 package Mapper;
 
-import DTO.PacienteCreateDTO;
-import DTO.PacienteRequestDTO;
+import DTO.PacienteNuevoDTO;
+import DTO.PacienteViejoDTO;
 import entidades.Paciente;
 
 /**
@@ -21,42 +21,42 @@ public class PacienteMapper {
     /**
      * Convierte un objeto `PacienteCreateDTO` a una entidad `Paciente`.
      * 
-     * Este método mapea los datos de un DTO de tipo `PacienteCreateDTO` a una entidad `Paciente`.
+     * Este método mapea los datos de un DTO de tipo `PacienteNuevoDTO` a una entidad `Paciente`.
      * Se utiliza cuando se desea crear un nuevo paciente en la base de datos, a partir de los datos proporcionados por el cliente.
      *
-     * @param pacienteCreate El DTO `PacienteCreateDTO` con los datos del paciente a crear.
+     * @param pacienteNuevo El DTO `PacienteNuevoDTO` con los datos del paciente a crear.
      * @return Una entidad `Paciente` que puede ser persistida en la base de datos, o null si el DTO es null.
      */
-    public Paciente toEntity(PacienteCreateDTO pacienteCreate) {
+    public Paciente toEntity(PacienteNuevoDTO pacienteNuevo) {
         
-        if (pacienteCreate == null) return null;
+        if (pacienteNuevo == null) return null;
         
         return new Paciente(
-            pacienteCreate.getNombre(),
-            pacienteCreate.getApellidoPaterno(),
-            pacienteCreate.getApellidoMaterno(),
-            pacienteCreate.getFechaNacimiento(),
-            pacienteCreate.getEmail(),
-            pacienteCreate.getTelefono(),
-            pacienteCreate.getUsuario(),
-            pacienteCreate.getDireccion()
+            pacienteNuevo.getNombre(),
+            pacienteNuevo.getApellidoPaterno(),
+            pacienteNuevo.getApellidoMaterno(),
+            pacienteNuevo.getFechaNacimiento(),
+            pacienteNuevo.getEmail(),
+            pacienteNuevo.getTelefono(),
+            pacienteNuevo.getUsuario(),
+            pacienteNuevo.getDireccion()
         );
     }
     
     /**
-     * Convierte una entidad `Paciente` a un DTO de tipo `PacienteCreateDTO`.
+     * Convierte una entidad `Paciente` a un DTO de tipo `PacienteNuevoDTO`.
      * 
-     * Este método mapea los datos de la entidad `Paciente` a un DTO `PacienteCreateDTO` que será utilizado
+     * Este método mapea los datos de la entidad `Paciente` a un DTO `PacienteNuevoDTO` que será utilizado
      * para la creación de un nuevo paciente en la base de datos.
      * 
      * @param paciente La entidad `Paciente` a convertir.
-     * @return Un objeto `PacienteCreateDTO` con los datos del paciente, o null si la entidad es null.
+     * @return Un objeto `PacienteNuevoDTO` con los datos del paciente, o null si la entidad es null.
      */
-    public PacienteCreateDTO toCreateDTO(Paciente paciente) {
+    public PacienteNuevoDTO toNuevoDTO(Paciente paciente) {
         
         if (paciente == null) return null;
         
-        return new PacienteCreateDTO(
+        return new PacienteNuevoDTO(
                 paciente.getNombre(), 
                 paciente.getApellidoPaterno(), 
                 paciente.getApellidoMaterno(), 
@@ -69,20 +69,20 @@ public class PacienteMapper {
     }
     
     /**
-     * Convierte una entidad `Paciente` a un DTO de tipo `PacienteRequestDTO`.
+     * Convierte una entidad `Paciente` a un DTO de tipo `PacienteViejoDTO`.
      * 
-     * Este método mapea los datos de la entidad `Paciente` a un DTO `PacienteRequestDTO`. 
+     * Este método mapea los datos de la entidad `Paciente` a un DTO `PacienteViejoDTO`. 
      * Se utiliza principalmente para representar los datos del paciente en un formato adecuado 
      * para ser enviado a la capa de presentación o API, y puede incluir el ID del paciente.
      *
      * @param paciente La entidad `Paciente` a convertir.
-     * @return Un objeto `PacienteRequestDTO` con los datos del paciente, o null si la entidad es null.
+     * @return Un objeto `PacienteViejoDTO` con los datos del paciente, o null si la entidad es null.
      */
-    public PacienteRequestDTO toRequestDTO(Paciente paciente) {
+    public PacienteViejoDTO toViejoDTO(Paciente paciente) {
         
         if (paciente == null) return null;
         
-        return new PacienteRequestDTO(
+        return new PacienteViejoDTO(
                 String.valueOf(paciente.getIdPaciente()), 
                 paciente.getNombre(), 
                 paciente.getApellidoPaterno(), 

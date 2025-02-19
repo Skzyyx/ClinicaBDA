@@ -18,7 +18,7 @@ import java.time.LocalDate;
  * @author 00000252574 Jose Luis Islas Molina 
  * @author 00000253301 Isabel Valenzuela Rocha 
  */
-public class PacienteCreateDTO {
+public class PacienteNuevoDTO {
     
     /* Nombre del paciente. */
     private String nombre;
@@ -38,14 +38,14 @@ public class PacienteCreateDTO {
     private Direccion direccion;
 
     /**
-     * Constructor vacío para la clase PacienteCreateDTO.
+     * Constructor vacío para la clase PacienteNuevoDTO.
      * Utilizado por frameworks de serialización/deserialización o por otros métodos que requieran un objeto vacío.
      */
-    public PacienteCreateDTO() {
+    public PacienteNuevoDTO() {
     }
 
     /**
-     * Constructor con parámetros para inicializar todos los campos de la clase PacienteCreateDTO.
+     * Constructor con parámetros para inicializar todos los campos de la clase PacienteNuevoDTO.
      * 
      * @param nombre Nombre del paciente
      * @param apellidoPaterno Apellido paterno del paciente
@@ -56,7 +56,7 @@ public class PacienteCreateDTO {
      * @param usuario Usuario asociado al paciente
      * @param direccion Dirección del paciente
      */
-    public PacienteCreateDTO(String nombre, String apellidoPaterno, String apellidoMaterno, LocalDate fechaNacimiento, String email, String telefono, Usuario usuario, Direccion direccion) {
+    public PacienteNuevoDTO(String nombre, String apellidoPaterno, String apellidoMaterno, LocalDate fechaNacimiento, String email, String telefono, Usuario usuario, Direccion direccion) {
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
@@ -140,6 +140,6 @@ public class PacienteCreateDTO {
      */
     @Override
     public String toString() {
-        return "PacienteCreateDTO{" + "nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", fechaNacimiento=" + fechaNacimiento + ", email=" + email + ", telefono=" + telefono + ", usuario=" + usuario + ", direccion=" + direccion + '}';
+        return "PacienteNuevoDTO{" + "nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", fechaNacimiento=" + fechaNacimiento + ", email=" + email + ", telefono=" + telefono + ", usuario=" + usuario + ", direccion=" + direccion + '}';
     }
 }
