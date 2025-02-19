@@ -174,4 +174,3 @@ public class Consulta {
         return "Consulta{" + "idConsulta=" + idConsulta + ", estado=" + estado + ", diagnostico=" + diagnostico + ", tratamiento=" + tratamiento + ", notas=" + notas + ", cita=" + cita + '}';
     }
 }
-

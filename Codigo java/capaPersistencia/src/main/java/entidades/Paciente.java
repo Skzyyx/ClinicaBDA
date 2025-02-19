@@ -16,23 +16,23 @@ import java.time.LocalDate;
  */
 public class Paciente {
     
-    /* Identificador único del paciente. */
+    /** Identificador único del paciente. */
     private int idPaciente;
-    /* Nombre del paciente. */
+    /** Nombre del paciente. */
     private String nombre;
-    /* Apellido paterno del paciente. */
+    /** Apellido paterno del paciente. */
     private String apellidoPaterno;
-    /* Apellido materno del paciente. */
+    /** Apellido materno del paciente. */
     private String apellidoMaterno;
-    /* Fecha de nacimiento del paciente. */
+    /** Fecha de nacimiento del paciente. */
     private LocalDate fechaNacimiento;
-    /* Correo electrónico del paciente. */
+    /** Correo electrónico del paciente. */
     private String email;
-    /* Teléfono del paciente. */
+    /** Teléfono del paciente. */
     private String telefono;
-    /* Usuario asociado al paciente. */
+    /** Usuario asociado al paciente. */
     private Usuario usuario;
-    /* Dirección del paciente. */
+    /** Dirección del paciente. */
     private Direccion direccion;
     
     /**

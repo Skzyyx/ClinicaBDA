@@ -36,6 +36,16 @@ CREATE PROCEDURE registrarPaciente(
     IN contraUsuario VARCHAR(50)
 )
 BEGIN
+    -- Manejador de errores. Por si algo falla en agregarUsuario, la transacción no queda abierta
+    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION 
+    BEGIN
+		-- Deshacer la transacción en caso de error
+        ROLLBACK;
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "Se ha producido un error en el procedimiento almacenado.";
+    END;
+	
+    -- Empezar transacción
+	START TRANSACTION;
 	-- Verificar si es un paciente nuevo
 	IF EXISTS (SELECT * FROM pacientes WHERE email = emailPaciente) THEN
 		-- Si ya existe, lanza error
@@ -52,6 +62,9 @@ BEGIN
 	-- Insertar registro en tabla Direcciones
     INSERT INTO direcciones(calle, numero, colonia, codigoPostal, idPaciente)
 		VALUES (callePaciente, numeroCasa, coloniaPaciente, codigoPostalPaciente, last_insert_id());
+        
+    -- Si todo fue bien, confirmar los cambios
+    COMMIT;
 END $$
 DELIMITER ;
 

@@ -13,11 +13,14 @@ package entidades;
  * @author 00000253301 Isabel Valenzuela Rocha 
  */
 public class Usuario {
-    //Atributos de la clase
-    private int idUsuario; //Id del usuario
-    private String usuario; //user (email para paciente, cédula profesional para médico)
-    private String contrasenia; //contraseña del usuario
-    private String rol; //rol/tipo de usuario (paciente o médico)
+    /** Identificador único del usuario. */
+    private int idUsuario;
+    /** User (email para paciente, cédula profesional para médico). */
+    private String usuario;
+    /** Contraseña del usuario. */
+    private String contrasenia;
+    /** Rol/tipo de usuario (paciente o médico). */
+    private String rol;
     
     /**
      * Constructor vacío.

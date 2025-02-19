@@ -49,7 +49,6 @@ public class Direccion {
      * @param numero componente número de casa
      * @param colonia componente colonia
      * @param codigoPostal componente código postal
-     * @param paciente paciente asociado a la dirección
      */
     public Direccion(String calle, String numero, String colonia, String codigoPostal) {
         this.calle = calle;
@@ -68,8 +67,9 @@ public class Direccion {
     }
     
     /**
-     * Método setIdDireccion(int idDireccion)
-     * @param idDireccion 
+     * Método setIdDireccion(int idDireccion).
+     * Establece el idDireccion al valor de su parámetro
+     * @param idDireccion valor de idDireccion para actualizar
      */
     public void setIdDireccion(int idDireccion) {
         this.idDireccion = idDireccion;
@@ -83,7 +83,12 @@ public class Direccion {
     public String getCalle() {
         return calle;
     }
-
+    
+    /**
+     * Método setCalle(String calle).
+     * Establece la calle al valor de su parámetro
+     * @param calle valor de calle para actualizar
+     */
     public void setCalle(String calle) {
         this.calle = calle;
     }
@@ -97,6 +102,11 @@ public class Direccion {
         return numero;
     }
     
+    /**
+     * Método setNumero(String numero).
+     * Establece la numero al valor de su parámetro
+     * @param numero valor de numero para actualizar
+     */
     public void setNumero(String numero) {
         this.numero = numero;
     }
@@ -109,7 +119,12 @@ public class Direccion {
     public String getColonia() {
         return colonia;
     }
-
+    
+    /**
+     * Método setColonia(String colonia).
+     * Establece la colonia al valor de su parámetro
+     * @param colonia valor de colonia para actualizar
+     */
     public void setColonia(String colonia) {
         this.colonia = colonia;
     }
