@@ -15,7 +15,7 @@ CREATE PROCEDURE registrarPaciente(
     IN numeroCasa VARCHAR(5),
 	IN coloniaPaciente VARCHAR(100),
     IN codigoPostalPaciente VARCHAR(5),
-    IN contraUsuario VARCHAR(50)
+    IN contraUsuario VARCHAR(70)
 )
 BEGIN
     -- Manejador de errores. Por si algo falla en agregarUsuario, la transacción no queda abierta
@@ -55,7 +55,7 @@ END $$
 DELIMITER ;
 
 -- Procedimiento almacenado consultarPacientePorId
--- Consulta los datos asociados a un paciente en específico
+-- Consulta los datos asociados a un paciente en específico usando su id
 -- Tiene todos los atributos de la entidad (menos Usuario)
 DELIMITER $$
 CREATE PROCEDURE consultarPacientePorId(
@@ -89,6 +89,40 @@ BEGIN
 	INNER JOIN direcciones AS d
 		ON d.idPaciente = p.idPaciente
 	WHERE p.idPaciente = id;
+END $$
+DELIMITER ;
+
+-- Procedimiento almacenado consultarPacientePorEmail
+-- Consulta los datos asociados a un paciente en específico usando su email
+-- Tiene todos los atributos de la entidad (menos Usuario)
+DELIMITER $$
+CREATE PROCEDURE consultarPacientePorEmail(
+	IN emailPaciente VARCHAR(100)
+)
+BEGIN
+	SELECT
+		p.idPaciente,
+        p.nombre,
+        p.apellidoPaterno,
+        p.apellidoMaterno,
+        p.fechaNacimiento,
+        p.email,
+        p.telefono,
+        u.idUsuario,
+        u.usuario,
+        u.contrasenia,
+        u.rol,
+        d.idDireccion,
+        d.calle,
+        d.numero,
+        d.colonia,
+        d.codigoPostal
+	FROM pacientes AS p
+    INNER JOIN usuarios AS u
+		ON p.idUsuario = u.idUsuario
+	INNER JOIN direcciones AS d
+		ON d.idPaciente = p.idPaciente
+	WHERE p.email = emailPaciente;
 END $$
 DELIMITER ;
 
@@ -200,6 +234,9 @@ BEGIN
 END $$
 DELIMITER ;
 
+DELIMITER $$
+CREATE 
+
 -- Función calcularEdad
 -- Calcula la edad a partir de una fecha de nacimiento
 DELIMITER $$
@@ -228,19 +265,20 @@ DELIMITER ;
 
 -- Pruebas
 CALL registrarPaciente(
-	"Juan",
-    "Perez",
-    "Lopez",
+	"Ana",
+    "Sanchez",
+    "Solis",
     "2000-10-24",
-    "example@gmail.com",
-    "6444239710",
-    "Tabasco",
+    "hola@gmail.com",
+    "6444586322",
+    "Tamaulipas",
     "1654",
-    "Campestre",
+    "Sochiloa",
     "85120",
-    "segura123"
+    "$2a$12$Js89fysKM.g1LnzAib/dQO6uNoyVnwLpeIwlzmfceYo2bDHKGfALi"
 );
 SELECT calcularEdad("2005-02-16");
 SELECT * FROM vistaPerfilPaciente;
 CALL consultarPacientePorId(23);
 CALL verPerfilPaciente(10);
+CALL consultarPacientePorEmail("maria.gomez@example.com");

@@ -5,14 +5,14 @@ USE ClinicaBDA;
 	Usuarios(
 		idUsuario :INT PRIMARY KEY AUTO_INCREMENT,
 		usuario :VARCHAR(100) UNIQUE NOT NULL,
-		contraseña :VARCHAR(50) NOT NULL,
+		contraseña :VARCHAR(60) NOT NULL,
 		rol :ENUM(‘PACIENTE’, ‘MEDICO’) NOT NULL
 	)
 */
 CREATE TABLE usuarios(
 	idUsuario INT PRIMARY KEY AUTO_INCREMENT,
     usuario VARCHAR(100) UNIQUE NOT NULL,
-    contrasenia VARCHAR(50) NOT NULL,
+    contrasenia VARCHAR(60) NOT NULL,
     rol ENUM('PACIENTE', 'MEDICO') NOT NULL
 );
 
