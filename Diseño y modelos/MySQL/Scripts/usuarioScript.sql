@@ -6,7 +6,7 @@ USE clinicabda;
 DELIMITER $$
 CREATE PROCEDURE registrarUsuario(
 	IN usuarioNuevo VARCHAR(100),
-    IN contraUsuario VARCHAR(50),
+    IN contraUsuario VARCHAR(70),
     IN rolUsuario ENUM('PACIENTE', 'MEDICO')
 )
 BEGIN

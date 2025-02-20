@@ -29,7 +29,8 @@ public class PruebasPersistencia {
         //pruebaInsertarPaciente();
         //pruebaConsultarPacientePorId();
         //pruebaEditarDatosPaciente();
-        pruebaVerPerfilPaciente();
+        //pruebaVerPerfilPaciente();
+        pruebaConsultarPacientePorEmail();
     }
     
     /**
@@ -91,6 +92,23 @@ public class PruebasPersistencia {
         int id = 30;
         try {
             Paciente paciente = pacienteDAO.consultarPacientePorId(id);
+
+            if (paciente == null) {
+                System.out.println("No existe el paciente");
+            }
+        } catch (PersistenciaException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    /**
+     * Prueba consultar paciente por email
+     */
+    private static void pruebaConsultarPacientePorEmail() {
+        String email = "maria.gomez@example.com";
+        
+        try {
+            Paciente paciente = pacienteDAO.consultarPacientePorEmail(email);
 
             if (paciente == null) {
                 System.out.println("No existe el paciente");
