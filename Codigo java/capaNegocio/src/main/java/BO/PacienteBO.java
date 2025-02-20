@@ -7,6 +7,7 @@ package BO;
 import DAO.IPacienteDAO;
 import DAO.PacienteDAO;
 import DTO.PacienteNuevoDTO;
+import DTO.PacienteViejoDTO;
 import Exception.NegocioException;
 import Mapper.PacienteMapper;
 import at.favre.lib.crypto.bcrypt.BCrypt;
@@ -56,11 +57,11 @@ public class PacienteBO {
     public boolean registrarPaciente(PacienteNuevoDTO pacienteNuevo) throws NegocioException, PersistenciaException {
         // Validar el objeto
         if (pacienteNuevo == null) {
-            throw new NegocioException("El paciente no puede ser nulo");
+            throw new NegocioException("El paciente no puede ser nulo.");
         }
         // Validar el rol
         if (!pacienteNuevo.getUsuario().getRol().equals("PACIENTE")) {
-            throw new NegocioException("El rol no es correcto");
+            throw new NegocioException("El rol no es correcto.");
         }
 
         // Validar que ninguno de los atributos requeridos sea nulo
@@ -70,7 +71,7 @@ public class PacienteBO {
                 || pacienteNuevo.getUsuario().getUsuario() == null || pacienteNuevo.getUsuario().getContrasenia() == null
                 || pacienteNuevo.getDireccion().getCalle() == null || pacienteNuevo.getDireccion().getNumero() == null
                 || pacienteNuevo.getDireccion().getColonia() == null || pacienteNuevo.getDireccion().getCodigoPostal() == null) {
-            throw new NegocioException("Ningún atributo requerido del paciente puede ser nulo");
+            throw new NegocioException("Ningún atributo requerido del paciente puede ser nulo.");
         }
 
         // Validar que los espacios obligatorios hayan sido llenados y no queden como ""
@@ -79,17 +80,17 @@ public class PacienteBO {
                 || pacienteNuevo.getUsuario().getUsuario().isEmpty() || pacienteNuevo.getUsuario().getContrasenia().isEmpty()
                 || pacienteNuevo.getDireccion().getCalle().isEmpty() || pacienteNuevo.getDireccion().getNumero().isEmpty()
                 || pacienteNuevo.getDireccion().getColonia().isEmpty() || pacienteNuevo.getDireccion().getCodigoPostal().isEmpty()) {
-            throw new NegocioException("Verifique que los campos obligatorios esten llenados");
+            throw new NegocioException("Verifique que los campos obligatorios esten llenados.");
         }
 
         // Validar que la fecha de nacimiento no sea despues de la fecha de hoy
         if (pacienteNuevo.getFechaNacimiento().isAfter(LocalDate.now())) {
-            throw new NegocioException("La fecha de nacimiento no puede ser después de la fecha de hoy");
+            throw new NegocioException("La fecha de nacimiento no puede ser después de la fecha de hoy.");
         }
 
         // Validar que el numero de telefono tenga los 10 digitos 
         if (pacienteNuevo.getTelefono().length() != 10) {
-            throw new NegocioException("El numero de telefono no puede ser mayor o menor a 10 digitos");
+            throw new NegocioException("El numero de telefono no puede ser mayor o menor a 10 dígitos.");
         }
 
         // Validar que el correo haya sido ingresado correctamente
@@ -130,9 +131,81 @@ public class PacienteBO {
             return pacienteRegistrado;
         // En caso de que ocurra un error, lanza una excepcion   
         } catch (PersistenciaException e) {
-            logger.log(Level.SEVERE, "Error al registrar un Paciente " , e);
+            logger.log(Level.SEVERE, "Error al registrar un paciente " , e);
             throw new NegocioException ("Error al registrar el paciente.");
         }
+    }
+    
+    /**
+     * Obtiene un paciente con un id específico mediante la DAO.
+     * @param id ID a buscar.
+     * @return el paciente si lo encontró, null en caso contrario.
+     * @throws NegocioException Si hubo un error al buscar el paciente.
+     */
+    public PacienteViejoDTO obtenerPacientePorId(int id) throws NegocioException {
+        // Validar que el id sea válido
+        if (id <= 0) {
+            throw new NegocioException("El ID debe ser un número válido.");
+        }
+        
+        // Intentar obtener el paciente
+        try {
+            // Busca el paciente usando la DAO
+            Paciente paciente = pacienteDAO.consultarPacientePorId(id);
+            
+            // Si no se encontró registro
+            if (paciente == null) {
+                return null;
+            }
+            
+            // Si se encontró registro
+            // Convertir entidad a DTO y regresarlo
+            return mapper.toViejoDTO(paciente);
+        } catch (PersistenciaException e) {
+            logger.log(Level.SEVERE, "Error al obtener un paciente " , e);
+            throw new NegocioException ("Error al obtener la información del paciente.", e);
+        }
+    }
+    
+    /**
+     * Obtiene un paciente con un id específico mediante la DAO.
+     * @param email
+     * @return el paciente si lo encontró, null en caso contrario.
+     * @throws NegocioException Si hubo un error al buscar el paciente.
+     */
+    public PacienteViejoDTO obtenerPacientePorEmail(String email) throws NegocioException {
+        // Validar que el id sea válido
+        if (email == null) {
+            throw new NegocioException("El correo electrónico no puede ser nulo.");
+        }
+        
+        // Validar que el correo haya sido ingresado correctamente
+        if (!EmailValidator.getInstance().isValid(email)) {
+            throw new NegocioException("El formato de correo electrónico ingresado no es válido.");
+        }
+        
+        // Intentar obtener el paciente
+        try {
+            // Busca el paciente usando la DAO
+            Paciente paciente = pacienteDAO.consultarPacientePorEmail(email);
+            
+            // Si no se encontró registro
+            if (paciente == null) {
+                return null;
+            }
+            
+            // Si se encontró registro
+            // Convertir entidad a DTO y regresarlo
+            return mapper.toViejoDTO(paciente);
+        } catch (PersistenciaException e) {
+            logger.log(Level.SEVERE, "Error al obtener un paciente " , e);
+            throw new NegocioException ("Error al obtener la información del paciente.", e);
+        }
+    }
+    
+    //
+    public boolean editarDatosPaciente(int idPaciente, PacienteNuevoDTO pacienteNuevo) {
+        return false;
     }
     
     /**
