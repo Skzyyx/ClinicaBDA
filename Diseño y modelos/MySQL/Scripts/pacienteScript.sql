@@ -212,6 +212,20 @@ END $$
 
 DELIMITER ;
 
+-- Procedimiento almacenado obtenerCitasActivasPorId(id)
+-- Obtiene todas las citas del paciente que tienen como estado 'ACTIVA'
+DELIMITER $$
+
+CREATE PROCEDURE obtenerCitasActivasPorId(
+	IN id INT)
+BEGIN
+	SELECT * 
+    FROM citas
+    WHERE idPaciente = id AND estado = 'ACTIVA';
+END $$
+
+DELIMITER ;
+
 -- Pruebas
 CALL registrarPaciente(
 	"Juan",

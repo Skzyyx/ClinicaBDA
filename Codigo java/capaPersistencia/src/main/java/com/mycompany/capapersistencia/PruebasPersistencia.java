@@ -4,16 +4,25 @@
 
 package com.mycompany.capapersistencia;
 
+import DAO.CitaDAO;
 import DAO.PacienteDAO;
 import conexion.ConexionDB;
 import conexion.IConexion;
+import entidades.Cita;
 import entidades.Direccion;
+import entidades.Medico;
 import entidades.Paciente;
 import entidades.Usuario;
 import excepciones.PersistenciaException;
+import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author 00000207653 Jesus Octavio Amarillas Amaya 
@@ -23,13 +32,16 @@ import java.time.LocalDate;
 public class PruebasPersistencia {
     private static final IConexion conexionDB = new ConexionDB();
     private static final PacienteDAO pacienteDAO = new PacienteDAO(conexionDB);
+    private static final CitaDAO citaDAO = new CitaDAO(conexionDB);
     
     public static void main(String[] args) throws SQLException {
         //pruebaConexion();
         //pruebaInsertarPaciente();
         //pruebaConsultarPacientePorId();
         //pruebaEditarDatosPaciente();
-        pruebaVerPerfilPaciente();
+        //pruebaVerPerfilPaciente();
+        //pruebaObtenerCitasActivasPorId(1);
+        pruebaRegistrarCitaProgramada();
     }
     
     /**
@@ -116,7 +128,7 @@ public class PruebasPersistencia {
                     10,
                     "María",
                     "Gómez",
-                    "Perez",
+                    "Gómez",
                     LocalDate.of(1995, 5, 10),
                     "maria.gomez@example.com",
                     "6442635874",
@@ -153,5 +165,72 @@ public class PruebasPersistencia {
         } catch (PersistenciaException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    private static void pruebaObtenerCitasActivasPorId(int id) throws SQLException {
+        System.out.println("--------------------");
+        String sql = "CALL obtenerCitasActivasPorId(?)";
+        try (Connection con = conexionDB.crearConexion();
+                CallableStatement cs = con.prepareCall(sql)) {
+            
+            cs.setInt(1, id);
+           
+            ResultSet rs = cs.executeQuery();
+            
+            while (rs.next()) {
+                System.out.println(
+                        rs.getInt(1) + ", " +
+                        rs.getString(2) + ", " +
+                        rs.getString(3) + ", " + 
+                        rs.getString(4) + ", " + 
+                        rs.getString(5) + ", " + 
+                        rs.getInt(6) + ", " + 
+                        rs.getInt(7)
+                );
+            }
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(PruebasPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private static void pruebaRegistrarCitaProgramada() throws SQLException {
+        
+        try {
+            // Crear instancia de Usuario
+            Usuario usuario = new Usuario(1, "juan.perez@example.com", "claveSegura456", "PACIENTE");
+
+            // Crear instancia de Dirección
+            Direccion direccion = new Direccion("Reforma", "789", "Centro", "06010");
+
+            // Crear instancia de Paciente
+            Paciente paciente = new Paciente(
+                    1,
+                    "Juan",
+                    "Perez",
+                    "Gomez",
+                    LocalDate.of(1990, 05, 14),
+                    "juan.perez@example.com",
+                    "5551234567",
+                    usuario,
+                    direccion
+            );
+            
+            // Crear instancia de Usuario
+            Usuario usuarioMedico = new Usuario(11, "77777777", "claveSegura456", "MEDICO");
+            
+            Medico medico = new Medico(1, "Ricardo", "Castillo", "Reyes", "Cardiología", "11111111", "ACTIVO", usuarioMedico);
+            
+            Cita cita = new Cita(LocalDateTime.of(2025, 02, 19, 18, 24, 54), null, "12345678", "PROGRAMADA", paciente, medico);
+            
+            boolean resultado = citaDAO.registrarCitaProgramada(cita);
+            
+            if (resultado) {
+                System.out.println("Se pudo agregar la cita.");
+            } else {
+                System.out.println("Se pudo agregar la cita: ");
+            }
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(PruebasPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+        } 
     }
 }
