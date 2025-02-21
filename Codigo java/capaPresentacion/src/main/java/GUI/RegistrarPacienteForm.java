@@ -4,21 +4,42 @@
  */
 package GUI;
 
+import BO.PacienteBO;
+import DTO.PacienteNuevoDTO;
+import Exception.NegocioException;
+import configuracion.DependencyInjector;
+import entidades.Direccion;
+import entidades.Usuario;
+import excepciones.PersistenciaException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author j_ama
  */
-public class registroPacienteForm extends javax.swing.JFrame {
+public class RegistrarPacienteForm extends javax.swing.JFrame {
+    
+    private PacienteBO pacienteBO = DependencyInjector.crearPacienteBO();
 
-    /**
-     * Creates new form registroPacienteForm
-     */
-    public registroPacienteForm() {
+    private static RegistrarPacienteForm instance; // Instancia única
+
+    private InicioDeSesion inicioSesionFrame;
+
+    // Constructor privado para evitar instanciación directa
+    private RegistrarPacienteForm() {
         initComponents();
-        
         this.setTitle("Registrarse como paciente");
         this.setSize(860, 510);
-        
+    }
+
+    // Método estático para obtener la instancia única
+    public static RegistrarPacienteForm getInstance() {
+        if (instance == null) {
+            instance = new RegistrarPacienteForm();
+        }
+        return instance;
     }
 
     /**
@@ -62,7 +83,6 @@ public class registroPacienteForm extends javax.swing.JFrame {
         txtFechaNacimiento = new com.github.lgooddatepicker.components.DatePicker();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(852, 510));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setText("Apellido Paterno");
@@ -109,6 +129,11 @@ public class registroPacienteForm extends javax.swing.JFrame {
         jPanel1.setLayout(new java.awt.CardLayout());
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnCancelar, "card3");
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 410, 230, 50));
@@ -217,9 +242,7 @@ public class registroPacienteForm extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCodigoPostalActionPerformed
 
     private void btnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarseActionPerformed
-
-        System.out.println(txtFechaNacimiento.getDate());
-// TODO add your handling code here:
+        registrarPaciente();
     }//GEN-LAST:event_btnRegistrarseActionPerformed
 
     private void txtTelefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTelefonoActionPerformed
@@ -250,6 +273,12 @@ public class registroPacienteForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNumeroActionPerformed
 
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        inicioSesionFrame.setRegistroPascienteFrame(this);
+        inicioSesionFrame.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -267,20 +296,21 @@ public class registroPacienteForm extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(registroPacienteForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegistrarPacienteForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(registroPacienteForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegistrarPacienteForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(registroPacienteForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegistrarPacienteForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(registroPacienteForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegistrarPacienteForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new registroPacienteForm().setVisible(true);
+                new RegistrarPacienteForm().setVisible(true);
             }
         });
     }
@@ -317,4 +347,59 @@ public class registroPacienteForm extends javax.swing.JFrame {
     private javax.swing.JTextField txtNumero;
     private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
+
+    public InicioDeSesion getInicioSesionFrame() {
+        return inicioSesionFrame;
+    }
+
+    public void setInicioSesionFrame(InicioDeSesion inicioSesionFrame) {
+        this.inicioSesionFrame = inicioSesionFrame;
+    }
+
+    private void registrarPaciente() {
+        try {
+            if (!txtContrasenia.getText().equals(txtConfirmarContrasenia.getText())) {
+                JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden");
+                return;
+            }
+            
+            PacienteNuevoDTO pacienteNuevo = new PacienteNuevoDTO();
+            pacienteNuevo.setNombre(txtNombreCompleto.getText());
+            pacienteNuevo.setApellidoPaterno(txtApellidoP.getText());
+            pacienteNuevo.setApellidoMaterno(txtApellidoM.getText());
+            pacienteNuevo.setEmail(txtEmail.getText());
+            pacienteNuevo.setFechaNacimiento(this.txtFechaNacimiento.getDate());
+            pacienteNuevo.setTelefono(txtTelefono.getText());
+            pacienteNuevo.setDireccion(new Direccion(
+                    txtCalle.getText(), 
+                    txtNumero.getText(), 
+                    txtColonia.getText(), 
+                    txtCodigoPostal.getText())
+            );
+            pacienteNuevo.setUsuario(new Usuario(
+                    txtEmail.getText(), 
+                    txtConfirmarContrasenia.getText(), "PACIENTE"));
+
+            int confirmacion = JOptionPane.showConfirmDialog(this, "¿Estas seguro que deseas registrarte?", "Mensaje de confirmación",
+                    JOptionPane.YES_NO_OPTION);
+            
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                try {
+                    boolean resultado = this.pacienteBO.registrarPaciente(pacienteNuevo);
+                    if (resultado) {
+                        JOptionPane.showMessageDialog(this, "¡Tu registro fue completado");
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Ocurrió un error inesperado y no pudimos regsitrarte. Intenta de nuevo.");
+                    }
+                } catch (NegocioException ex) {
+                    JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
+                }
+            }
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(RegistrarPacienteForm.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Ocurrió un error inesperado. Intenta de nuevo.");
+        } 
+    }
+    
+    
 }
