@@ -152,6 +152,7 @@ public class PacienteDAO implements IPacienteDAO {
      *  -- fecha de nacimiento
      *  -- telefono
      *  -- direccion
+     *  -- contraseña
      * @param paciente Paciente para editar
      * @return True si se editó el registro, false en caso contrario.
      * @throws PersistenciaException Si hubo un error al intentar editar los datos.
