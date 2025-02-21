@@ -28,14 +28,6 @@ public interface IPacienteDAO {
     
     /**
      * Consulta un paciente por su id.
-     * @param id Id del paciente a consultar.
-     * @return Paciente si se encontró, o null.
-     * @throws PersistenciaException Si hubo un error al intentar consultar el paciente.
-     */
-    public Paciente consultarPacientePorId(int id) throws PersistenciaException;
-    
-    /**
-     * Consulta un paciente por su id.
      * @param email Email del paciente a consultar.
      * @return Paciente si se encontró, o null.
      * @throws PersistenciaException Si hubo un error al intentar consultar el paciente.
