@@ -5,10 +5,8 @@
 package DAO;
 
 import conexion.IConexion;
-import entidades.Paciente;
 import entidades.Usuario;
 import excepciones.PersistenciaException;
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,8 +15,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author Jesus
+ * Clase UsuarioDAO.
+ * Representa el DAO para la clase Usuario
+ * 
+ * @author 00000207653 Jesus Octavio Amarillas Amaya 
+ * @author 00000252574 Jose Luis Islas Molina 
+ * @author 00000253301 Isabel Valenzuela Rocha 
  */
 public class UsuarioDAO implements IUsuarioDAO {
     private static final Logger logger = Logger.getLogger(Usuario.class.getName());
@@ -38,12 +40,13 @@ public class UsuarioDAO implements IUsuarioDAO {
     }
 
     /**
-     * Consultar un usuario existente de la base de datos
+     * Consultar si un usuario existente de la base de datos
      *
-     * @param usuario
-     * @return
-     * @throws PersistenciaException
+     * @param usuario Usuario a buscar.
+     * @return Usuario si se encontró, null en caso contrario.
+     * @throws PersistenciaException Si hubo un error al consultar el usuario.
      */
+    @Override
     public Usuario consultarUsuario(String usuario) throws PersistenciaException {
         Usuario usuarioEncontrado = null;
 
@@ -65,13 +68,10 @@ public class UsuarioDAO implements IUsuarioDAO {
                     
                     logger.log(Level.INFO, "Usuario encontrado: {0}", usuarioEncontrado);
                 }
-
             }
         } catch (SQLException e) {
             throw new PersistenciaException("Error al consultar el usuario: "+ e.getMessage());
         }
         return usuarioEncontrado;
-
     }
-
 }

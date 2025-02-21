@@ -15,6 +15,9 @@ public class PrincipalPaciente extends javax.swing.JFrame {
      */
     public PrincipalPaciente() {
         initComponents();
+        setLocationRelativeTo(null);
+        setResizable(false);
+        setTitle("Paciente - Menú principal");
     }
 
     /**

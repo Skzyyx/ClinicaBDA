@@ -8,6 +8,7 @@ import BO.PacienteBO;
 import BO.UsuarioBO;
 import DTO.PacienteNuevoDTO;
 import DTO.PerfilViejoDTO;
+import DTO.SesionNuevoDTO;
 import DTO.UsuarioViejoDTO;
 import Exception.NegocioException;
 import at.favre.lib.crypto.bcrypt.BCrypt;
@@ -33,7 +34,8 @@ public class PruebasNegocio {
         //pruebaObtenerPerfilPaciente();
         //pruebaEditarDatosPaciente();
         //pruebaEncriptarContrasenia();
-        pruebaConsultarUsuario();
+        //pruebaConsultarUsuario();
+        pruebaValidarSesion();
     }
     
     /**
@@ -42,12 +44,12 @@ public class PruebasNegocio {
     private static void pruebaRegistrarPaciente() throws PersistenciaException {
         try {
             // Crear instancia de Usuario
-            Usuario usuario = new Usuario("anaPer@gmail.com", "seguraClave2024", "PACIENTE");
+            Usuario usuario = new Usuario("anazzz@gmail.com", "contra", "PACIENTE");
 
             // Crear instancia de Dirección
             Direccion direccion = new Direccion("Calle Reforma", "102", "Centro", "85000");
 
-            PacienteNuevoDTO pacienteAGuardar = new PacienteNuevoDTO("Ana", "Pérez", "López", LocalDate.of(1992, 8, 25), "anaPer@gmail.com", "6666666666", usuario, direccion);
+            PacienteNuevoDTO pacienteAGuardar = new PacienteNuevoDTO("Ana", "Casillas", "López", LocalDate.of(1992, 8, 25), "anazzz@gmail.com", "1245963874", usuario, direccion);
 
             boolean pacienteRegistrado = pacienteBO.registrarPaciente(pacienteAGuardar);
             
@@ -147,4 +149,18 @@ public class PruebasNegocio {
             System.out.println("No se encontró usuario.");
         }
     }
+    
+    /**
+     * Prueba validar sesion
+     */
+    private static void pruebaValidarSesion() throws NegocioException {
+        SesionNuevoDTO sesion = new SesionNuevoDTO("anazzz@gmail.com", "contra");
+        
+        boolean valido = usuarioBO.autenticarSesion(sesion);
+        if (valido) {
+            System.out.println("Sesión válida.");
+        } else {
+            System.out.println("La sesión no es válida.");
+        }
+    }    
 }

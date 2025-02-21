@@ -5,19 +5,39 @@
 package configuracion;
 
 import BO.PacienteBO;
+import BO.UsuarioBO;
 import conexion.ConexionDB;
 import conexion.IConexion;
 
 /**
- *
- * @author skyro
+ * Clase DependencyInjector.
+ * Su función es inyectar dependencias para evitar acoplamientos directos.
+ * 
+ * @author 00000207653 Jesus Octavio Amarillas Amaya
+ * @author 00000252574 Jose Luis Islas Molina
+ * @author 00000253301 Isabel Valenzuela Rocha
  */
 public class DependencyInjector {
     
+    /**
+     * Crea y devuelve una instancia de PacienteBO, inyectando la conexión a la base de datos mediante IConexionBD.
+     * @return Instancia de PacienteBO
+     */
     public static PacienteBO crearPacienteBO() {
         IConexion conexion = new ConexionDB();
         PacienteBO pacienteBO = new PacienteBO(conexion);
         
         return pacienteBO;
+    }
+    
+    /**
+     * Crea y devuelve una instancia de UsuarioBO, inyectando la conexión a la base de datos mediante IConexionBD.
+     * @return Instancia de UsuarioBO
+     */
+    public static UsuarioBO crearUsuarioBO() {
+        IConexion conexion = new ConexionDB();
+        UsuarioBO usuarioBO = new UsuarioBO(conexion);
+        
+        return usuarioBO;
     }
 }

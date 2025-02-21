@@ -4,12 +4,24 @@
  */
 package GUI;
 
+import BO.UsuarioBO;
+import DTO.SesionNuevoDTO;
+import DTO.UsuarioViejoDTO;
+import Exception.NegocioException;
+import configuracion.DependencyInjector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import sesion.SessionManager;
+
 /**
  *
  * @author j_ama
  */
 public class InicioDeSesion extends javax.swing.JFrame {
-
+    
+    UsuarioBO usuarioBO = DependencyInjector.crearUsuarioBO();
+    
     /**
      * Creates new form InicioDeSesion
      */
@@ -170,9 +182,11 @@ public class InicioDeSesion extends javax.swing.JFrame {
     }//GEN-LAST:event_txtUsuarioActionPerformed
 
     private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
-        PrincipalPaciente ventana = new PrincipalPaciente();
-        ventana.setVisible(true);
-        ventana.dispose();
+        try {
+            iniciarSesion();
+        } catch (NegocioException ex) {
+            Logger.getLogger(InicioDeSesion.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
 
     private void btnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarseActionPerformed
@@ -230,7 +244,55 @@ public class InicioDeSesion extends javax.swing.JFrame {
     private javax.swing.JPasswordField txtContra;
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
+    
+    /**
+     * Inicia la sesión si las credenciales son válidas.
+     * @throws NegocioException Si hubo un error al iniciar sesión.
+     */
+    private void iniciarSesion() throws NegocioException {
+        // Obtener el usuario ingresado
+        String usuario = txtUsuario.getText();
+        // Obtener la contraseña ingresada (arreglo de caracteres)
+        char[] caracteres = txtContra.getPassword();
+        
+        // Validar campos vacíos
+        if (caracteres.length == 0 || usuario.isBlank()) {
+            JOptionPane.showMessageDialog(null, "Por favor ingrese todos los campos.");
+            return;
+        }
+        
+        // Convertir el arreglo en un String
+        String contrasenia = new String(caracteres);
+        
+        try {
+            // Crear DTO de sesión para mandar al usuarioBO
+            SesionNuevoDTO sesion = new SesionNuevoDTO(usuario, contrasenia);
+            
+            // Intentar autenticar las credenciales
+            boolean autenticado = usuarioBO.autenticarSesion(sesion);
 
+            // Si las credenciales son válidas
+            if (autenticado) {
+                // Consulta el usuario de la sesión
+                UsuarioViejoDTO usuarioSesion = usuarioBO.consultarUsuario(usuario);
+
+                // Guardar quién inició sesion y su rol
+                SessionManager.getInstance().iniciarSesion(usuarioSesion.getUsuario(), usuarioSesion.getRol());
+                
+                //Abre la siguiente pestaña
+                PrincipalPaciente menuPrincipalPaciente = new PrincipalPaciente();
+                menuPrincipalPaciente.setVisible(true);
+                
+                //Cierra la pestaña actual
+                this.dispose();
+            // Si no fueron válidas, muestra una notificación
+            } else {
+                JOptionPane.showMessageDialog(this, "El usuario o contraseña no es válido.");
+            }
+        } catch (NegocioException ex) {
+            JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
+        }  
+    }
 }
 
 
