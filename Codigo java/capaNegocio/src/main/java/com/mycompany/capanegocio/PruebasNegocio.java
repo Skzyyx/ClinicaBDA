@@ -5,14 +5,15 @@
 package com.mycompany.capanegocio;
 
 import BO.PacienteBO;
+import BO.UsuarioBO;
 import DTO.PacienteNuevoDTO;
 import DTO.PerfilViejoDTO;
+import DTO.UsuarioViejoDTO;
 import Exception.NegocioException;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import conexion.ConexionDB;
 import conexion.IConexion;
 import entidades.Direccion;
-import entidades.Paciente;
 import entidades.Usuario;
 import excepciones.PersistenciaException;
 import java.time.LocalDate;
@@ -25,12 +26,14 @@ import java.time.LocalDate;
 public class PruebasNegocio {
     private static final IConexion conexion = new ConexionDB();
     private static final PacienteBO pacienteBO = new PacienteBO(conexion);
-    
+    private static final UsuarioBO usuarioBO = new UsuarioBO(conexion);
+            
     public static void main(String[] args) throws PersistenciaException, NegocioException {
         //pruebaRegistrarPaciente();
         //pruebaObtenerPerfilPaciente();
-        pruebaEditarDatosPaciente();
+        //pruebaEditarDatosPaciente();
         //pruebaEncriptarContrasenia();
+        pruebaConsultarUsuario();
     }
     
     /**
@@ -127,6 +130,21 @@ public class PruebasNegocio {
             System.out.println("Contraseña correcta.");
         } else {
             System.out.println("Contraseña incorrecta.");
+        }
+    }
+    
+    /**
+     * Prueba consultar usuario
+     */
+    private static void pruebaConsultarUsuario() throws NegocioException {
+        String usuario = "anaPer@gmail.com";
+        
+        UsuarioViejoDTO usuarioEncontrado = usuarioBO.consultarUsuario(usuario);
+        
+        if (usuarioEncontrado != null) {
+            System.out.println("Usuario encontrado.");
+        } else {
+            System.out.println("No se encontró usuario.");
         }
     }
 }

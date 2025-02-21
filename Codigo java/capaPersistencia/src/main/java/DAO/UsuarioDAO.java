@@ -5,6 +5,7 @@
 package DAO;
 
 import conexion.IConexion;
+import entidades.Paciente;
 import entidades.Usuario;
 import excepciones.PersistenciaException;
 import java.sql.CallableStatement;
@@ -12,12 +13,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Jesus
  */
 public class UsuarioDAO implements IUsuarioDAO {
+    private static final Logger logger = Logger.getLogger(Usuario.class.getName());
 
     /**
      * Conexion que se va utilizar
@@ -58,7 +62,8 @@ public class UsuarioDAO implements IUsuarioDAO {
                     usuarioEncontrado.setUsuario(rs.getString("usuario"));
                     usuarioEncontrado.setContrasenia(rs.getString("contrasenia"));
                     usuarioEncontrado.setRol(rs.getString("rol"));
-
+                    
+                    logger.log(Level.INFO, "Usuario encontrado: {0}", usuarioEncontrado);
                 }
 
             }

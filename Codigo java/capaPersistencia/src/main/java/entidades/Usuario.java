@@ -4,8 +4,6 @@
  */
 package entidades;
 
-import java.util.Objects;
-
 /**
  * Clase Usuario.
  * Maneja la entidad Usuario, usado principalmente para guardar los datos de inicio de sesión.

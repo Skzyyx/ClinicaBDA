@@ -6,7 +6,11 @@
 package com.mycompany.capapersistencia;
 
 import DAO.CitaDAO;
+import DAO.ICitaDAO;
+import DAO.IPacienteDAO;
+import DAO.IUsuarioDAO;
 import DAO.PacienteDAO;
+import DAO.UsuarioDAO;
 import DTO.PerfilDTO;
 import conexion.ConexionDB;
 import conexion.IConexion;
@@ -32,15 +36,17 @@ import java.util.logging.Logger;
  */
 public class PruebasPersistencia {
     private static final IConexion conexionDB = new ConexionDB();
-    private static final PacienteDAO pacienteDAO = new PacienteDAO(conexionDB);
-    private static final CitaDAO citaDAO = new CitaDAO(conexionDB);
+    private static final IPacienteDAO pacienteDAO = new PacienteDAO(conexionDB);
+    private static final ICitaDAO citaDAO = new CitaDAO(conexionDB);
+    private static final IUsuarioDAO usuarioDAO = new UsuarioDAO(conexionDB);
     
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException, PersistenciaException {
         //pruebaConexion();
         //pruebaInsertarPaciente();
-        pruebaEditarDatosPaciente();
+        //pruebaEditarDatosPaciente();
         //pruebaVerPerfilPaciente();
         //pruebaConsultarPacientePorEmail();
+        pruebaConsultarUsuario();
     }
     
     /**
@@ -231,5 +237,20 @@ public class PruebasPersistencia {
         } catch (PersistenciaException ex) {
             Logger.getLogger(PruebasPersistencia.class.getName()).log(Level.SEVERE, null, ex);
         } 
+    }
+    
+    /**
+     * Prueba consultar usuario
+     */
+    private static void pruebaConsultarUsuario() throws PersistenciaException {
+        String usuario = "anaPer@gmail.com";
+        
+        Usuario usuarioConsultado = usuarioDAO.consultarUsuario(usuario);
+        
+        if (usuarioConsultado != null) {
+            System.out.println("Usuario encontrado.");
+        } else {
+            System.out.println("No se encontró usuario.");
+        }
     }
 }
