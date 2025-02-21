@@ -38,8 +38,6 @@ public class PruebasPersistencia {
     public static void main(String[] args) throws SQLException {
         //pruebaConexion();
         //pruebaInsertarPaciente();
-        //pruebaConsultarPacientePorId();
-        //
         pruebaEditarDatosPaciente();
         //pruebaVerPerfilPaciente();
         //pruebaConsultarPacientePorEmail();
@@ -94,22 +92,6 @@ public class PruebasPersistencia {
             }
         } catch (PersistenciaException e) {
             System.out.println("Error al insertar paciente: " + e.getMessage());
-        }
-    }
-    
-    /**
-     * Prueba consultar paciente por id
-     */
-    private static void pruebaConsultarPacientePorId() {
-        int id = 30;
-        try {
-            Paciente paciente = pacienteDAO.consultarPacientePorId(id);
-
-            if (paciente == null) {
-                System.out.println("No existe el paciente");
-            }
-        } catch (PersistenciaException e) {
-            System.out.println(e.getMessage());
         }
     }
     

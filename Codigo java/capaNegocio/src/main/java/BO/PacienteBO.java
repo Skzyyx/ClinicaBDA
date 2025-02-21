@@ -31,7 +31,6 @@ import org.apache.commons.validator.routines.EmailValidator;
  * @author 00000253301 Isabel Valenzuela Rocha
  */
 public class PacienteBO {
-
     private static final Logger logger = Logger.getLogger(PacienteBO.class.getName());
 
     // DAO para manejar la persistencia de los pacientes
@@ -136,37 +135,6 @@ public class PacienteBO {
         } catch (PersistenciaException e) {
             logger.log(Level.SEVERE, "Error al registrar un paciente " , e);
             throw new NegocioException ("Error al registrar el paciente.");
-        }
-    }
-    
-    /**
-     * Obtiene un paciente con un id específico mediante la DAO.
-     * @param id ID a buscar.
-     * @return el paciente si lo encontró, null en caso contrario.
-     * @throws NegocioException Si hubo un error al buscar el paciente.
-     */
-    public PacienteViejoDTO obtenerPacientePorId(int id) throws NegocioException {
-        // Validar que el id sea válido
-        if (id <= 0) {
-            throw new NegocioException("El ID debe ser un número válido.");
-        }
-        
-        // Intentar obtener el paciente
-        try {
-            // Busca el paciente usando la DAO
-            Paciente paciente = pacienteDAO.consultarPacientePorId(id);
-            
-            // Si no se encontró registro
-            if (paciente == null) {
-                return null;
-            }
-            
-            // Si se encontró registro
-            // Convertir entidad a DTO y regresarlo
-            return mapper.toViejoDTO(paciente);
-        } catch (PersistenciaException e) {
-            logger.log(Level.SEVERE, "Error al obtener un paciente " , e);
-            throw new NegocioException ("Error al obtener la información del paciente.", e);
         }
     }
     
@@ -305,8 +273,6 @@ public class PacienteBO {
         
         // Intentar editar los datos del paciente
         try {
-            System.out.println(paciente.toString());
-            
             // Regresar si hubo cambios o no
             return pacienteDAO.editarDatosPaciente(paciente);
         } catch (PersistenciaException e) {
@@ -333,19 +299,24 @@ public class PacienteBO {
             throw new NegocioException("El formato de correo electrónico ingresado no es válido.");
         }
         
+        // Validar si el paciente existe
         Paciente pacienteExiste = pacienteDAO.consultarPacientePorEmail(email);
-            
+        
+        // Si el paciente no existe
         if (pacienteExiste == null) {
             throw new NegocioException("No existe paciente con email " + email + ".");
         }
-
+        
+        // Intentar obtener el perfil del paciente
         try {
             PerfilDTO perfil = pacienteDAO.obtenerPerfilPaciente(email);
             
+            // Si no se obtuvo el perfil
             if (perfil == null) {
                 return null;
             }
             
+            // Si se obtuvo el perfil
             return mapper.toPerfilViejoDTO(perfil);
         } catch (PersistenciaException e) {
             logger.log(Level.SEVERE, "Error al obtener un perfil" , e);

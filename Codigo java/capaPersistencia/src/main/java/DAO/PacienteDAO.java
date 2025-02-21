@@ -84,71 +84,6 @@ public class PacienteDAO implements IPacienteDAO {
     }
     
     /**
-     * Consulta un paciente por su id.
-     * @param id Id del paciente a consultar.
-     * @return Paciente si se encontró, o null.
-     * @throws PersistenciaException Si hubo un error al intentar consultar el paciente.
-     */
-    @Override
-    public Paciente consultarPacientePorId(int id) throws PersistenciaException {
-        // Paciente que se va a regresar
-        Paciente paciente = null;
-        
-        // Sentencia SQL
-        String sentenciaSQL = "CALL consultarPacientePorId(?)";
-        
-        // Intenta la conexión
-        try (Connection con = conexion.crearConexion();
-             CallableStatement cb = con.prepareCall(sentenciaSQL)) {
-            
-            // Se setea el valor del id a buscar
-            cb.setInt(1, id);
-            
-            // Intenta la consulta
-            try (ResultSet rs = cb.executeQuery()) { 
-                // Si se encontró registro
-                if (rs.next()) {
-                    // Inicializa la instancia
-                    paciente = new Paciente();
-                    // Setea los datos del paciente
-                    paciente.setIdPaciente(rs.getInt(1));
-                    paciente.setNombre(rs.getString(2));
-                    paciente.setApellidoPaterno(rs.getString(3));
-                    paciente.setApellidoMaterno(rs.getString(4));
-                    paciente.setFechaNacimiento(rs.getDate(5).toLocalDate());
-                    paciente.setEmail(rs.getString(6));
-                    paciente.setTelefono(rs.getString(7));
-                    
-                    // Setea los datos del usuario asociado al paciente
-                    Usuario usuario = new Usuario();
-                    usuario.setIdUsuario(rs.getInt(8));
-                    usuario.setUsuario(rs.getString(9));
-                    usuario.setContrasenia(rs.getString(10));
-                    usuario.setRol(rs.getString(11));
-                    paciente.setUsuario(usuario);
-                    
-                    // Setea los datos de la dirección asociada al paciente
-                    Direccion direccion = new Direccion();
-                    direccion.setIdDireccion(rs.getInt(12));
-                    direccion.setCalle(rs.getString(13));
-                    direccion.setNumero(rs.getString(14));
-                    direccion.setColonia(rs.getString(15));
-                    direccion.setCodigoPostal(rs.getString(16));
-                    paciente.setDireccion(direccion);
-
-                    logger.log(Level.INFO, "Paciente encontrado: {0}", paciente);
-                }
-            }
-        // Si ocurre un error
-        } catch (Exception e) {
-            throw new PersistenciaException("Error al consultar paciente: " + e.getMessage());
-        }
-        
-        // Regresa el paciente
-        return paciente;
-    }
-    
-    /**
      * Consulta un paciente por su email.
      * @param email Email del paciente a consultar.
      * @return Paciente si se encontró, o null.
@@ -217,6 +152,7 @@ public class PacienteDAO implements IPacienteDAO {
      *  -- fecha de nacimiento
      *  -- telefono
      *  -- direccion
+     *  -- contraseña
      * @param paciente Paciente para editar
      * @return True si se editó el registro, false en caso contrario.
      * @throws PersistenciaException Si hubo un error al intentar editar los datos.
