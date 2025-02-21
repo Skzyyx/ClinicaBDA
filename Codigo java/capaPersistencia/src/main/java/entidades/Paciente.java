@@ -5,6 +5,7 @@
 package entidades;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * Clase Usuario.
@@ -26,8 +27,6 @@ public class Paciente {
     private String apellidoMaterno;
     /** Fecha de nacimiento del paciente. */
     private LocalDate fechaNacimiento;
-    /** Edad del paciente*/
-    private int edad;
     /** Correo electrónico del paciente. */
     private String email;
     /** Teléfono del paciente. */
@@ -45,7 +44,7 @@ public class Paciente {
     
     /**
      * Constructor de la clase.
-     * Establece todos los atributos de la clase al valor de sus parámetros, excepto edad.
+     * Establece todos los atributos de la clase al valor de sus parámetros.
      * @param idPaciente id del paciente
      * @param nombre nombre del paciente
      * @param apellidoPaterno apellido paterno del paciente
@@ -70,7 +69,7 @@ public class Paciente {
     
     /**
      * Contructor de la clase.
-     * Establece los atributos de la clase al valor de sus parámetros, excepto idPaciente y edad.
+     * Establece los atributos de la clase al valor de sus parámetros, excepto idPaciente.
      * @param nombre nombre del paciente
      * @param apellidoPaterno apellido paterno del paciente
      * @param apellidoMaterno apellido materno del paciente
@@ -85,31 +84,6 @@ public class Paciente {
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
         this.fechaNacimiento = fechaNacimiento;
-        this.email = email;
-        this.telefono = telefono;
-        this.usuario = usuario;
-        this.direccion = direccion;
-    }
-    
-    /**
-     * Constructor de la clase.
-     * Establece los atributos de la clase al valor de sus parámetros, excepto idPaciente.
-     * @param nombre nombre del paciente
-     * @param apellidoPaterno apellido paterno del paciente
-     * @param apellidoMaterno apellido materno del paciente
-     * @param fechaNacimiento fecha de nacimiento del paciente
-     * @param edad edad del paciente
-     * @param email correo electrónico del paciente
-     * @param telefono teléfono del paciente
-     * @param usuario usuario del paciente
-     * @param direccion direccion del paciente
-     */
-    public Paciente(String nombre, String apellidoPaterno, String apellidoMaterno, LocalDate fechaNacimiento, int edad, String email, String telefono, Usuario usuario, Direccion direccion) {
-        this.nombre = nombre;
-        this.apellidoPaterno = apellidoPaterno;
-        this.apellidoMaterno = apellidoMaterno;
-        this.fechaNacimiento = fechaNacimiento;
-        this.edad = edad;
         this.email = email;
         this.telefono = telefono;
         this.usuario = usuario;
@@ -205,23 +179,6 @@ public class Paciente {
     public void setFechaNacimiento(LocalDate fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
-    
-    /**
-     * Método getEdad(). 
-     * Obtiene la edad del paciente
-     * @return edad del paciente
-     */
-    public int getEdad() {
-        return edad;
-    }
-    
-    /**
-     * Método setEdad(int edad).
-     * @param edad valor de edad para actualizar
-     */
-    public void setEdad(int edad) {
-        this.edad = edad;
-    }
 
     /**
      * Método getEmail().
@@ -296,12 +253,36 @@ public class Paciente {
     }
     
     /**
+     * Método equals(Object obj).
+     * Compara si dos pacientes son iguales (solo incluye valor de atributos que pueden editarse).
+     * @param obj Objeto paciente para comparar
+     * @return True si son iguales, false en caso contrario.
+     */
+    public boolean equalsParcial(Object obj) {
+        if (this == obj) {
+            return true; // Misma referencia
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false; // No es un Paciente
+        }
+        Paciente paciente = (Paciente) obj;
+
+        return Objects.equals(this.nombre, paciente.nombre)
+                && Objects.equals(this.apellidoPaterno, paciente.apellidoPaterno)
+                && Objects.equals(this.apellidoMaterno, paciente.apellidoMaterno)
+                && Objects.equals(this.fechaNacimiento, paciente.fechaNacimiento)
+                && Objects.equals(this.telefono, paciente.telefono)
+                && Objects.equals(this.usuario != null ? this.usuario.getContrasenia() : null,  paciente.usuario != null ? paciente.usuario.getContrasenia() : null)
+                && Objects.equals(this.direccion, paciente.direccion); 
+    }
+    
+    /**
      * Método toString().
      *
      * @return String con detalles de los atributos de la clase
      */
     @Override
     public String toString() {
-        return "Paciente{" + "idPaciente=" + idPaciente + ", nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", fechaNacimiento=" + fechaNacimiento + ", edad=" + edad + ", email=" + email + ", telefono=" + telefono + ", usuario=" + usuario + ", direccion=" + direccion + '}';
+        return "Paciente{" + "idPaciente=" + idPaciente + ", nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", fechaNacimiento=" + fechaNacimiento + ", email=" + email + ", telefono=" + telefono + ", usuario=" + usuario + ", direccion=" + direccion + '}';
     }
 }

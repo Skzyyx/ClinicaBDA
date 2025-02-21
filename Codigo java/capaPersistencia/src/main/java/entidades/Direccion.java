@@ -4,6 +4,8 @@
  */
 package entidades;
 
+import java.util.Objects;
+
 /**
  * Clase Direccion.
  * Maneja la entidad Direccion, usado para guardar los datos de dirección de un paciente.
@@ -145,6 +147,27 @@ public class Direccion {
      */
     public void setCodigoPostal(String codigoPostal) {
         this.codigoPostal = codigoPostal;
+    }
+    
+    /**
+     * Método equalsParcial(Object obj).
+     * Compara si dos direcciones son iguales (incluye valor de atributos, menos id).
+     * @param obj Objeto paciente para comparar
+     * @return True si son iguales, false en caso contrario.
+     */
+    public boolean equalsParcial(Object obj) {
+        if (this == obj) {
+            return true; // Misma referencia en memoria
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false; // No es del mismo tipo
+        }
+        Direccion direccion = (Direccion) obj;
+
+        return Objects.equals(calle, direccion.calle)
+                && Objects.equals(numero, direccion.numero)
+                && Objects.equals(colonia, direccion.colonia)
+                && Objects.equals(codigoPostal, direccion.codigoPostal);
     }
     
     /**

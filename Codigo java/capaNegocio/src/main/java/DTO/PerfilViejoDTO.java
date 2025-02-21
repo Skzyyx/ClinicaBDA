@@ -5,21 +5,18 @@
 package DTO;
 
 import entidades.Direccion;
-import entidades.Usuario;
 import java.time.LocalDate;
 
 /**
- * Clase PacienteNuevoDTO.
- * Esta clase representa un DTO utilizado para la creación de un paciente, 
- * que se utilizará para ingresar datos de pacientes en la base de datos. 
- * No contiene el ID del paciente, ya que este será generado automáticamente al momento de la inserción.
+ * Clase PerfilViejoDTO.
+ * Representa un DTO utilizado para recopilar de perfil de paciente.
+ * Se utilizará para pasar la información de perfil a Presentación. 
  * 
  * @author 00000207653 Jesus Octavio Amarillas Amaya 
  * @author 00000252574 Jose Luis Islas Molina 
  * @author 00000253301 Isabel Valenzuela Rocha 
  */
-public class PacienteNuevoDTO {
-    
+public class PerfilViejoDTO {
     /* Nombre del paciente. */
     private String nombre;
     /* Apellido paterno del paciente. */
@@ -28,46 +25,41 @@ public class PacienteNuevoDTO {
     private String apellidoMaterno;
     /* Fecha de nacimiento del paciente. */
     private LocalDate fechaNacimiento;
+    /* Edad del paciente */
+    private int edad;
     /* Correo electrónico del paciente. */
     private String email;
     /* Teléfono del paciente. */
     private String telefono;
-    /* Usuario asociado al paciente. */
-    private Usuario usuario;
     /* Dirección del paciente. */
     private Direccion direccion;
-
+    
     /**
-     * Constructor vacío para la clase PacienteNuevoDTO.
-     * Utilizado por frameworks de serialización/deserialización o por otros métodos que requieran un objeto vacío.
+     * Constructor vacío.
      */
-    public PacienteNuevoDTO() {
+    public PerfilViejoDTO() {
     }
-
+    
     /**
-     * Constructor con parámetros para inicializar todos los campos de la clase PacienteNuevoDTO.
-     * 
+     * Constructor con parámetros para inicializar todos los campos de la clase PerfilNuevoDTO.
      * @param nombre Nombre del paciente
      * @param apellidoPaterno Apellido paterno del paciente
      * @param apellidoMaterno Apellido materno del paciente
      * @param fechaNacimiento Fecha de nacimiento del paciente
      * @param email Correo electrónico del paciente
      * @param telefono Teléfono del paciente
-     * @param usuario Usuario asociado al paciente
      * @param direccion Dirección del paciente
      */
-    public PacienteNuevoDTO(String nombre, String apellidoPaterno, String apellidoMaterno, LocalDate fechaNacimiento, String email, String telefono, Usuario usuario, Direccion direccion) {
+    public PerfilViejoDTO(String nombre, String apellidoPaterno, String apellidoMaterno, LocalDate fechaNacimiento, int edad, String email, String telefono, Direccion direccion) {
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
         this.fechaNacimiento = fechaNacimiento;
+        this.edad = edad;
         this.email = email;
         this.telefono = telefono;
-        this.usuario = usuario;
         this.direccion = direccion;
     }
-
-    // Getters y setters
 
     public String getNombre() {
         return nombre;
@@ -101,6 +93,14 @@ public class PacienteNuevoDTO {
         this.fechaNacimiento = fechaNacimiento;
     }
 
+    public int getEdad() {
+        return edad;
+    }
+
+    public void setEdad(int edad) {
+        this.edad = edad;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -117,14 +117,6 @@ public class PacienteNuevoDTO {
         this.telefono = telefono;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
     public Direccion getDireccion() {
         return direccion;
     }
@@ -132,14 +124,13 @@ public class PacienteNuevoDTO {
     public void setDireccion(Direccion direccion) {
         this.direccion = direccion;
     }
-
+    
     /**
-     * Método toString para mostrar los detalles del paciente en formato de texto.
-     * 
-     * @return Cadena con los detalles del paciente.
+     * Método toString().
+     * @return String con detalles de los atributos de la clase.
      */
     @Override
     public String toString() {
-        return "PacienteNuevoDTO{" + "nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", fechaNacimiento=" + fechaNacimiento + ", email=" + email + ", telefono=" + telefono + ", usuario=" + usuario + ", direccion=" + direccion + '}';
+        return "PerfilViejoDTO{" + "nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", fechaNacimiento=" + fechaNacimiento + ", edad=" + edad + ", email=" + email + ", telefono=" + telefono + ", direccion=" + direccion + '}';
     }
 }

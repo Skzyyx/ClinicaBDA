@@ -6,6 +6,7 @@ package com.mycompany.capanegocio;
 
 import BO.PacienteBO;
 import DTO.PacienteNuevoDTO;
+import DTO.PerfilViejoDTO;
 import Exception.NegocioException;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import conexion.ConexionDB;
@@ -25,22 +26,23 @@ public class PruebasNegocio {
     private static final PacienteBO pacienteBO = new PacienteBO(conexion);
     
     public static void main(String[] args) throws PersistenciaException, NegocioException {
-        pruebaRegistrarPaciente();
+        //pruebaRegistrarPaciente();
+        pruebaObtenerPerfilPaciente();
         pruebaEncriptarContrasenia();
     }
     
     /**
      * Prueba registrar paciente
      */
-    private static void pruebaRegistrarPaciente() throws NegocioException{
+    private static void pruebaRegistrarPaciente() throws PersistenciaException {
         try {
             // Crear instancia de Usuario
-            Usuario usuario = new Usuario("anaPerez123@gmail.com", "seguraClave2024", "PACIENTE");
+            Usuario usuario = new Usuario("anaPer@gmail.com", "seguraClave2024", "PACIENTE");
 
             // Crear instancia de Dirección
             Direccion direccion = new Direccion("Calle Reforma", "102", "Centro", "85000");
 
-            PacienteNuevoDTO pacienteAGuardar = new PacienteNuevoDTO("Ana", "Pérez", "López", LocalDate.of(1992, 8, 25), "anaPerez123@gmail.com", "6621457890", usuario, direccion);
+            PacienteNuevoDTO pacienteAGuardar = new PacienteNuevoDTO("Ana", "Pérez", "López", LocalDate.of(1992, 8, 25), "anaPer@gmail.com", "6666666666", usuario, direccion);
 
             boolean pacienteRegistrado = pacienteBO.registrarPaciente(pacienteAGuardar);
             
@@ -49,8 +51,27 @@ public class PruebasNegocio {
             } else {
                 System.out.println("No se registró el paciente.");
             }
-        } catch (PersistenciaException e) {
+        } catch (NegocioException e) {
             System.out.println("Error al insertar paciente: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Prueba ver perfil paciente
+     */
+    private static void pruebaObtenerPerfilPaciente() throws NegocioException, PersistenciaException {
+        try {
+            String email = "anaPer@gmail.com";
+            
+            PerfilViejoDTO perfil = pacienteBO.obtenerPerfilPaciente(email);
+            
+            if (perfil != null) {
+                System.out.println("Se encontró perfil.");
+            } else {
+                System.out.println("No se encontró perfil.");
+            }
+        } catch (NegocioException e) {
+            System.out.println("Error al obtener perfil paciente: " + e.getMessage());
         }
     }
     

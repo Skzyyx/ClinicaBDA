@@ -4,6 +4,7 @@
  */
 package DAO;
 
+import DTO.PerfilDTO;
 import entidades.Paciente;
 import excepciones.PersistenciaException;
 
@@ -57,11 +58,11 @@ public interface IPacienteDAO {
     
     /**
      * Obtiene los datos que se muestran en el perfil de un paciente.
-     * @param id Id del paciente a consultar.
-     * @return Objeto paciente con los datos de perfil.
+     * @param email Email del paciente a buscar.
+     * @return Objeto perfilDTO con los datos de perfil.
      * @throws PersistenciaException Si hubo un error al consultar los datos.
      */
-    public Paciente verPerfilPaciente(int id) throws PersistenciaException;
+    public PerfilDTO obtenerPerfilPaciente(String email) throws PersistenciaException;
     
     /**
      * Busca si un teléfono ya está en la tabla pacientes.

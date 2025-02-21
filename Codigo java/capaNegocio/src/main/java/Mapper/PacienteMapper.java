@@ -6,6 +6,8 @@ package Mapper;
 
 import DTO.PacienteNuevoDTO;
 import DTO.PacienteViejoDTO;
+import DTO.PerfilDTO;
+import DTO.PerfilViejoDTO;
 import entidades.Paciente;
 
 /**
@@ -95,4 +97,22 @@ public class PacienteMapper {
         );
     }
     
+    /**
+     * Convierte un DTO de persistencia PerfilDTO a un DTO de negocio PerfilViejoDTO
+     * @param perfil DTO perfil que viene de persistencia.
+     * @return PerfilViejoDTO creado.
+     */
+    public PerfilViejoDTO toPerfilViejoDTO(PerfilDTO perfil) {
+        if (perfil == null) return null;
+        
+        return new PerfilViejoDTO(
+                perfil.getNombre(),
+                perfil.getApellidoPaterno(),
+                perfil.getApellidoMaterno(),
+                perfil.getFechaNacimiento(),
+                perfil.getEdad(),
+                perfil.getEmail(),
+                perfil.getTelefono(),
+                perfil.getDireccion());
+    }
 }

@@ -4,6 +4,7 @@
  */
 package DAO;
 
+import DTO.PerfilDTO;
 import conexion.IConexion;
 import entidades.Direccion;
 import entidades.Paciente;
@@ -241,6 +242,8 @@ public class PacienteDAO implements IPacienteDAO {
             cb.setString(8, paciente.getDireccion().getNumero());
             cb.setString(9, paciente.getDireccion().getColonia());
             cb.setString(10, paciente.getDireccion().getCodigoPostal());
+            // Settea la contraseña
+            cb.setString(11, paciente.getDireccion().getCodigoPostal());
             
             // Se ejecuta el procedimiento
             cb.executeUpdate();
@@ -255,14 +258,14 @@ public class PacienteDAO implements IPacienteDAO {
     
     /**
      * Obtiene los datos que se muestran en el perfil de un paciente.
-     * @param id Id del paciente a consultar.
+     * @param email Email del paciente a buscar.
      * @return Objeto paciente con los datos de perfil.
      * @throws PersistenciaException Si hubo un error al consultar los datos.
      */
     @Override
-    public Paciente verPerfilPaciente(int id) throws PersistenciaException {
+    public PerfilDTO obtenerPerfilPaciente(String email) throws PersistenciaException {
         // Paciente que se va a regresar
-        Paciente paciente = null;
+        PerfilDTO perfil = null;
         
         // Sentencia SQL
         String sentenciaSQL = "CALL verPerfilPaciente(?)";
@@ -272,33 +275,32 @@ public class PacienteDAO implements IPacienteDAO {
              CallableStatement cb = con.prepareCall(sentenciaSQL)) {
             
             // Se setea el valor del id a buscar
-            cb.setInt(1, id);
+            cb.setString(1, email);
             
             // Intenta la consulta
             try (ResultSet rs = cb.executeQuery()) { 
                 // Si se encontró registro
                 if (rs.next()) {
                     // Inicializa la instancia
-                    paciente = new Paciente();
+                    perfil = new PerfilDTO();
                     // Setea los datos del paciente
-                    paciente.setIdPaciente(rs.getInt(1));
-                    paciente.setNombre(rs.getString(2));
-                    paciente.setApellidoPaterno(rs.getString(3));
-                    paciente.setApellidoMaterno(rs.getString(4));
-                    paciente.setFechaNacimiento(rs.getDate(5).toLocalDate());
-                    paciente.setEdad(rs.getInt(6));
-                    paciente.setEmail(rs.getString(7));
-                    paciente.setTelefono(rs.getString(8));
+                    perfil.setNombre(rs.getString(1));
+                    perfil.setApellidoPaterno(rs.getString(2));
+                    perfil.setApellidoMaterno(rs.getString(3));
+                    perfil.setFechaNacimiento(rs.getDate(4).toLocalDate());
+                    perfil.setEdad(rs.getInt(5));
+                    perfil.setEmail(rs.getString(6));
+                    perfil.setTelefono(rs.getString(7));
                     
                     // Setea los datos de la dirección asociada al paciente
                     Direccion direccion = new Direccion();
-                    direccion.setCalle(rs.getString(9));
-                    direccion.setNumero(rs.getString(10));
-                    direccion.setColonia(rs.getString(11));
-                    direccion.setCodigoPostal(rs.getString(12));
-                    paciente.setDireccion(direccion);
+                    direccion.setCalle(rs.getString(8));
+                    direccion.setNumero(rs.getString(9));
+                    direccion.setColonia(rs.getString(10));
+                    direccion.setCodigoPostal(rs.getString(11));
+                    perfil.setDireccion(direccion);
 
-                    logger.log(Level.INFO, "Perfil encontrado: {0}", paciente);
+                    logger.log(Level.INFO, "Perfil encontrado: {0}", perfil);
                 }
             }
         // Si ocurre un error
@@ -307,7 +309,7 @@ public class PacienteDAO implements IPacienteDAO {
         }
         
         // Regresa el paciente
-        return paciente;
+        return perfil;
     }
     
     /**

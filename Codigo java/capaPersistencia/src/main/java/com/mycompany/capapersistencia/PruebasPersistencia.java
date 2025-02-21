@@ -7,6 +7,7 @@ package com.mycompany.capapersistencia;
 
 import DAO.CitaDAO;
 import DAO.PacienteDAO;
+import DTO.PerfilDTO;
 import conexion.ConexionDB;
 import conexion.IConexion;
 import entidades.Cita;
@@ -39,8 +40,8 @@ public class PruebasPersistencia {
         //pruebaInsertarPaciente();
         //pruebaConsultarPacientePorId();
         //pruebaEditarDatosPaciente();
-        //pruebaVerPerfilPaciente();
-        pruebaConsultarPacientePorEmail();
+        pruebaVerPerfilPaciente();
+        //pruebaConsultarPacientePorEmail();
     }
     
     /**
@@ -169,8 +170,8 @@ public class PruebasPersistencia {
      */
     private static void pruebaVerPerfilPaciente() {
         try {
-            int id = 1;
-            Paciente pacientePerfil = pacienteDAO.verPerfilPaciente(id);
+            String email = "maria.gomez@example.com";
+            PerfilDTO pacientePerfil = pacienteDAO.obtenerPerfilPaciente(email);
             
             if (pacientePerfil != null) {
                 System.out.println("Perfil encontrado");
@@ -243,7 +244,7 @@ public class PruebasPersistencia {
             if (resultado) {
                 System.out.println("Se pudo agregar la cita.");
             } else {
-                System.out.println("Se pudo agregar la cita: ");
+                System.out.println("No se pudo agregar la cita. ");
             }
         } catch (PersistenciaException ex) {
             Logger.getLogger(PruebasPersistencia.class.getName()).log(Level.SEVERE, null, ex);

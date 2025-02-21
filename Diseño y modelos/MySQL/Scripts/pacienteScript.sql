@@ -146,7 +146,6 @@ DELIMITER ;
 -- Tabla con todos los datos que se muestran en el perfil del paciente
 CREATE OR REPLACE VIEW vistaPerfilPaciente AS
     SELECT
-		p.idPaciente,
         p.nombre,
         p.apellidoPaterno,
         p.apellidoMaterno,

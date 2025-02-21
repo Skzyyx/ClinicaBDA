@@ -4,6 +4,8 @@
  */
 package entidades;
 
+import java.util.Objects;
+
 /**
  * Clase Usuario.
  * Maneja la entidad Usuario, usado principalmente para guardar los datos de inicio de sesión.
@@ -127,6 +129,40 @@ public class Usuario {
     public void setRol(String rol) {
         this.rol = rol;
     }
+    
+    /**
+     * Método equals(Object obj).
+     * Compara si dos usuarios son iguales (incluye valor de atributos).
+     * @param obj Objeto paciente para comparar
+     * @return True si son iguales, false en caso contrario.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true; // Misma referencia en memoria
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false; // No es del mismo tipo
+        }
+        Usuario usuarioObj = (Usuario) obj;
+
+        return idUsuario == usuarioObj.idUsuario
+                && // Si el ID es único, basta con esto
+                Objects.equals(usuario, usuarioObj.usuario)
+                && Objects.equals(contrasenia, usuarioObj.contrasenia)
+                && Objects.equals(rol, usuarioObj.rol);
+    }
+    
+    /**
+     * Método hashCode().
+     * Genera código hash al objeto usuario.
+     * @return Código hash.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(idUsuario, usuario, contrasenia, rol);
+    }
+
     
     /**
      * Método toString().
