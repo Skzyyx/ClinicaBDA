@@ -19,7 +19,6 @@ public class registroPacienteForm extends javax.swing.JFrame {
         this.setTitle("Registrarse como paciente");
         this.setSize(860, 510);
         
-        
     }
 
     /**
@@ -44,7 +43,6 @@ public class registroPacienteForm extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         btnCancelar = new javax.swing.JButton();
         btnRegistrarse = new javax.swing.JButton();
-        txtFechaNacimiento = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         txtTelefono = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
@@ -61,6 +59,7 @@ public class registroPacienteForm extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         txtNumero = new javax.swing.JTextField();
+        txtFechaNacimiento = new com.github.lgooddatepicker.components.DatePicker();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(852, 510));
@@ -121,13 +120,6 @@ public class registroPacienteForm extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnRegistrarse, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 360, 230, 50));
-
-        txtFechaNacimiento.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtFechaNacimientoActionPerformed(evt);
-            }
-        });
-        getContentPane().add(txtFechaNacimiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 270, 190, -1));
 
         jLabel7.setText("Telefono");
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 310, 140, -1));
@@ -206,6 +198,7 @@ public class registroPacienteForm extends javax.swing.JFrame {
             }
         });
         getContentPane().add(txtNumero, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 160, 190, -1));
+        getContentPane().add(txtFechaNacimiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 270, 200, -1));
 
         pack();
         setLocationRelativeTo(null);
@@ -224,12 +217,10 @@ public class registroPacienteForm extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCodigoPostalActionPerformed
 
     private void btnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarseActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnRegistrarseActionPerformed
 
-    private void txtFechaNacimientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFechaNacimientoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtFechaNacimientoActionPerformed
+        System.out.println(txtFechaNacimiento.getDate());
+// TODO add your handling code here:
+    }//GEN-LAST:event_btnRegistrarseActionPerformed
 
     private void txtTelefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTelefonoActionPerformed
         // TODO add your handling code here:
@@ -321,7 +312,7 @@ public class registroPacienteForm extends javax.swing.JFrame {
     private javax.swing.JTextField txtConfirmarContrasenia;
     private javax.swing.JTextField txtContrasenia;
     private javax.swing.JTextField txtEmail;
-    private javax.swing.JTextField txtFechaNacimiento;
+    private com.github.lgooddatepicker.components.DatePicker txtFechaNacimiento;
     private javax.swing.JTextField txtNombreCompleto;
     private javax.swing.JTextField txtNumero;
     private javax.swing.JTextField txtTelefono;
