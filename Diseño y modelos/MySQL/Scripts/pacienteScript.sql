@@ -142,6 +142,17 @@ BEGIN
 END $$
 DELIMITER ;
 
+-- Función calcularEdad
+-- Calcula la edad a partir de una fecha de nacimiento
+DELIMITER $$
+CREATE FUNCTION calcularEdad(fechaNacimiento DATE)
+RETURNS INT 
+DETERMINISTIC
+BEGIN
+    RETURN TIMESTAMPDIFF(YEAR, fechaNacimiento, curdate());
+END $$
+DELIMITER ;
+
 -- Vista vistaPerfilPaciente
 -- Tabla con todos los datos que se muestran en el perfil del paciente
 CREATE OR REPLACE VIEW vistaPerfilPaciente AS
@@ -236,17 +247,7 @@ DELIMITER ;
 DELIMITER $$
 CREATE 
 
--- Función calcularEdad
--- Calcula la edad a partir de una fecha de nacimiento
-DELIMITER $$
-CREATE FUNCTION calcularEdad(fechaNacimiento DATE)
-RETURNS INT 
-DETERMINISTIC
-BEGIN
-    RETURN TIMESTAMPDIFF(YEAR, fechaNacimiento, curdate());
-END $$
 
-DELIMITER ;
 
 -- Procedimiento almacenado obtenerCitasActivasPorId(id)
 -- Obtiene todas las citas del paciente que tienen como estado 'ACTIVA'

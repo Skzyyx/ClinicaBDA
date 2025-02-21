@@ -64,7 +64,7 @@ public class CitaDAO implements ICitaDAO {
             return true;
         } catch (SQLException ex) {
             Logger.getLogger(CitaDAO.class.getName()).log(Level.SEVERE, null, ex);
-            throw new PersistenciaException("No se pudo registrar la cita.");
+            throw new PersistenciaException("No se pudo registrar la cita programada.");
         }
     }
 
@@ -73,11 +73,30 @@ public class CitaDAO implements ICitaDAO {
      * Actualmente no está implementado.
      * 
      * @param cita Objeto Cita que contiene la información de la cita de emergencia.
-     * @return false ya que la funcionalidad no está soportada aún.
-     * @throws PersistenciaException Si ocurre un error al intentar registrar la cita.
+     * @return true si la cita se registra exitosamente, false en caso contrario.
+     * @throws PersistenciaException Si ocurre un error al registrar la cita en la base de datos.
      */
     @Override
     public boolean registrarCitaEmergencia(Cita cita) throws PersistenciaException {
-        throw new UnsupportedOperationException("Not supported yet."); // Método aún no implementado
+        
+        String sentenciaSQL = "CALL registrarCita(?, ?, ?, ?, ?)";
+        
+        try (Connection con = conexion.crearConexion();
+             CallableStatement cs = con.prepareCall(sentenciaSQL)) {
+            
+            cs.setTimestamp(1, Timestamp.valueOf(cita.getFechaHoraInicio()));
+            cs.setString(2, cita.getFolio());
+            cs.setString(3, "EMERGENCIA");
+            cs.setInt(4, cita.getPaciente().getIdPaciente());
+            cs.setInt(5, cita.getMedico().getIdMedico());
+            
+            cs.execute();
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(CitaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PersistenciaException("No se pudo registrar la cita de emergencia.");
+        }
     }
+    
+    
 }
