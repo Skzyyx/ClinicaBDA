@@ -253,30 +253,6 @@ public class Paciente {
     }
     
     /**
-     * Método equals(Object obj).
-     * Compara si dos pacientes son iguales (solo incluye valor de atributos que pueden editarse).
-     * @param obj Objeto paciente para comparar
-     * @return True si son iguales, false en caso contrario.
-     */
-    public boolean equalsParcial(Object obj) {
-        if (this == obj) {
-            return true; // Misma referencia
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false; // No es un Paciente
-        }
-        Paciente paciente = (Paciente) obj;
-
-        return Objects.equals(this.nombre, paciente.nombre)
-                && Objects.equals(this.apellidoPaterno, paciente.apellidoPaterno)
-                && Objects.equals(this.apellidoMaterno, paciente.apellidoMaterno)
-                && Objects.equals(this.fechaNacimiento, paciente.fechaNacimiento)
-                && Objects.equals(this.telefono, paciente.telefono)
-                && Objects.equals(this.usuario != null ? this.usuario.getContrasenia() : null,  paciente.usuario != null ? paciente.usuario.getContrasenia() : null)
-                && Objects.equals(this.direccion, paciente.direccion); 
-    }
-    
-    /**
      * Método toString().
      *
      * @return String con detalles de los atributos de la clase

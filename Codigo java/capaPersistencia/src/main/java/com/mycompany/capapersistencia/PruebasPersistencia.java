@@ -39,8 +39,9 @@ public class PruebasPersistencia {
         //pruebaConexion();
         //pruebaInsertarPaciente();
         //pruebaConsultarPacientePorId();
-        //pruebaEditarDatosPaciente();
-        pruebaVerPerfilPaciente();
+        //
+        pruebaEditarDatosPaciente();
+        //pruebaVerPerfilPaciente();
         //pruebaConsultarPacientePorEmail();
     }
     
@@ -142,8 +143,7 @@ public class PruebasPersistencia {
 
             // Crear instancia de Paciente
             Paciente paciente = new Paciente(
-                    10,
-                    "María",
+                    "Perla",
                     "Gómez",
                     "Perez",
                     LocalDate.of(1995, 5, 10),

@@ -130,15 +130,15 @@ DELIMITER ;
 -- Consulta los datos de perfil de un paciente específico
 DELIMITER $$
 CREATE PROCEDURE verPerfilPaciente(
-	IN id INT
+	IN emailPaciente VARCHAR(100)
 )
 BEGIN 
-	IF NOT EXISTS (SELECT idPaciente FROM pacientes WHERE idPaciente = id) THEN
+	IF NOT EXISTS (SELECT email FROM pacientes WHERE email = emailPaciente) THEN
 		SIGNAL SQLSTATE "45000" SET MESSAGE_TEXT = "El paciente no existe";
 	END IF;
     
     SELECT * FROM vistaPerfilPaciente
-    WHERE idPaciente = id;
+    WHERE email = emailPaciente;
 END $$
 DELIMITER ;
 
@@ -151,7 +151,6 @@ DETERMINISTIC
 BEGIN
     RETURN TIMESTAMPDIFF(YEAR, fechaNacimiento, curdate());
 END $$
-DELIMITER ;
 
 -- Vista vistaPerfilPaciente
 -- Tabla con todos los datos que se muestran en el perfil del paciente
@@ -172,9 +171,7 @@ CREATE OR REPLACE VIEW vistaPerfilPaciente AS
     INNER JOIN usuarios AS u
 		ON p.idUsuario = u.idUsuario
 	INNER JOIN direcciones AS d
-		ON d.idPaciente = p.idPaciente
-	WHERE p.idPaciente = d.idPaciente;
-    
+		ON d.idPaciente = p.idPaciente;
 DELIMITER $$
 
 -- Procedimiento almacenado editarDatosPaciente
@@ -185,9 +182,10 @@ DELIMITER $$
     -- fecha de nacimiento
     -- telefono
     -- direccion
+    -- contraseña
 DELIMITER $$
 CREATE PROCEDURE editarDatosPaciente(
-	IN id INT,
+	IN emailPaciente VARCHAR(100),
 	IN nombrePaciente VARCHAR(50),
     IN apellidoPaternoPaciente VARCHAR(50),
     IN apellidoMaternoPaciente VARCHAR(50),
@@ -196,9 +194,12 @@ CREATE PROCEDURE editarDatosPaciente(
     IN callePaciente VARCHAR(100),
     IN numeroCasa VARCHAR(5),
     IN coloniaPaciente VARCHAR(100),
-    IN codigoPostalPaciente VARCHAR(5)
+    IN codigoPostalPaciente VARCHAR(5),
+    IN contraseniaNueva VARCHAR(70)
 )
 BEGIN
+	DECLARE id INT;
+    
 	-- Manejo de errores
 	DECLARE CONTINUE HANDLER FOR SQLEXCEPTION 
     BEGIN
@@ -213,11 +214,25 @@ BEGIN
     
     -- Empezar transacción
 	START TRANSACTION;
-    
     -- Verificar si el paciente existe
-	IF NOT EXISTS (SELECT idPaciente FROM pacientes WHERE idPaciente = id) THEN
+	IF NOT EXISTS (SELECT idPaciente FROM pacientes WHERE email = emailPaciente) THEN
 		-- Si no existe, lanza error
 		SIGNAL SQLSTATE "45000" SET MESSAGE_TEXT = "El paciente no existe";
+	ELSE
+		-- Si sí existe, obtiene su id
+		SET id = (SELECT idPaciente FROM pacientes WHERE email = emailPaciente);
+	END IF;
+    
+    -- Verificar si tiene dirección asociada
+    IF NOT EXISTS (SELECT idPaciente FROM direcciones WHERE idPaciente = id) THEN
+		-- Si no existe, lanza error
+		SIGNAL SQLSTATE "45000" SET MESSAGE_TEXT = "El paciente no cuenta con dirección asociada";
+	END IF;
+    
+    -- Verificar si tiene registro como usuario
+    IF NOT EXISTS (SELECT idUsuario FROM usuarios WHERE usuario = emailPaciente) THEN
+		-- Si no existe, lanza error
+		SIGNAL SQLSTATE "45000" SET MESSAGE_TEXT = "El paciente no está registrado como usuario";
 	END IF;
 	
     -- Actualizar los datos del paciente
@@ -228,7 +243,7 @@ BEGIN
 		apellidoMaterno = apellidoMaternoPaciente,
 		fechaNacimiento = fechaNacimientoPaciente,
 		telefono = telefonoPaciente
-	WHERE idPaciente = id;
+	WHERE email = emailPaciente;
 	
     -- Actualizar la dirección del paciente
 	UPDATE direcciones
@@ -239,15 +254,30 @@ BEGIN
 		codigoPostal = codigoPostalPaciente
 	WHERE idPaciente = id;
     
+    -- Actualizar la contraseña
+    UPDATE usuarios
+    SET
+		contrasenia = contraseniaNueva
+	WHERE usuario = emailPaciente;
+    
     -- Confirmar con commit
 	COMMIT;
 END $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE 
 
+-- Función calcularEdad
+-- Calcula la edad a partir de una fecha de nacimiento
+DELIMITER $$
+CREATE FUNCTION calcularEdad(fechaNacimiento DATE)
+RETURNS INT 
+DETERMINISTIC
+BEGIN
+    RETURN TIMESTAMPDIFF(YEAR, fechaNacimiento, curdate());
+END $$
 
+DELIMITER ;
 
 -- Procedimiento almacenado obtenerCitasActivasPorId(id)
 -- Obtiene todas las citas del paciente que tienen como estado 'ACTIVA'
@@ -280,5 +310,19 @@ CALL registrarPaciente(
 SELECT calcularEdad("2005-02-16");
 SELECT * FROM vistaPerfilPaciente;
 CALL consultarPacientePorId(23);
-CALL verPerfilPaciente(10);
+CALL verPerfilPaciente("maria.gomez@example.com");
 CALL consultarPacientePorEmail("maria.gomez@example.com");
+
+CALL editarDatosPaciente(
+	"hola@gmail.com",
+	"Sonia",
+    "Castillo",
+    "Perez",
+    "1990-10-24",
+    "6444586322",
+    "Tamaulipas",
+    "1654",
+    "Sochiloa",
+    "85120",
+    "$2a$12$Js89fysKM.g1LnzAib/dQO6uNoyVnwLpeIwlzmfceYo2bDHKGfALi"
+);

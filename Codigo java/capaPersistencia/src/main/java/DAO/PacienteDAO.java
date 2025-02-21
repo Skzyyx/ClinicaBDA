@@ -224,14 +224,14 @@ public class PacienteDAO implements IPacienteDAO {
     @Override
     public boolean editarDatosPaciente(Paciente paciente) throws PersistenciaException {
         // Sentencia SQL
-        String sentenciaSQL = "CALL editarDatosPaciente(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sentenciaSQL = "CALL editarDatosPaciente(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         // Intentar la conexión
         try (Connection con = conexion.crearConexion();
              CallableStatement cb = con.prepareCall(sentenciaSQL)){
             
             // Settea el valor de los ? del paciente
-            cb.setInt(1, paciente.getIdPaciente());
+            cb.setString(1, paciente.getEmail());
             cb.setString(2, paciente.getNombre());
             cb.setString(3, paciente.getApellidoPaterno());
             cb.setString(4, paciente.getApellidoMaterno());
@@ -243,7 +243,7 @@ public class PacienteDAO implements IPacienteDAO {
             cb.setString(9, paciente.getDireccion().getColonia());
             cb.setString(10, paciente.getDireccion().getCodigoPostal());
             // Settea la contraseña
-            cb.setString(11, paciente.getDireccion().getCodigoPostal());
+            cb.setString(11, paciente.getUsuario().getContrasenia());
             
             // Se ejecuta el procedimiento
             cb.executeUpdate();

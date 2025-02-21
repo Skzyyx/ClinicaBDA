@@ -12,6 +12,7 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 import conexion.ConexionDB;
 import conexion.IConexion;
 import entidades.Direccion;
+import entidades.Paciente;
 import entidades.Usuario;
 import excepciones.PersistenciaException;
 import java.time.LocalDate;
@@ -27,8 +28,9 @@ public class PruebasNegocio {
     
     public static void main(String[] args) throws PersistenciaException, NegocioException {
         //pruebaRegistrarPaciente();
-        pruebaObtenerPerfilPaciente();
-        pruebaEncriptarContrasenia();
+        //pruebaObtenerPerfilPaciente();
+        pruebaEditarDatosPaciente();
+        //pruebaEncriptarContrasenia();
     }
     
     /**
@@ -71,7 +73,41 @@ public class PruebasNegocio {
                 System.out.println("No se encontró perfil.");
             }
         } catch (NegocioException e) {
-            System.out.println("Error al obtener perfil paciente: " + e.getMessage());
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public static void pruebaEditarDatosPaciente() throws PersistenciaException {
+        try {
+            String email = "maria.gomez@example.com";
+            
+            // Crear instancia de Usuario
+            Usuario usuario = new Usuario("maria.gomez@example.com", "hola", "PACIENTE");
+
+            // Crear instancia de Dirección
+            Direccion direccion = new Direccion("Puebla", "111", "Centro", "06010");
+
+            // Crear instancia de Paciente
+            PacienteNuevoDTO pacienteNuevo = new PacienteNuevoDTO(
+                    "Karla",
+                    "Rosas",
+                    "",
+                    LocalDate.of(1980, 5, 10),
+                    "maria.gomez@example.com",
+                    "6442635871",
+                    usuario,
+                    direccion
+            );
+            
+            boolean datosEditados = pacienteBO.editarDatosPaciente(email, pacienteNuevo);
+            
+            if (datosEditados) {
+                System.out.println("Datos editados con éxito.");
+            } else {
+                System.out.println("No se editaron los datos.");
+            }
+        } catch (NegocioException e) {
+            System.out.println(e.getMessage());
         }
     }
     

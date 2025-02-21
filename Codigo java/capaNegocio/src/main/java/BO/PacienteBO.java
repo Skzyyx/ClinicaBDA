@@ -192,7 +192,6 @@ public class PacienteBO {
             // Busca el paciente usando la DAO
             Paciente paciente = pacienteDAO.consultarPacientePorEmail(email);
             
-            
             // Si no se encontró registro
             if (paciente == null) {
                 return null;
@@ -241,27 +240,20 @@ public class PacienteBO {
             throw new NegocioException("El paciente no existe.");
         }
         
-        // Encriptar la contraseña
-        String contraseniaEncriptada = encriptarContrasenia(pacienteNuevo.getUsuario().getContrasenia());
-        pacienteNuevo.getUsuario().setContrasenia(contraseniaEncriptada);
-        
-        // Cambiar a entidad Paciente
-        Paciente paciente = mapper.toEntity(pacienteNuevo);
-
-        // Comparar si se cambiaron datos o se mandó lo mismo que ya está en la base.
-        // Deben ser de la misma clase para usar .equals
-        if (pacienteExiste.equalsParcial(paciente)) {
-            throw new NegocioException("La información enviada es idéntica a la anterior. No se han generado cambios.");
-        }
-        
         // Verificar que no se intente modificar el user
-        if (Objects.nonNull(paciente.getUsuario()) && Objects.nonNull(paciente.getUsuario().getUsuario())
-                && !Objects.equals(paciente.getUsuario().getUsuario(), pacienteExiste.getUsuario().getUsuario())) {
+        if (Objects.nonNull(pacienteNuevo.getUsuario()) && Objects.nonNull(pacienteNuevo.getUsuario().getUsuario())
+                && !Objects.equals(pacienteNuevo.getUsuario().getUsuario(), pacienteExiste.getUsuario().getUsuario())) {
             throw new NegocioException("No se permite modificar el usuario.");
         }
         
+        // Verificar que no se intente modificar el rol
+        if (Objects.nonNull(pacienteNuevo.getUsuario()) && Objects.nonNull(pacienteNuevo.getUsuario().getRol())
+                && !Objects.equals(pacienteNuevo.getUsuario().getRol(), pacienteExiste.getUsuario().getRol())) {
+            throw new NegocioException("No se permite modificar el rol.");
+        }
+        
         // Verificar que no se intente modificar el email
-        if (Objects.nonNull(paciente.getEmail()) && !Objects.equals(paciente.getEmail(), pacienteExiste.getEmail())) {
+        if (Objects.nonNull(pacienteNuevo.getEmail()) && !Objects.equals(pacienteNuevo.getEmail(), pacienteExiste.getEmail())) {
             throw new NegocioException("No se permite modificar el correo electrónico.");
         }
         
@@ -277,7 +269,7 @@ public class PacienteBO {
 
         // Validar que los espacios obligatorios hayan sido llenados y no queden solo con espacios
         if (pacienteNuevo.getNombre().isBlank() || pacienteNuevo.getApellidoPaterno().isBlank()
-                || pacienteNuevo.getTelefono().isBlank() || pacienteNuevo.getUsuario().getUsuario().isBlank()
+                || pacienteNuevo.getTelefono().isBlank() || pacienteNuevo.getUsuario().getUsuario().isBlank() 
                 || pacienteNuevo.getUsuario().getContrasenia().isBlank()
                 || pacienteNuevo.getDireccion().getCalle().isBlank() || pacienteNuevo.getDireccion().getNumero().isBlank()
                 || pacienteNuevo.getDireccion().getColonia().isBlank() || pacienteNuevo.getDireccion().getCodigoPostal().isBlank()) {
@@ -295,16 +287,30 @@ public class PacienteBO {
         }
         
         // Verificar que el teléfono no sea duplicado
-        if (pacienteDAO.existeTelefonoPaciente(pacienteNuevo.getTelefono())) {
+        if (pacienteDAO.existeTelefonoPaciente(pacienteNuevo.getTelefono()) && !pacienteExiste.getTelefono().equals(pacienteNuevo.getTelefono())) {
             throw new NegocioException("El teléfono ya se encuentra registrado.");
         }
         
+        // Si el apellido paterno esta vacío, lo cambia a null
+        if (pacienteNuevo.getApellidoMaterno().isBlank()) {
+            pacienteNuevo.setApellidoMaterno(null);
+        }
+        
+        // Encriptar la contraseña
+        String contraseniaEncriptada = encriptarContrasenia(pacienteNuevo.getUsuario().getContrasenia());
+        pacienteNuevo.getUsuario().setContrasenia(contraseniaEncriptada);
+        
+        // Cambiar a entidad Paciente
+        Paciente paciente = mapper.toEntity(pacienteNuevo);
+        
         // Intentar editar los datos del paciente
         try {
+            System.out.println(paciente.toString());
+            
             // Regresar si hubo cambios o no
             return pacienteDAO.editarDatosPaciente(paciente);
         } catch (PersistenciaException e) {
-            logger.log(Level.SEVERE, "Error al editar datos de paciente: " , e);
+            logger.log(Level.SEVERE, "Error al editar datos de paciente" , e);
             throw new NegocioException ("Error al editar datos de paciente: ", e);
         }
     }
@@ -342,7 +348,7 @@ public class PacienteBO {
             
             return mapper.toPerfilViejoDTO(perfil);
         } catch (PersistenciaException e) {
-            logger.log(Level.SEVERE, "Error al obtener un perfil: " , e);
+            logger.log(Level.SEVERE, "Error al obtener un perfil" , e);
             throw new NegocioException ("Error al obtener la información del perfil: ", e);
         }
     }
