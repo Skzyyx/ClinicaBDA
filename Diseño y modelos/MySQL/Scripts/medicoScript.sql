@@ -1,3 +1,4 @@
+USE clinicabda;
 -- Procedimiento almacenado obtenerMedico
 -- Obtiene la informacion de un medico (y usuario)
 DELIMITER $$
@@ -21,4 +22,17 @@ BEGIN
     INNER JOIN usuarios AS u
 		ON m.idUsuario = u.idUsuario;
 END $$
+DELIMITER ;
+
+-- Procedimiento para obtener Medico por ID
+DELIMITER &&
+CREATE PROCEDURE consultarHorariosMedicoPorID(
+IN id_Medico int)
+
+BEGIN 
+SELECT h.diaSemana, h.horaEntrada, h.horaSalida
+FROM horarios as h
+WHERE h.idMedico=id_Medico;
+
+END &&
 DELIMITER ;
