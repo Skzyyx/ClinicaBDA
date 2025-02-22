@@ -4,17 +4,60 @@
  */
 package GUI;
 
+import BO.MedicoBO;
+import BO.PacienteBO;
+import DTO.PerfilViejoDTO;
+import Exception.NegocioException;
+import configuracion.DependencyInjector;
+import excepciones.PersistenciaException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import sesion.SessionManager;
+
 /**
  *
- * @author Jesus
+ * @author j_ama
  */
 public class VerPerfilMedico extends javax.swing.JFrame {
-
+    private PacienteBO pacienteBO = DependencyInjector.crearPacienteBO();
+    private static VerPerfilMedico instance;
+    private PrincipalPaciente principalPacienteFrame;
+    private EditarDatosPaciente editarDatosFrame;
+    
     /**
-     * Creates new form VerPerfilMedico
+     * Creates new form InicioDeSesion
      */
-    public VerPerfilMedico() {
+    public VerPerfilMedico() throws NegocioException {
         initComponents();
+        setLocationRelativeTo(null);
+        setResizable(false);
+        setTitle("Paciente - Ver perfil");
+//        mostrarPerfil();
+    }
+    
+    public static VerPerfilMedico getInstance() throws NegocioException {
+         if (instance == null) {
+            instance = new VerPerfilMedico();
+        }
+        return instance;
+    }
+
+    public PrincipalPaciente getPrincipalPacienteFrame() {
+        return principalPacienteFrame;
+    }
+
+    public void setPrincipalPacienteFrame(PrincipalPaciente principalPacienteFrame) {
+        this.principalPacienteFrame = principalPacienteFrame;
+    }
+
+    public EditarDatosPaciente getEditarDatosFrame() {
+        return editarDatosFrame;
+    }
+
+    public void setEditarDatosFrame(EditarDatosPaciente editarDatosFrame) {
+        this.editarDatosFrame = editarDatosFrame;
     }
 
     /**
@@ -26,80 +69,173 @@ public class VerPerfilMedico extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel5 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        btnVolver = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        lblFichadeDatos = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        lbPerfil = new javax.swing.JLabel();
+        lbNombre2 = new javax.swing.JLabel();
+        lbNombre3 = new javax.swing.JLabel();
+        lbNombre4 = new javax.swing.JLabel();
+        lbNombre5 = new javax.swing.JLabel();
+        lbEspecialidad = new javax.swing.JLabel();
+        lbNombre8 = new javax.swing.JLabel();
+        lbNombre = new javax.swing.JLabel();
+        lbCedulaProfesional = new javax.swing.JLabel();
+        lbHorario = new javax.swing.JLabel();
+        lbEstado = new javax.swing.JLabel();
+        lbFondo = new javax.swing.JLabel();
+
+        jLabel5.setText("jLabel5");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(812, 544));
 
         jPanel1.setBackground(new java.awt.Color(210, 222, 230));
-        jPanel1.setPreferredSize(new java.awt.Dimension(812, 544));
+        jPanel1.setMaximumSize(new java.awt.Dimension(800, 600));
+        jPanel1.setPreferredSize(new java.awt.Dimension(800, 600));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI Semibold", 1, 36)); // NOI18N
         jLabel2.setText("Mi perfil");
 
-        jPanel2.setPreferredSize(new java.awt.Dimension(510, 320));
+        btnVolver.setBackground(new java.awt.Color(0, 0, 0));
+        btnVolver.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
+        btnVolver.setForeground(new java.awt.Color(255, 255, 255));
+        btnVolver.setText("Volver");
+        btnVolver.setPreferredSize(new java.awt.Dimension(150, 30));
+        btnVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVolverActionPerformed(evt);
+            }
+        });
 
-        lblFichadeDatos.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
-        lblFichadeDatos.setText("Ficha de datos");
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(217, Short.MAX_VALUE)
-                .addComponent(lblFichadeDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(163, 163, 163))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(54, 54, 54)
-                .addComponent(lblFichadeDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(246, Short.MAX_VALUE))
-        );
+        jLabel8.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
+        jLabel8.setText("Ficha de datos");
+        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 40, 130, 20));
+
+        jLabel1.setIcon(new ImageIcon(getClass().getResource("/iconPaciente.JPG")));
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 90, 100, 90));
+
+        lbPerfil.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
+        lbPerfil.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jPanel2.add(lbPerfil, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 190, 100, 20));
+
+        lbNombre2.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
+        lbNombre2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbNombre2.setText("Especialidad");
+        lbNombre2.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jPanel2.add(lbNombre2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 120, 110, 20));
+
+        lbNombre3.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
+        lbNombre3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbNombre3.setText("Estado");
+        lbNombre3.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jPanel2.add(lbNombre3, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 80, 50, -1));
+
+        lbNombre4.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
+        lbNombre4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbNombre4.setText("Cedula Profesional");
+        lbNombre4.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jPanel2.add(lbNombre4, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 160, 120, 20));
+
+        lbNombre5.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
+        lbNombre5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbNombre5.setText("Horario de Trabajo");
+        lbNombre5.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jPanel2.add(lbNombre5, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 200, 130, 20));
+
+        lbEspecialidad.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        lbEspecialidad.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbEspecialidad.setVerifyInputWhenFocusTarget(false);
+        jPanel2.add(lbEspecialidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 130, 180, 30));
+
+        lbNombre8.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
+        lbNombre8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbNombre8.setText("Nombre completo");
+        jPanel2.add(lbNombre8, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 80, 100, 20));
+
+        lbNombre.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        lbNombre.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbNombre.setVerifyInputWhenFocusTarget(false);
+        jPanel2.add(lbNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 90, 200, 30));
+
+        lbCedulaProfesional.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        lbCedulaProfesional.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbCedulaProfesional.setVerifyInputWhenFocusTarget(false);
+        jPanel2.add(lbCedulaProfesional, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 170, 180, 30));
+
+        lbHorario.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        lbHorario.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbHorario.setVerifyInputWhenFocusTarget(false);
+        jPanel2.add(lbHorario, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 210, 180, 30));
+
+        lbEstado.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        lbEstado.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbEstado.setVerifyInputWhenFocusTarget(false);
+        jPanel2.add(lbEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 90, 70, 30));
+
+        lbFondo.setIcon(new ImageIcon(getClass().getResource("/fondoFicha.JPG")));
+        lbFondo.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        lbFondo.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        jPanel2.add(lbFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 510, 320));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(329, 329, 329))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(79, 79, 79)
+                .addContainerGap(64, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(221, Short.MAX_VALUE))
+                .addGap(35, 35, 35)
+                .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(53, 53, 53))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(332, 332, 332)
+                .addComponent(jLabel2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(87, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(77, 77, 77))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(400, 400, 400)
+                        .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(65, 65, 65)
+                        .addComponent(jLabel2)
+                        .addGap(35, 35, 35)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(77, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 810, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 812, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 544, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+        try {
+            volver();
+        } catch (NegocioException ex) {
+            Logger.getLogger(VerPerfilMedico.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnVolverActionPerformed
 
     /**
      * @param args the command line arguments
@@ -127,19 +263,89 @@ public class VerPerfilMedico extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(VerPerfilMedico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VerPerfilMedico().setVisible(true);
+                try {
+                    new VerPerfilMedico().setVisible(true);
+                } catch (NegocioException ex) {
+                    Logger.getLogger(VerPerfilMedico.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnVolver;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JLabel lblFichadeDatos;
+    private javax.swing.JLabel lbCedulaProfesional;
+    private javax.swing.JLabel lbEspecialidad;
+    private javax.swing.JLabel lbEstado;
+    private javax.swing.JLabel lbFondo;
+    private javax.swing.JLabel lbHorario;
+    private javax.swing.JLabel lbNombre;
+    private javax.swing.JLabel lbNombre2;
+    private javax.swing.JLabel lbNombre3;
+    private javax.swing.JLabel lbNombre4;
+    private javax.swing.JLabel lbNombre5;
+    private javax.swing.JLabel lbNombre8;
+    private javax.swing.JLabel lbPerfil;
     // End of variables declaration//GEN-END:variables
+    
+    /**
+     * Obtiene los datos de perfil del medico y los muestra.
+     */
+//    public void mostrarPerfil() {
+//        try {
+//            PerfilViejoDTO perfil = MedicoBO.obtenerPerfil(SessionManager.getInstance().getUser());
+//            
+//            if (perfil == null) {
+//                JOptionPane.showMessageDialog(this, "Ocurrió un error al mostrar perfil.", "Error", JOptionPane.ERROR_MESSAGE);
+//            }
+//            else {
+//                lbPerfil.setText(perfil.getNombre());
+//                lbNombre.setText(perfil.getNombre() + " " + perfil.getApellidoPaterno() + " " + perfil.getApellidoMaterno());
+//                lbEspecialidad.setText(perfil.getFechaNacimiento().toString());
+//                lbCedulaProfesional.setText(perfil.getTelefono());
+//                lbHorario.setText(perfil.getEmail());
+//                lbEstado.setText(String.valueOf(perfil.getEdad()));
+//            }
+//        } catch (NegocioException | PersistenciaException ex) {
+//            Logger.getLogger(VerPerfilMedico.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
+    
+    
+    /**
+     * Envía a pestaña de menú principal de Medico
+     * @throws NegocioException Si hubo un error al cambiar de pestaña.
+     */
+    private void volver() throws NegocioException {
+        PrincipalMedico principalMedico = PrincipalMedico.getInstance();
+        principalMedico.setVerPerfilMedicoFrame(this);
+        principalMedico.setVisible(true);
+        this.setVisible(false);
+    }
+    
 }
