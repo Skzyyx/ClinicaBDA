@@ -10,6 +10,7 @@ import Exception.NegocioException;
 import configuracion.DependencyInjector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import sesion.SessionManager;
 
@@ -49,9 +50,10 @@ public class PrincipalPaciente extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         lbNombre = new javax.swing.JLabel();
         iconPaciente = new javax.swing.JLabel();
-        btnAgendarCita1 = new javax.swing.JButton();
+        btnVerPerfil = new javax.swing.JButton();
         fondoCredencial = new javax.swing.JLabel();
-        btnAgendarCita2 = new javax.swing.JButton();
+        btnVerHistorial = new javax.swing.JButton();
+        btnCerrarSesion = new javax.swing.JButton();
 
         jLabel5.setText("jLabel5");
 
@@ -104,32 +106,43 @@ public class PrincipalPaciente extends javax.swing.JFrame {
         jPanel2.add(lbNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, 220, 30));
 
         iconPaciente.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
-        iconPaciente.setIcon(new javax.swing.ImageIcon("E:\\github\\ClinicaBDA\\Codigo java\\capaPresentacion\\src\\iconPaciente.JPG")); // NOI18N
+        iconPaciente.setIcon(new ImageIcon(getClass().getResource("/iconPaciente.JPG")));
         jPanel2.add(iconPaciente, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 40, 90, 90));
 
-        btnAgendarCita1.setBackground(new java.awt.Color(0, 0, 0));
-        btnAgendarCita1.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
-        btnAgendarCita1.setForeground(new java.awt.Color(255, 255, 255));
-        btnAgendarCita1.setText("Ver perfil");
-        btnAgendarCita1.setPreferredSize(new java.awt.Dimension(150, 30));
-        btnAgendarCita1.addActionListener(new java.awt.event.ActionListener() {
+        btnVerPerfil.setBackground(new java.awt.Color(0, 0, 0));
+        btnVerPerfil.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
+        btnVerPerfil.setForeground(new java.awt.Color(255, 255, 255));
+        btnVerPerfil.setText("Ver perfil");
+        btnVerPerfil.setPreferredSize(new java.awt.Dimension(150, 30));
+        btnVerPerfil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgendarCita1ActionPerformed(evt);
+                btnVerPerfilActionPerformed(evt);
             }
         });
-        jPanel2.add(btnAgendarCita1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 210, 150, 58));
+        jPanel2.add(btnVerPerfil, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 210, 150, 58));
 
-        fondoCredencial.setIcon(new javax.swing.ImageIcon("E:\\github\\ClinicaBDA\\Codigo java\\capaPresentacion\\src\\fondoCredencial.JPG")); // NOI18N
+        fondoCredencial.setIcon(new ImageIcon(getClass().getResource("/fondoCredencial.JPG")));
         jPanel2.add(fondoCredencial, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        btnAgendarCita2.setBackground(new java.awt.Color(0, 0, 0));
-        btnAgendarCita2.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
-        btnAgendarCita2.setForeground(new java.awt.Color(255, 255, 255));
-        btnAgendarCita2.setText("Ver historial");
-        btnAgendarCita2.setPreferredSize(new java.awt.Dimension(150, 30));
-        btnAgendarCita2.addActionListener(new java.awt.event.ActionListener() {
+        btnVerHistorial.setBackground(new java.awt.Color(0, 0, 0));
+        btnVerHistorial.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
+        btnVerHistorial.setForeground(new java.awt.Color(255, 255, 255));
+        btnVerHistorial.setText("Ver historial");
+        btnVerHistorial.setPreferredSize(new java.awt.Dimension(150, 30));
+        btnVerHistorial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgendarCita2ActionPerformed(evt);
+                btnVerHistorialActionPerformed(evt);
+            }
+        });
+
+        btnCerrarSesion.setBackground(new java.awt.Color(0, 0, 0));
+        btnCerrarSesion.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
+        btnCerrarSesion.setForeground(new java.awt.Color(255, 255, 255));
+        btnCerrarSesion.setText("Cerrar sesión");
+        btnCerrarSesion.setPreferredSize(new java.awt.Dimension(150, 30));
+        btnCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCerrarSesionActionPerformed(evt);
             }
         });
 
@@ -152,8 +165,9 @@ public class PrincipalPaciente extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(btnAgendarCita2, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
-                        .addComponent(btnCancelarCita, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btnVerHistorial, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
+                        .addComponent(btnCancelarCita, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnCerrarSesion, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE))
                     .addComponent(btnAgendarCita, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(99, 99, 99))
         );
@@ -165,15 +179,18 @@ public class PrincipalPaciente extends javax.swing.JFrame {
                 .addGap(45, 45, 45)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(517, 517, 517)
+                        .addComponent(btnHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(9, 9, 9)
                         .addComponent(btnAgendarCita, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(54, 54, 54)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnCancelarCita, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(53, 53, 53)
-                        .addComponent(btnAgendarCita2, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(495, 495, 495)
-                .addComponent(btnHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnVerHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -207,13 +224,17 @@ public class PrincipalPaciente extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnHistorialActionPerformed
 
-    private void btnAgendarCita1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgendarCita1ActionPerformed
+    private void btnVerPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerPerfilActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnAgendarCita1ActionPerformed
+    }//GEN-LAST:event_btnVerPerfilActionPerformed
 
-    private void btnAgendarCita2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgendarCita2ActionPerformed
+    private void btnVerHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerHistorialActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnAgendarCita2ActionPerformed
+    }//GEN-LAST:event_btnVerHistorialActionPerformed
+
+    private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
+        cerrarSesion();
+    }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
     /**
      * @param args the command line arguments
@@ -257,10 +278,11 @@ public class PrincipalPaciente extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgendarCita;
-    private javax.swing.JButton btnAgendarCita1;
-    private javax.swing.JButton btnAgendarCita2;
     private javax.swing.JButton btnCancelarCita;
+    private javax.swing.JButton btnCerrarSesion;
     private javax.swing.JButton btnHistorial;
+    private javax.swing.JButton btnVerHistorial;
+    private javax.swing.JButton btnVerPerfil;
     private javax.swing.JLabel fondoCredencial;
     private javax.swing.JLabel iconPaciente;
     private javax.swing.JLabel jLabel2;
@@ -277,9 +299,12 @@ public class PrincipalPaciente extends javax.swing.JFrame {
             lbNombre.setText(paciente.getNombre());
         } else {
             JOptionPane.showMessageDialog(this, "Ocurrió un error interno. Se ha cerrado la sesión.", "Error", JOptionPane.ERROR_MESSAGE);
-            SessionManager.getInstance().cerrarSesion();
-            System.exit(0);
+            cerrarSesion();
         }
     }
-
+    
+    private void cerrarSesion() {
+        SessionManager.getInstance().cerrarSesion();
+        System.exit(0);
+    }
 }
