@@ -6,9 +6,11 @@ package com.mycompany.capanegocio;
 
 import BO.PacienteBO;
 import BO.UsuarioBO;
+import DTO.DireccionNuevoDTO;
 import DTO.PacienteNuevoDTO;
 import DTO.PerfilViejoDTO;
 import DTO.SesionNuevoDTO;
+import DTO.UsuarioNuevoDTO;
 import DTO.UsuarioViejoDTO;
 import Exception.NegocioException;
 import at.favre.lib.crypto.bcrypt.BCrypt;
@@ -44,10 +46,10 @@ public class PruebasNegocio {
     private static void pruebaRegistrarPaciente() throws PersistenciaException {
         try {
             // Crear instancia de Usuario
-            Usuario usuario = new Usuario("anazzz@gmail.com", "contra", "PACIENTE");
+            UsuarioNuevoDTO usuario = new UsuarioNuevoDTO("anazzz@gmail.com", "contra", "PACIENTE");
 
             // Crear instancia de Dirección
-            Direccion direccion = new Direccion("Calle Reforma", "102", "Centro", "85000");
+            DireccionNuevoDTO direccion = new DireccionNuevoDTO("Calle Reforma", "102", "Centro", "85000");
 
             PacienteNuevoDTO pacienteAGuardar = new PacienteNuevoDTO("Ana", "Casillas", "López", LocalDate.of(1992, 8, 25), "anazzz@gmail.com", "1245963874", usuario, direccion);
 
@@ -87,10 +89,10 @@ public class PruebasNegocio {
             String email = "maria.gomez@example.com";
             
             // Crear instancia de Usuario
-            Usuario usuario = new Usuario("maria.gomez@example.com", "hola", "PACIENTE");
+            UsuarioNuevoDTO usuario = new UsuarioNuevoDTO("maria.gomez@example.com", "hola", "PACIENTE");
 
             // Crear instancia de Dirección
-            Direccion direccion = new Direccion("Puebla", "111", "Centro", "06010");
+            DireccionNuevoDTO direccion = new DireccionNuevoDTO("Puebla", "111", "Centro", "06010");
 
             // Crear instancia de Paciente
             PacienteNuevoDTO pacienteNuevo = new PacienteNuevoDTO(

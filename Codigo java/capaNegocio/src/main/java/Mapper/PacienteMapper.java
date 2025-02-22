@@ -4,11 +4,15 @@
  */
 package Mapper;
 
+import DTO.DireccionNuevoDTO;
 import DTO.PacienteNuevoDTO;
 import DTO.PacienteViejoDTO;
 import DTO.PerfilDTO;
 import DTO.PerfilViejoDTO;
+import DTO.UsuarioNuevoDTO;
+import entidades.Direccion;
 import entidades.Paciente;
+import entidades.Usuario;
 
 /**
  * Clase PacienteMapper.
@@ -19,6 +23,8 @@ import entidades.Paciente;
  * @author 00000253301 Isabel Valenzuela Rocha 
  */
 public class PacienteMapper {
+    UsuarioMapper mapperUsuario = new UsuarioMapper();
+    DireccionMapper mapperDireccion = new DireccionMapper();
     
     /**
      * Convierte un objeto `PacienteCreateDTO` a una entidad `Paciente`.
@@ -30,8 +36,10 @@ public class PacienteMapper {
      * @return Una entidad `Paciente` que puede ser persistida en la base de datos, o null si el DTO es null.
      */
     public Paciente toEntity(PacienteNuevoDTO pacienteNuevo) {
-        
         if (pacienteNuevo == null) return null;
+        
+        Usuario usuario = mapperUsuario.toEntity(pacienteNuevo.getUsuario());
+        Direccion direccion = mapperDireccion.toEntity(pacienteNuevo.getDireccion());
         
         return new Paciente(
             pacienteNuevo.getNombre(),
@@ -40,8 +48,8 @@ public class PacienteMapper {
             pacienteNuevo.getFechaNacimiento(),
             pacienteNuevo.getEmail(),
             pacienteNuevo.getTelefono(),
-            pacienteNuevo.getUsuario(),
-            pacienteNuevo.getDireccion()
+            usuario,
+            direccion
         );
     }
     
@@ -58,6 +66,9 @@ public class PacienteMapper {
         
         if (paciente == null) return null;
         
+        UsuarioNuevoDTO usuario = mapperUsuario.toNuevoDTO(paciente.getUsuario());
+        DireccionNuevoDTO direccion = mapperDireccion.toNuevoTO(paciente.getDireccion());
+        
         return new PacienteNuevoDTO(
                 paciente.getNombre(), 
                 paciente.getApellidoPaterno(), 
@@ -65,8 +76,8 @@ public class PacienteMapper {
                 paciente.getFechaNacimiento(), 
                 paciente.getEmail(), 
                 paciente.getTelefono(), 
-                paciente.getUsuario(), 
-                paciente.getDireccion()
+                usuario, 
+                direccion
         );
     }
     

@@ -33,9 +33,9 @@ public class PacienteNuevoDTO {
     /* Teléfono del paciente. */
     private String telefono;
     /* Usuario asociado al paciente. */
-    private Usuario usuario;
+    private UsuarioNuevoDTO usuario;
     /* Dirección del paciente. */
-    private Direccion direccion;
+    private DireccionNuevoDTO direccion;
 
     /**
      * Constructor vacío para la clase PacienteNuevoDTO.
@@ -56,7 +56,7 @@ public class PacienteNuevoDTO {
      * @param usuario Usuario asociado al paciente
      * @param direccion Dirección del paciente
      */
-    public PacienteNuevoDTO(String nombre, String apellidoPaterno, String apellidoMaterno, LocalDate fechaNacimiento, String email, String telefono, Usuario usuario, Direccion direccion) {
+    public PacienteNuevoDTO(String nombre, String apellidoPaterno, String apellidoMaterno, LocalDate fechaNacimiento, String email, String telefono, UsuarioNuevoDTO usuario, DireccionNuevoDTO direccion) {
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
@@ -117,19 +117,19 @@ public class PacienteNuevoDTO {
         this.telefono = telefono;
     }
 
-    public Usuario getUsuario() {
+    public UsuarioNuevoDTO getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Usuario usuario) {
+    public void setUsuario(UsuarioNuevoDTO usuario) {
         this.usuario = usuario;
     }
 
-    public Direccion getDireccion() {
+    public DireccionNuevoDTO getDireccion() {
         return direccion;
     }
 
-    public void setDireccion(Direccion direccion) {
+    public void setDireccion(DireccionNuevoDTO direccion) {
         this.direccion = direccion;
     }
 

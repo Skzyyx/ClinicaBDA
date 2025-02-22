@@ -5,7 +5,9 @@
 package GUI;
 
 import BO.PacienteBO;
+import DTO.DireccionNuevoDTO;
 import DTO.PacienteNuevoDTO;
+import DTO.UsuarioNuevoDTO;
 import Exception.NegocioException;
 import configuracion.DependencyInjector;
 import entidades.Direccion;
@@ -560,13 +562,13 @@ public class RegistrarPacienteForm extends javax.swing.JFrame {
             pacienteNuevo.setEmail(txtEmail.getText());
             pacienteNuevo.setFechaNacimiento(this.txtFechaNacimiento.getDate());
             pacienteNuevo.setTelefono(txtTelefono.getText());
-            pacienteNuevo.setDireccion(new Direccion(
+            pacienteNuevo.setDireccion(new DireccionNuevoDTO(
                     txtCalle.getText(), 
                     txtNumero.getText(), 
                     txtColonia.getText(), 
                     txtCodigoPostal.getText())
             );
-            pacienteNuevo.setUsuario(new Usuario(
+            pacienteNuevo.setUsuario(new UsuarioNuevoDTO(
                     txtEmail.getText(), 
                     txtConfirmarContrasenia.getText(), "PACIENTE"));
 

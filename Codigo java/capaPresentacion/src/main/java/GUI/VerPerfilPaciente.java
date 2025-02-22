@@ -103,7 +103,7 @@ public class VerPerfilPaciente extends javax.swing.JFrame {
         jLabel2.setText("Mi perfil");
 
         btnEditarDatos.setBackground(new java.awt.Color(0, 0, 0));
-        btnEditarDatos.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
+        btnEditarDatos.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         btnEditarDatos.setForeground(new java.awt.Color(255, 255, 255));
         btnEditarDatos.setText("Editar datos");
         btnEditarDatos.setPreferredSize(new java.awt.Dimension(150, 30));
@@ -114,7 +114,7 @@ public class VerPerfilPaciente extends javax.swing.JFrame {
         });
 
         btnVolver.setBackground(new java.awt.Color(0, 0, 0));
-        btnVolver.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
+        btnVolver.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         btnVolver.setForeground(new java.awt.Color(255, 255, 255));
         btnVolver.setText("Volver");
         btnVolver.setPreferredSize(new java.awt.Dimension(150, 30));

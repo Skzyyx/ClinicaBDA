@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import org.apache.commons.validator.routines.EmailValidator;
 
 /**
@@ -118,6 +119,10 @@ public class PacienteBO {
         // Validar que el codigo postal solo tiene dígitos
         if (!pacienteNuevo.getDireccion().getCodigoPostal().matches("\\d{5}")) {
             throw new NegocioException("El código postal debe ser un número de 5 digitos");
+        }
+        
+        if (pacienteNuevo.getDireccion().getNumero().length() != 5 || pacienteNuevo.getDireccion().getCodigoPostal().length() != 5) {
+            throw new NegocioException("El número de casa y el código postal sólo debe de contener 5 caracteres.");
         }
         
         // Buscar si el paciente ya está registrado (email repetido)

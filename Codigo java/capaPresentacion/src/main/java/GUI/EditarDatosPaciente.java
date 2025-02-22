@@ -5,10 +5,15 @@
 package GUI;
 
 import BO.PacienteBO;
+import DTO.DireccionNuevoDTO;
+import DTO.PacienteNuevoDTO;
+import DTO.PacienteViejoDTO;
 import DTO.PerfilViejoDTO;
+import DTO.UsuarioNuevoDTO;
 import Exception.NegocioException;
 import configuracion.DependencyInjector;
 import excepciones.PersistenciaException;
+import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -32,7 +37,7 @@ public class EditarDatosPaciente extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
         setTitle("Paciente - Editar datos");
-        mostrarPerfil();
+        cargarDatos(SessionManager.getInstance().getUser());
     }
     
     public static EditarDatosPaciente getInstance() throws NegocioException {
@@ -62,24 +67,34 @@ public class EditarDatosPaciente extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        btnAgendarCita = new javax.swing.JButton();
-        btnCancelarCita = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         lbNombre7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        lbPerfil = new javax.swing.JLabel();
         lbNombre2 = new javax.swing.JLabel();
         lbNombre3 = new javax.swing.JLabel();
         lbNombre4 = new javax.swing.JLabel();
         lbNombre5 = new javax.swing.JLabel();
-        lbFecha = new javax.swing.JLabel();
         lbNombre8 = new javax.swing.JLabel();
-        lbNombre = new javax.swing.JLabel();
-        lbTelefono = new javax.swing.JLabel();
-        lbEmail = new javax.swing.JLabel();
-        lbEdad = new javax.swing.JLabel();
-        lbDireccion = new javax.swing.JLabel();
+        btnCancelar = new javax.swing.JButton();
+        lbNombre9 = new javax.swing.JLabel();
+        lbNombre10 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        lbNombre6 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        lbNombre11 = new javax.swing.JLabel();
+        lbNombre12 = new javax.swing.JLabel();
+        txtNombre = new javax.swing.JTextField();
+        txtPaterno = new javax.swing.JTextField();
+        txtTelefono = new javax.swing.JTextField();
+        txtMaterno = new javax.swing.JTextField();
+        txtCalle = new javax.swing.JTextField();
+        txtColonia = new javax.swing.JTextField();
+        txtNumero = new javax.swing.JTextField();
+        txtCodigo = new javax.swing.JTextField();
+        txtConfirmarContra = new javax.swing.JPasswordField();
+        txtContra = new javax.swing.JPasswordField();
+        txtFecha = new com.github.lgooddatepicker.components.DatePicker();
+        btnGuardar = new javax.swing.JButton();
         lbFondo = new javax.swing.JLabel();
 
         jLabel5.setText("jLabel5");
@@ -91,152 +106,167 @@ public class EditarDatosPaciente extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(800, 600));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI Semibold", 1, 36)); // NOI18N
-        jLabel2.setText("Mi perfil");
+        jLabel2.setText("Editar datos");
 
-        btnAgendarCita.setBackground(new java.awt.Color(0, 0, 0));
-        btnAgendarCita.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
-        btnAgendarCita.setForeground(new java.awt.Color(255, 255, 255));
-        btnAgendarCita.setText("Editar datos");
-        btnAgendarCita.setPreferredSize(new java.awt.Dimension(150, 30));
-        btnAgendarCita.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgendarCitaActionPerformed(evt);
-            }
-        });
-
-        btnCancelarCita.setBackground(new java.awt.Color(0, 0, 0));
-        btnCancelarCita.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
-        btnCancelarCita.setForeground(new java.awt.Color(255, 255, 255));
-        btnCancelarCita.setText("Volver");
-        btnCancelarCita.setPreferredSize(new java.awt.Dimension(150, 30));
-        btnCancelarCita.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelarCitaActionPerformed(evt);
-            }
-        });
-
+        jPanel2.setBackground(new java.awt.Color(247, 242, 250));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lbNombre7.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
         lbNombre7.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lbNombre7.setText("Dirección");
+        lbNombre7.setText("Número");
         lbNombre7.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        jPanel2.add(lbNombre7, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 250, 50, 20));
+        jPanel2.add(lbNombre7, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 280, 50, 20));
 
         jLabel8.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
-        jLabel8.setText("Ficha de datos");
-        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 40, 130, 20));
-
-        jLabel1.setIcon(new ImageIcon(getClass().getResource("/iconPaciente.JPG")));
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 90, 100, 90));
-
-        lbPerfil.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
-        lbPerfil.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jPanel2.add(lbPerfil, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 190, 100, 20));
+        jLabel8.setText("Contraseña");
+        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 180, 110, 20));
 
         lbNombre2.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
         lbNombre2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lbNombre2.setText("Fecha de nacimiento");
         lbNombre2.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        jPanel2.add(lbNombre2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 120, 110, 20));
+        jPanel2.add(lbNombre2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 120, 110, 20));
 
         lbNombre3.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
         lbNombre3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lbNombre3.setText("Edad");
+        lbNombre3.setText("Código postal");
         lbNombre3.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        jPanel2.add(lbNombre3, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 80, 50, -1));
+        jPanel2.add(lbNombre3, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 280, 90, -1));
 
         lbNombre4.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
         lbNombre4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lbNombre4.setText("Teléfono");
         lbNombre4.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        jPanel2.add(lbNombre4, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 160, 50, 20));
+        jPanel2.add(lbNombre4, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 120, 50, 20));
 
         lbNombre5.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
         lbNombre5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lbNombre5.setText("Email");
+        lbNombre5.setText("Calle");
         lbNombre5.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        jPanel2.add(lbNombre5, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 200, 30, 20));
-
-        lbFecha.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
-        lbFecha.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lbFecha.setVerifyInputWhenFocusTarget(false);
-        jPanel2.add(lbFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 130, 180, 30));
+        jPanel2.add(lbNombre5, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 220, 30, 20));
 
         lbNombre8.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
         lbNombre8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lbNombre8.setText("Nombre completo");
-        jPanel2.add(lbNombre8, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 80, 100, 20));
+        lbNombre8.setText("Apellido materno");
+        jPanel2.add(lbNombre8, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 70, 100, 20));
 
-        lbNombre.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
-        lbNombre.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lbNombre.setVerifyInputWhenFocusTarget(false);
-        jPanel2.add(lbNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 90, 200, 30));
+        btnCancelar.setBackground(new java.awt.Color(0, 0, 0));
+        btnCancelar.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
+        btnCancelar.setForeground(new java.awt.Color(255, 255, 255));
+        btnCancelar.setText("Cancelar");
+        btnCancelar.setPreferredSize(new java.awt.Dimension(150, 30));
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 280, 140, 40));
 
-        lbTelefono.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
-        lbTelefono.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lbTelefono.setVerifyInputWhenFocusTarget(false);
-        jPanel2.add(lbTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 170, 180, 30));
+        lbNombre9.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
+        lbNombre9.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbNombre9.setText("Nombre");
+        jPanel2.add(lbNombre9, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 50, 20));
 
-        lbEmail.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
-        lbEmail.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lbEmail.setVerifyInputWhenFocusTarget(false);
-        jPanel2.add(lbEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 210, 180, 30));
+        lbNombre10.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
+        lbNombre10.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbNombre10.setText("Apellido paterno");
+        jPanel2.add(lbNombre10, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 70, 90, 20));
 
-        lbEdad.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
-        lbEdad.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lbEdad.setVerifyInputWhenFocusTarget(false);
-        jPanel2.add(lbEdad, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 90, 70, 30));
+        jLabel9.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
+        jLabel9.setText("Datos personales");
+        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 30, 160, 20));
 
-        lbDireccion.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
-        lbDireccion.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lbDireccion.setVerifyInputWhenFocusTarget(false);
-        jPanel2.add(lbDireccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 260, 290, 30));
+        lbNombre6.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
+        lbNombre6.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbNombre6.setText("Confirmar contraseña");
+        lbNombre6.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jPanel2.add(lbNombre6, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 280, 120, -1));
 
-        lbFondo.setIcon(new ImageIcon(getClass().getResource("/fondoFicha.JPG")));
+        jLabel10.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
+        jLabel10.setText("Dirección");
+        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 180, 90, 20));
+
+        lbNombre11.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
+        lbNombre11.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbNombre11.setText("Colonia");
+        lbNombre11.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jPanel2.add(lbNombre11, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 220, 50, -1));
+
+        lbNombre12.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
+        lbNombre12.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbNombre12.setText("Contraseña");
+        lbNombre12.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jPanel2.add(lbNombre12, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 220, 60, -1));
+        jPanel2.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 90, 180, -1));
+        jPanel2.add(txtPaterno, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 90, 190, -1));
+        jPanel2.add(txtTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 140, 190, -1));
+        jPanel2.add(txtMaterno, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 90, 190, -1));
+        jPanel2.add(txtCalle, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 240, 110, -1));
+        jPanel2.add(txtColonia, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 240, 110, -1));
+        jPanel2.add(txtNumero, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 300, 110, -1));
+        jPanel2.add(txtCodigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 300, 110, -1));
+
+        txtConfirmarContra.setToolTipText("");
+        jPanel2.add(txtConfirmarContra, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 300, 150, -1));
+
+        txtContra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtContraActionPerformed(evt);
+            }
+        });
+        jPanel2.add(txtContra, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 240, 150, -1));
+
+        txtFecha.setBorder(javax.swing.BorderFactory.createCompoundBorder());
+        jPanel2.add(txtFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, -1, -1));
+
+        btnGuardar.setBackground(new java.awt.Color(0, 0, 0));
+        btnGuardar.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
+        btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
+        btnGuardar.setText("Guardar");
+        btnGuardar.setPreferredSize(new java.awt.Dimension(150, 30));
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 230, 140, 40));
+
+        lbFondo.setBackground(new java.awt.Color(247, 242, 250));
         lbFondo.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         lbFondo.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
-        jPanel2.add(lbFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 510, 320));
+        jPanel2.add(lbFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 750, 350));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(64, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnAgendarCita, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCancelarCita, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(53, 53, 53))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(332, 332, 332)
-                .addComponent(jLabel2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(332, 332, 332)
+                        .addComponent(jLabel2))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(63, 63, 63)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 749, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(58, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(316, 316, 316)
-                        .addComponent(btnAgendarCita, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26)
-                        .addComponent(btnCancelarCita, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(65, 65, 65)
-                        .addComponent(jLabel2)
-                        .addGap(35, 35, 35)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(77, Short.MAX_VALUE))
+                .addGap(65, 65, 65)
+                .addComponent(jLabel2)
+                .addGap(32, 32, 32)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(50, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 812, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 870, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 6, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -248,17 +278,25 @@ public class EditarDatosPaciente extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnCancelarCitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarCitaActionPerformed
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         try {
-            guardar();
+            volver();
         } catch (NegocioException ex) {
             Logger.getLogger(EditarDatosPaciente.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_btnCancelarCitaActionPerformed
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
-    private void btnAgendarCitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgendarCitaActionPerformed
+    private void txtContraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtContraActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnAgendarCitaActionPerformed
+    }//GEN-LAST:event_txtContraActionPerformed
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        try {
+            guardar();
+        } catch (NegocioException | PersistenciaException ex) {
+            Logger.getLogger(EditarDatosPaciente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnGuardarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -307,56 +345,143 @@ public class EditarDatosPaciente extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAgendarCita;
-    private javax.swing.JButton btnCancelarCita;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnGuardar;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JLabel lbDireccion;
-    private javax.swing.JLabel lbEdad;
-    private javax.swing.JLabel lbEmail;
-    private javax.swing.JLabel lbFecha;
     private javax.swing.JLabel lbFondo;
-    private javax.swing.JLabel lbNombre;
+    private javax.swing.JLabel lbNombre10;
+    private javax.swing.JLabel lbNombre11;
+    private javax.swing.JLabel lbNombre12;
     private javax.swing.JLabel lbNombre2;
     private javax.swing.JLabel lbNombre3;
     private javax.swing.JLabel lbNombre4;
     private javax.swing.JLabel lbNombre5;
+    private javax.swing.JLabel lbNombre6;
     private javax.swing.JLabel lbNombre7;
     private javax.swing.JLabel lbNombre8;
-    private javax.swing.JLabel lbPerfil;
-    private javax.swing.JLabel lbTelefono;
+    private javax.swing.JLabel lbNombre9;
+    private javax.swing.JTextField txtCalle;
+    private javax.swing.JTextField txtCodigo;
+    private javax.swing.JTextField txtColonia;
+    private javax.swing.JPasswordField txtConfirmarContra;
+    private javax.swing.JPasswordField txtContra;
+    private com.github.lgooddatepicker.components.DatePicker txtFecha;
+    private javax.swing.JTextField txtMaterno;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtNumero;
+    private javax.swing.JTextField txtPaterno;
+    private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
-    
-    private void mostrarPerfil() {
-        try {
-            PerfilViejoDTO perfil = pacienteBO.obtenerPerfilPaciente(SessionManager.getInstance().getUser());
-            
-            if (perfil == null) {
-                JOptionPane.showMessageDialog(this, "Ocurrió un error al mostrar perfil.", "Error", JOptionPane.ERROR_MESSAGE);
+
+    private void guardar() throws NegocioException, PersistenciaException {
+        String user = SessionManager.getInstance().getUser();
+        String rol = SessionManager.getInstance().getRol();
+        String nombre = txtNombre.getText().trim();
+        String apellidoPaterno = txtPaterno.getText().trim();
+        String apellidoMaterno = txtMaterno.getText().trim();
+        LocalDate fechaNacimiento = txtFecha.getDate();
+        String telefono = txtTelefono.getText().trim();
+        String calle = txtCalle.getText().trim();
+        String numero = txtNumero.getText().trim();
+        String colonia = txtColonia.getText().trim();
+        String codigoPostal = txtCodigo.getText().trim();
+        String contrasenia = new String(txtContra.getPassword());
+        String confirmarContrasenia = new String(txtConfirmarContra.getPassword());
+        
+        boolean validados = validarCampos(user, nombre, apellidoPaterno, fechaNacimiento, telefono, calle, numero, colonia, codigoPostal, contrasenia, confirmarContrasenia);
+        
+        if (validados) {
+            int confirmacion = JOptionPane.showConfirmDialog(this, "¿Estás seguro que deseas modificar tus datos?", "Mensaje de confirmación", JOptionPane.YES_NO_OPTION);
+
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                try {
+                    UsuarioNuevoDTO usuario = new UsuarioNuevoDTO(user, contrasenia, rol);
+                    DireccionNuevoDTO direccion = new DireccionNuevoDTO(calle, numero, colonia, codigoPostal);
+                    PacienteNuevoDTO paciente = new PacienteNuevoDTO(nombre, apellidoPaterno, apellidoMaterno, fechaNacimiento, user, telefono, usuario, direccion);
+                    boolean editado = pacienteBO.editarDatosPaciente(user, paciente);
+
+                    if (editado) {
+                        JOptionPane.showMessageDialog(this, "Datos editados con éxito.");
+                    } else {
+                        JOptionPane.showMessageDialog(this, "No se ha podido registrar los datos.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (NegocioException ex) {
+                    Logger.getLogger(RegistrarPacienteForm.class.getName()).log(Level.SEVERE, "Error al editar datos.", ex);
+                    JOptionPane.showMessageDialog(this, ex.getMessage());
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Se han cancelado los cambios.");
+                txtFecha.setText("");
             }
-            else {
-                lbPerfil.setText(perfil.getNombre());
-                lbNombre.setText(perfil.getNombre() + " " + perfil.getApellidoPaterno() + " " + perfil.getApellidoMaterno());
-                lbFecha.setText(perfil.getFechaNacimiento().toString());
-                lbTelefono.setText(perfil.getTelefono());
-                lbEmail.setText(perfil.getEmail());
-                lbDireccion.setText(perfil.getDireccion().getCalle() + " " + perfil.getDireccion().getNumero() + " " + perfil.getDireccion().getColonia() + " " + perfil.getDireccion().getCodigoPostal());
-                lbEdad.setText(String.valueOf(perfil.getEdad()));
-            }
-        } catch (NegocioException | PersistenciaException ex) {
-            Logger.getLogger(EditarDatosPaciente.class.getName()).log(Level.SEVERE, null, ex);
         }
+        cargarDatos(user);
     }
     
-    private void guardar() throws NegocioException {
+    private boolean validarCampos(String user, String nombre, String apellidoPaterno, LocalDate fechaNacimiento, String telefono, String calle, String numero, String colonia, String codigoPostal, String contrasenia, String confirmarContrasenia) throws NegocioException, PersistenciaException {
+        PacienteViejoDTO pacienteViejo = pacienteBO.obtenerPacientePorEmail(user);
+        
+        /**CHECAR ESTO, CÓMO HACERLE PARA Q NO MUESTRE CONTRASEÑA PERO LAS OBTENGA*/
+        /*if (contrasenia.length() == 0 && confirmarContrasenia.length() == 0) {
+            contrasenia = contrasenia;
+        }*/
+        
+        
+        if (nombre.isBlank() || apellidoPaterno.isBlank() ||
+                fechaNacimiento == null || telefono.isBlank() || calle.isBlank() ||
+                numero.isBlank() || colonia.isBlank() || codigoPostal.isBlank() ||
+                contrasenia.length() == 0 || confirmarContrasenia.length() == 0) {
+            JOptionPane.showMessageDialog(null, "Por favor ingrese todos los campos obligatorios.");
+            return false;
+        }
+
+        // Si las contraseñas no coinciden
+        if (!contrasenia.equals(confirmarContrasenia)) {
+            JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden.");
+            return false;
+        }
+        
+        String regex = "^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]+$";
+        
+        if (!txtNombre.getText().trim().matches(regex) || !txtPaterno.getText().trim().matches(regex) || !txtMaterno.getText().trim().matches(regex)) {
+            JOptionPane.showMessageDialog(null, "El nombre y apellidos solo deben de contener letras.");
+            return false;
+        }
+
+        return true;
+    }
+    
+    private void cargarDatos(String user) {
+        try {
+            PacienteViejoDTO pacienteViejo = pacienteBO.obtenerPacientePorEmail(user);
+
+            if (pacienteViejo != null) {
+                txtNombre.setText(pacienteViejo.getNombre());
+                txtPaterno.setText(pacienteViejo.getApellidoPaterno());
+                txtMaterno.setText(pacienteViejo.getApellidoMaterno());
+                txtTelefono.setText(pacienteViejo.getTelefono());
+                txtCalle.setText(pacienteViejo.getDireccion().getCalle());
+                txtNumero.setText(pacienteViejo.getDireccion().getNumero());
+                txtColonia.setText(pacienteViejo.getDireccion().getColonia());
+                txtCodigo.setText(pacienteViejo.getDireccion().getCodigoPostal());
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al consultar datos.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (NegocioException ex) {
+            JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
+        }
+   
+    }
+    
+    private void volver() throws NegocioException {
         VerPerfilPaciente verPerfilPaciente = VerPerfilPaciente.getInstance();
         verPerfilPaciente.setEditarDatosFrame(this);
         verPerfilPaciente.setVisible(true);
         this.setVisible(false);
     }
-
 }
