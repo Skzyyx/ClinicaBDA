@@ -5,6 +5,7 @@
 package DAO;
 
 import conexion.IConexion;
+import entidades.Horario;
 import entidades.Medico;
 import entidades.Usuario;
 import excepciones.PersistenciaException;
@@ -13,6 +14,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -225,5 +227,47 @@ public class MedicoDAO implements IMedicoDAO {
         
         return medico;
     }
+
+
+
+    @Override
+    public Horario obtenerHorarioMedicoPorID(int id) throws PersistenciaException {
+        Horario horario = null;
+        
+        String sentenciaSQL = "CALL consultarHorariosMedicoPorID(?)";
+        
+        //Intenta la conexion
+        try(Connection con =conexion.crearConexion();
+                CallableStatement cb = con.prepareCall(sentenciaSQL)) {
+            
+            //se setea el valor del id a buscar
+            cb.setInt(1, id);
+            
+            //Intenta la Busqueda
+            try (ResultSet rs =cb.executeQuery()){
+                
+                if(rs.next()){
+                    horario =new Horario();
+                    horario.setDiaSemana(rs.getString("diaSemana"));
+                    horario.setHoraEntrada(rs.getTime("horaEntrada").toLocalTime());
+                    horario.setHoraSalida(rs.getTime("horaSalida").toLocalTime());
+                    
+                    
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(MedicoDAO.class.getName()).log(Level.SEVERE, null, ex);
+                throw new PersistenciaException("Error inesperado"+ex.getMessage());
+            }
+            
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(MedicoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PersistenciaException("Error al consultar el Horario "+ ex.getMessage());
+        }
+        return horario;
+    }
+
+
 }
 

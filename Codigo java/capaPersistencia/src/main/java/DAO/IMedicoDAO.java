@@ -4,6 +4,7 @@
  */
 package DAO;
 
+import entidades.Horario;
 import entidades.Medico;
 import excepciones.PersistenciaException;
 import java.util.ArrayList;
@@ -42,6 +43,8 @@ public interface IMedicoDAO {
     public List<String> obtenerEspecialidades() throws PersistenciaException;
     
     public Medico obtenerMedico(String cedula) throws PersistenciaException;
+    
+    public Horario obtenerHorarioMedicoPorID (int id) throws PersistenciaException;
             
 }
 
