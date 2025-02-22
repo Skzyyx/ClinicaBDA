@@ -459,7 +459,7 @@ public class PacienteBO {
      * @return Lista con citas activas
      * @throws NegocioException Si hubo un error al consultar la lista
      */
-    private List<CitaViejoDTO> obtenerCitasActivasPaciente(String email) throws NegocioException {
+    public List<CitaViejoDTO> obtenerCitasActivasPaciente(String email) throws NegocioException {
         if (email == null) {
             throw new NegocioException("El correo electrónico no puede ser nulo.");
         }
