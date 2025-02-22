@@ -24,6 +24,7 @@ public class PrincipalPaciente extends javax.swing.JFrame {
     private static PrincipalPaciente instance;
     
     private VerPerfilPaciente verPerfilPacienteFrame;
+    private RegistrarCita registroCitaFrame;
     
     /**
      * Creates new form InicioDeSesion
@@ -236,7 +237,10 @@ public class PrincipalPaciente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarCitaActionPerformed
 
     private void btnAgendarCitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgendarCitaActionPerformed
-        // TODO add your handling code here:
+        RegistrarCita registrarCita = RegistrarCita.getInstance();
+        registrarCita.setPrincipalPaciente(this);
+        registrarCita.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_btnAgendarCitaActionPerformed
 
     private void btnHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHistorialActionPerformed
@@ -337,4 +341,14 @@ public class PrincipalPaciente extends javax.swing.JFrame {
         SessionManager.getInstance().cerrarSesion();
         System.exit(0);
     }
+
+    public RegistrarCita getRegistroCitaFrame() {
+        return registroCitaFrame;
+    }
+
+    public void setRegistroCitaFrame(RegistrarCita registroCitaFrame) {
+        this.registroCitaFrame = registroCitaFrame;
+    }
+    
+    
 }
