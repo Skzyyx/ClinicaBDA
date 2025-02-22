@@ -376,7 +376,6 @@ BEGIN
         m.especialidad,
         m.cedula,
         m.estado AS estado_medico,
-        p.idPaciente, 
         p.nombre,
         p.apellidoPaterno,
         p.apellidoMaterno,
@@ -387,6 +386,7 @@ BEGIN
 	INNER JOIN medicos AS m
 		ON c.idMedico = m.idMedico
 	INNER JOIN pacientes AS p
+		ON c.idPaciente = p.idPaciente
     WHERE emailPaciente = p.email
     AND c.estado = 'ACTIVA';
 END $$
