@@ -364,9 +364,10 @@ CREATE PROCEDURE obtenerCitasActivasPaciente(
 BEGIN
 	SELECT 
 		c.idCita,
+        c.fechaHoraInicio,
+        c.estado AS estado_cita,
         c.folio,
         c.tipo,
-        c.estado AS estado_cita,
         c.idPaciente,
         m.idMedico,
         m.nombre,
@@ -374,11 +375,19 @@ BEGIN
         m.apellidoMaterno,
         m.especialidad,
         m.cedula,
-        m.estado AS estado_medico
+        m.estado AS estado_medico,
+        p.idPaciente, 
+        p.nombre,
+        p.apellidoPaterno,
+        p.apellidoMaterno,
+        p.fechaNacimiento,
+        p.email,
+        p.telefono
     FROM citas AS c
 	INNER JOIN medicos AS m
 		ON c.idMedico = m.idMedico
-    WHERE emailPaciente = (SELECT email FROM pacientes WHERE email = emailPaciente)
+	INNER JOIN pacientes AS p
+    WHERE emailPaciente = p.email
     AND c.estado = 'ACTIVA';
 END $$
 

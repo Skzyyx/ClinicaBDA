@@ -17,6 +17,8 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -325,10 +327,17 @@ public class PacienteDAO implements IPacienteDAO {
         }
     }
     
-    /*
+    
+    /**
+     * Consulta las citas activas de un paciente en específico.
+     * @param email Email a consultar.
+     * @return Lista con citas activas.
+     * @throws PersistenciaException Si hubo un error al consultar los datos.
+     */
     @Override
-    public List<Cita> obtenerCitasActivasPaciente(String email) {
+    public List<Cita> obtenerCitasActivasPaciente(String email) throws PersistenciaException {
         String sentenciaSQL = "CALL obtenerCitasActivasPaciente(?)";
+        List<Cita> citas = new ArrayList<>();
         
         // Intenta la conexión
         try (Connection con = conexion.crearConexion();
@@ -341,22 +350,48 @@ public class PacienteDAO implements IPacienteDAO {
             try (ResultSet rs = cb.executeQuery()) { 
                 // Si se encontró registro
                 while (rs.next()) {
-                    Paciente paciente = consultarPacientePorEmail(email);
+                    Paciente paciente = new Paciente(
+                            rs.getInt(6),
+                            rs.getString(14),
+                            rs.getString(15),
+                            rs.getString(16),
+                            rs.getDate(17).toLocalDate(),
+                            rs.getString(18),
+                            rs.getString(19)
+                    );
                     
-                    Medico medico = medicoDAO.
+                    Medico medico = new Medico(
+                            rs.getInt(7),
+                            rs.getString(8),
+                            rs.getString(9),
+                            rs.getString(10),
+                            rs.getString(11),
+                            rs.getString(12),
+                            rs.getString(13)
+                    );
+                    
                     Cita cita = new Cita(
-                        rs.getInt("idCita"),
-                        rs.getTimestamp("fechaHoraInicio"),
-                        rs.getString("estado"),
-                        rs.getString("tipo"),
+                        rs.getInt(1),
+                        rs.getTimestamp(2).toLocalDateTime(),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
                         paciente,
                         medico
                     );
+                    citas.add(cita);
                 }
             }
         // Si ocurre un error
-        } catch (Exception e) {
-            throw new PersistenciaException("Error al consultar paciente: " + e.getMessage());
+        } catch (SQLException e) {
+            try {
+                throw new PersistenciaException("Error al consultar citas: " + e.getMessage());
+            } catch (PersistenciaException ex) {
+                Logger.getLogger(PacienteDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(PacienteDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }*/
+        return citas;
+    }
 }

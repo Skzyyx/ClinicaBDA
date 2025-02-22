@@ -40,6 +40,8 @@ public interface IMedicoDAO {
     public List<Medico> obtenerMedicos() throws PersistenciaException;
     
     public List<String> obtenerEspecialidades() throws PersistenciaException;
+    
+    public Medico obtenerMedico(String cedula) throws PersistenciaException;
             
 }
 

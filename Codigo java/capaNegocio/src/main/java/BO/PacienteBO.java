@@ -6,21 +6,24 @@ package BO;
 
 import DAO.IPacienteDAO;
 import DAO.PacienteDAO;
+import DTO.CitaViejoDTO;
 import DTO.PacienteNuevoDTO;
 import DTO.PacienteViejoDTO;
 import DTO.PerfilDTO;
 import DTO.PerfilViejoDTO;
 import Exception.NegocioException;
+import Mapper.CitaMapper;
 import Mapper.PacienteMapper;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import conexion.IConexion;
+import entidades.Cita;
 import entidades.Paciente;
 import excepciones.PersistenciaException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import org.apache.commons.validator.routines.EmailValidator;
 
 /**
@@ -39,6 +42,7 @@ public class PacienteBO {
 
     // Creacion y uso del mapper/convertidor que se encargara de convertir los DTO a Entidades
     private final PacienteMapper mapper = new PacienteMapper();
+    private final CitaMapper mapperCita = new CitaMapper();
 
     /**
      * Constructor de la clase PacienteBO
@@ -446,6 +450,27 @@ public class PacienteBO {
         } catch (PersistenciaException e) {
             logger.log(Level.SEVERE, "Error al obtener un perfil" , e);
             throw new NegocioException ("Error al obtener la información del perfil: ", e);
+        }
+    }
+    
+    /**
+     * Obtiene una lista con las citas activas d eun paciente en específico
+     * @param email Email a buscar
+     * @return Lista con citas activas
+     * @throws NegocioException Si hubo un error al consultar la lista
+     */
+    private List<CitaViejoDTO> obtenerCitasActivasPaciente(String email) throws NegocioException {
+        if (email == null) {
+            throw new NegocioException("El correo electrónico no puede ser nulo.");
+        }
+        
+        try {
+            List<Cita> citasActivas = pacienteDAO.obtenerCitasActivasPaciente(email);
+            
+            return mapperCita.toViejoDTOList(citasActivas);
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(MedicoBO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new NegocioException("No se pudo obtener los médicos");
         }
     }
     

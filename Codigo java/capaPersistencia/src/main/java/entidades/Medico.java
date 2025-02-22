@@ -81,6 +81,16 @@ public class Medico {
         this.usuario = usuario;
     }
 
+    public Medico(int idMedico, String nombre, String apellidoPaterno, String apellidoMaterno, String especialidad, String cedula, String estado) {
+        this.idMedico = idMedico;
+        this.nombre = nombre;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.especialidad = especialidad;
+        this.cedula = cedula;
+        this.estado = estado;
+    }
+
     /**
      * Obtiene el identificador único del médico.
      * @return ID del médico.

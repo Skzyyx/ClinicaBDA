@@ -65,13 +65,20 @@ public interface IPacienteDAO {
      * @throws PersistenciaException Si hubo un error al consultar los datos.
      */
     public boolean existeTelefonoPaciente(String telefono) throws PersistenciaException;
-    /*
-    public List<Cita> obtenerCitasActivasPaciente(String email);*/
+    
+    /**
+     * Consulta las citas activas de un paciente en específico.
+     * @param email Email a consultar.
+     * @return Lista con citas activas.
+     * @throws PersistenciaException Si hubo un error al consultar los datos.
+     */
+    public List<Cita> obtenerCitasActivasPaciente(String email) throws PersistenciaException;
     
     /**
      * Edita los datos de un paciente, excepto la contraseña
      * @param paciente Paciente para editar
      * @return True si se editó el registro, false en caso contrario.
+     * @throws excepciones.PersistenciaExceptionSi hubo un error al editar los datos.
      */
     public boolean editarDatosSinContraPaciente(Paciente paciente) throws PersistenciaException;
 }

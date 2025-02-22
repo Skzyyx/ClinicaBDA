@@ -8,11 +8,9 @@ import entidades.Usuario;
 
 /**
  *
- * @author skyro
+ * @author Isabel
  */
-public class MedicoViejoDTO {
-    
-    private int idMedico;
+public class MedicoNuevoDTO {
     private String nombre;
     private String apellidoPaterno;
     private String apellidoMaterno;
@@ -21,11 +19,7 @@ public class MedicoViejoDTO {
     private String estado;
     private Usuario usuario;
 
-    public MedicoViejoDTO() {
-    }
-
-    public MedicoViejoDTO(int idMedico, String nombre, String apellidoPaterno, String apellidoMaterno, String especialidad, String cedula, String estado, Usuario usuario) {
-        this.idMedico = idMedico;
+    public MedicoNuevoDTO(String nombre, String apellidoPaterno, String apellidoMaterno, String especialidad, String cedula, String estado, Usuario usuario) {
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
@@ -33,34 +27,6 @@ public class MedicoViejoDTO {
         this.cedula = cedula;
         this.estado = estado;
         this.usuario = usuario;
-    }
-
-    public MedicoViejoDTO(String nombre, String apellidoPaterno, String apellidoMaterno, String especialidad, String cedula, String estado, Usuario usuario) {
-        this.nombre = nombre;
-        this.apellidoPaterno = apellidoPaterno;
-        this.apellidoMaterno = apellidoMaterno;
-        this.especialidad = especialidad;
-        this.cedula = cedula;
-        this.estado = estado;
-        this.usuario = usuario;
-    }
-
-    public MedicoViejoDTO(int idMedico, String nombre, String apellidoPaterno, String apellidoMaterno, String especialidad, String cedula, String estado) {
-        this.idMedico = idMedico;
-        this.nombre = nombre;
-        this.apellidoPaterno = apellidoPaterno;
-        this.apellidoMaterno = apellidoMaterno;
-        this.especialidad = especialidad;
-        this.cedula = cedula;
-        this.estado = estado;
-    }
-
-    public int getIdMedico() {
-        return idMedico;
-    }
-
-    public void setIdMedico(int idMedico) {
-        this.idMedico = idMedico;
     }
 
     public String getNombre() {
@@ -121,6 +87,8 @@ public class MedicoViejoDTO {
 
     @Override
     public String toString() {
-        return "MedicoViejoDTO{" + "idMedico=" + idMedico + ", nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", especialidad=" + especialidad + ", cedula=" + cedula + ", estado=" + estado + ", usuario=" + usuario + '}';
+        return "MedicoNuevoDTO{" + "nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", especialidad=" + especialidad + ", cedula=" + cedula + ", estado=" + estado + ", usuario=" + usuario + '}';
     }
+    
+    
 }

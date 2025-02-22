@@ -89,7 +89,17 @@ public class Paciente {
         this.usuario = usuario;
         this.direccion = direccion;
     }
-    
+
+    public Paciente(int idPaciente, String nombre, String apellidoPaterno, String apellidoMaterno, LocalDate fechaNacimiento, String email, String telefono) {
+        this.idPaciente = idPaciente;
+        this.nombre = nombre;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.fechaNacimiento = fechaNacimiento;
+        this.email = email;
+        this.telefono = telefono;
+    }
+
     /**
      * Método getIdPaciente().
      * Obtiene el id del paciente

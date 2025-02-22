@@ -6,6 +6,7 @@ package DAO;
 
 import conexion.IConexion;
 import entidades.Medico;
+import entidades.Usuario;
 import excepciones.PersistenciaException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -177,6 +178,52 @@ public class MedicoDAO implements IMedicoDAO {
             Logger.getLogger(MedicoDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new PersistenciaException("No se pudieron obtener las especialidades");
         }
+    }
+    
+    @Override
+    public Medico obtenerMedico(String cedula) throws PersistenciaException {
+        Medico medico = null;
+        String sentenciaSQL = "CALL obtenerMedico(?)";
+        
+        // Intenta la conexión
+        try (Connection con = conexion.crearConexion();
+             CallableStatement cb = con.prepareCall(sentenciaSQL)) {
+            
+            // Se setea el valor del id a buscar
+            cb.setString(1, cedula);
+            
+            // Intenta la búsqueda
+            try (ResultSet rs = cb.executeQuery()) {
+                // Si encontró coincidencia
+                if (rs.next()) {
+                    medico = new Medico();
+                    medico.setIdMedico(rs.getInt("idMedico"));
+                    medico.setNombre(rs.getString("nombre"));
+                    medico.setApellidoPaterno(rs.getString("apellidoPaterno"));
+                    medico.setApellidoMaterno(rs.getString("apellidoMaterno"));
+                    medico.setEspecialidad("especialidad");
+                    medico.setCedula("cedula");
+                    
+                    Usuario usuario = new Usuario(
+                            rs.getInt("idUsuario"),
+                            rs.getString("usuario"),
+                            rs.getString("contrasenia"),
+                            rs.getString("rol")
+                    );
+                    medico.setUsuario(usuario);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(MedicoDAO.class.getName()).log(Level.SEVERE, null, ex);
+                throw new PersistenciaException("Error inesperado: " + ex.getMessage());
+            }
+
+        // Si ocurre un error
+        } catch (Exception e) {
+            Logger.getLogger(MedicoDAO.class.getName()).log(Level.SEVERE, null, e);
+            throw new PersistenciaException("Error al consultar médico: " + e.getMessage());
+        }
+        
+        return medico;
     }
 }
 

@@ -4,6 +4,7 @@
  */
 package Mapper;
 
+import DTO.MedicoNuevoDTO;
 import DTO.MedicoViejoDTO;
 import entidades.Medico;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class MedicoMapper {
         
         for (Medico medico : medicos) {
             medicosViejoDTO.add(new MedicoViejoDTO( 
-                    String.valueOf(medico.getIdMedico()),
+                    medico.getIdMedico(),
                     medico.getNombre(), 
                     medico.getApellidoPaterno(), 
                     medico.getApellidoMaterno(), 
@@ -29,5 +30,48 @@ public class MedicoMapper {
                     medico.getEstado()));
         }
         return medicosViejoDTO;
+    }
+    
+    public Medico toEntity(MedicoNuevoDTO medicoNuevo) {
+        if (medicoNuevo == null) return null;
+        
+        return new Medico(
+                medicoNuevo.getNombre(),
+                medicoNuevo.getApellidoPaterno(),
+                medicoNuevo.getApellidoMaterno(),
+                medicoNuevo.getEspecialidad(),
+                medicoNuevo.getCedula(),
+                medicoNuevo.getEstado(),
+                medicoNuevo.getUsuario()
+        );
+    }
+    
+    public MedicoViejoDTO toViejoDTO(Medico medico) {
+        if (medico == null) return null;
+        
+        return new MedicoViejoDTO(
+                medico.getIdMedico(),
+                medico.getNombre(),
+                medico.getApellidoPaterno(),
+                medico.getApellidoPaterno(),
+                medico.getEspecialidad(),
+                medico.getCedula(),
+                medico.getEstado(),
+                medico.getUsuario()
+        );
+    }
+    
+    public MedicoNuevoDTO toNuevoDTO(Medico medico) {
+        if (medico == null) return null;
+        
+        return new MedicoNuevoDTO(
+                medico.getNombre(),
+                medico.getApellidoPaterno(),
+                medico.getApellidoPaterno(),
+                medico.getEspecialidad(),
+                medico.getCedula(),
+                medico.getEstado(),
+                medico.getUsuario()
+        );
     }
 }

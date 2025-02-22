@@ -369,6 +369,9 @@ public class VerPerfilPaciente extends javax.swing.JFrame {
      * @throws NegocioException Si hubo un error al cambiar de pestaña.
      */
     private void editarDatos() throws NegocioException {
+        
+        
+        
         EditarDatosPaciente editarDatosPaciente = EditarDatosPaciente.getInstance();
         editarDatosPaciente.setVerPerfilPacienteFrame(this);
         editarDatosPaciente.setVisible(true);
