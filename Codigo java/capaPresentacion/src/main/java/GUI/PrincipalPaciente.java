@@ -24,7 +24,7 @@ public class PrincipalPaciente extends javax.swing.JFrame {
     private static PrincipalPaciente instance;
     
     private VerPerfilPaciente verPerfilPacienteFrame;
-    private RegistrarCita registroCitaFrame;
+    private AgendarCita registroCitaFrame;
     
     /**
      * Creates new form InicioDeSesion
@@ -342,11 +342,11 @@ public class PrincipalPaciente extends javax.swing.JFrame {
         System.exit(0);
     }
 
-    public RegistrarCita getRegistroCitaFrame() {
+    public AgendarCita getRegistroCitaFrame() {
         return registroCitaFrame;
     }
 
-    public void setRegistroCitaFrame(RegistrarCita registroCitaFrame) {
+    public void setRegistroCitaFrame(AgendarCita registroCitaFrame) {
         this.registroCitaFrame = registroCitaFrame;
     }
     
