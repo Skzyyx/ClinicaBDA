@@ -14,6 +14,7 @@ import javax.swing.ImageIcon;
 
 import javax.swing.JOptionPane;
 import javax.swing.UnsupportedLookAndFeelException;
+import sesion.SessionManager;
 
 
 /**
@@ -80,17 +81,17 @@ public class InicioDeSesion extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         jLabel1.setText("Usuario");
 
-        jLabel2.setFont(new java.awt.Font("Montserrat", 0, 36)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Segoe UI Semibold", 1, 36)); // NOI18N
         jLabel2.setText("Inicio de sesión");
 
-        jLabel3.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         jLabel3.setText("Contraseña");
 
         btnIniciarSesion.setBackground(new java.awt.Color(0, 0, 0));
-        btnIniciarSesion.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
+        btnIniciarSesion.setFont(new java.awt.Font("Segoe UI Semilight", 0, 18)); // NOI18N
         btnIniciarSesion.setForeground(new java.awt.Color(255, 255, 255));
         btnIniciarSesion.setText("Iniciar sesión");
         btnIniciarSesion.setPreferredSize(new java.awt.Dimension(150, 30));
@@ -101,7 +102,7 @@ public class InicioDeSesion extends javax.swing.JFrame {
         });
 
         btnRegistrarse.setBackground(new java.awt.Color(0, 0, 0));
-        btnRegistrarse.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
+        btnRegistrarse.setFont(new java.awt.Font("Segoe UI Semilight", 0, 18)); // NOI18N
         btnRegistrarse.setForeground(new java.awt.Color(255, 255, 255));
         btnRegistrarse.setText("Registrarse");
         btnRegistrarse.setPreferredSize(new java.awt.Dimension(150, 30));
@@ -165,7 +166,7 @@ public class InicioDeSesion extends javax.swing.JFrame {
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtContra, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRegistrarse, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnIniciarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -288,13 +289,22 @@ public class InicioDeSesion extends javax.swing.JFrame {
 
             // Si las credenciales son válidas
             if (autenticado) {
-                //Abre la siguiente pestaña
-                PrincipalPaciente menuPrincipalPaciente = new PrincipalPaciente();
-                menuPrincipalPaciente.setVisible(true);
-                
-                //Cierra la pestaña actual
-                this.dispose();
-            // Si no fueron válidas, muestra una notificación
+                // Dependiendo el rol, dirige a ventanas diferentes
+                switch (SessionManager.getInstance().getRol()) {
+                    case "PACIENTE" -> {
+                        //Abre la siguiente pestaña
+                        PrincipalPaciente menuPrincipalPaciente = new PrincipalPaciente();
+                        menuPrincipalPaciente.setVisible(true);
+                        //Cierra la pestaña actual
+                        this.dispose();
+                    }
+                    case "MEDICO" -> {
+                        
+                    }
+                    // Si el rol no es válido
+                    default -> JOptionPane.showMessageDialog(this, "Su rol registrado no es válido.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            // Si no fueron válidas, muestra una notificación    
             } else {
                 JOptionPane.showMessageDialog(this, "Las credenciales son incorrectas.", "Error", JOptionPane.ERROR_MESSAGE);
             }
