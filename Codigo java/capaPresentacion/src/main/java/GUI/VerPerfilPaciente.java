@@ -5,10 +5,12 @@
 package GUI;
 
 import BO.PacienteBO;
+import DTO.CitaViejoDTO;
 import DTO.PerfilViejoDTO;
 import Exception.NegocioException;
 import configuracion.DependencyInjector;
 import excepciones.PersistenciaException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -345,12 +347,16 @@ public class VerPerfilPaciente extends javax.swing.JFrame {
      */
     public void mostrarPerfil() {
         try {
+            // Intenta obtener el perfil
             PerfilViejoDTO perfil = pacienteBO.obtenerPerfilPaciente(SessionManager.getInstance().getUser());
             
+            // Si no se encontró perfil
             if (perfil == null) {
                 JOptionPane.showMessageDialog(this, "Ocurrió un error al mostrar perfil.", "Error", JOptionPane.ERROR_MESSAGE);
             }
+            // Si se encontró perfil
             else {
+                // Mostrar los datos 
                 lbPerfil.setText(perfil.getNombre());
                 lbNombre.setText(perfil.getNombre() + " " + perfil.getApellidoPaterno() + " " + perfil.getApellidoMaterno());
                 lbFecha.setText(perfil.getFechaNacimiento().toString());
@@ -369,14 +375,19 @@ public class VerPerfilPaciente extends javax.swing.JFrame {
      * @throws NegocioException Si hubo un error al cambiar de pestaña.
      */
     private void editarDatos() throws NegocioException {
+        // Obtiene las citas activas del paciente
+        List<CitaViejoDTO> citas = pacienteBO.obtenerCitasActivasPaciente(SessionManager.getInstance().getUser());
         
-        
-        
-        EditarDatosPaciente editarDatosPaciente = EditarDatosPaciente.getInstance();
-        editarDatosPaciente.setVerPerfilPacienteFrame(this);
-        editarDatosPaciente.setVisible(true);
-        this.setVisible(false);
-        mostrarPerfil();
+        // Si tiene citas activas
+        if (!citas.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No es posible editar datos si cuentas con citas activas.", "Error", JOptionPane.ERROR_MESSAGE);
+        // Ir a ventana de editar datos
+        } else {
+            EditarDatosPaciente editarDatosPaciente = EditarDatosPaciente.getInstance();
+            editarDatosPaciente.setVerPerfilPacienteFrame(this);
+            editarDatosPaciente.setVisible(true);
+            this.setVisible(false);
+        }
     }
     
     /**
