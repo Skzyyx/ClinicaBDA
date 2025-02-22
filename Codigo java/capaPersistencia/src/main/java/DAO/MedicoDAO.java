@@ -231,8 +231,8 @@ public class MedicoDAO implements IMedicoDAO {
 
 
     @Override
-    public Horario obtenerHorarioMedicoPorID(int id) throws PersistenciaException {
-        Horario horario = null;
+    public List<Horario> obtenerHorariosMedicoPorID(int id) throws PersistenciaException {
+        List<Horario> horarios = new ArrayList<>();
         
         String sentenciaSQL = "CALL consultarHorariosMedicoPorID(?)";
         
@@ -246,17 +246,19 @@ public class MedicoDAO implements IMedicoDAO {
             //Intenta la Busqueda
             try (ResultSet rs =cb.executeQuery()){
                 
-                if(rs.next()){
-                    horario =new Horario();
-                    horario.setDiaSemana(rs.getString("diaSemana"));
-                    horario.setHoraEntrada(rs.getTime("horaEntrada").toLocalTime());
-                    horario.setHoraSalida(rs.getTime("horaSalida").toLocalTime());
-                    
-                    
+                while (rs.next()){
+                    horarios.add(new Horario(
+                        rs.getString("diaSemana"),
+                        rs.getTime("horaEntrada").toLocalTime(),
+                        rs.getTime("horaSalida").toLocalTime(),
+                        null)
+                    );     
                 }
+                
+                return horarios;
             } catch (SQLException ex) {
                 Logger.getLogger(MedicoDAO.class.getName()).log(Level.SEVERE, null, ex);
-                throw new PersistenciaException("Error inesperado"+ex.getMessage());
+                throw new PersistenciaException("Error inesperado: " + ex.getMessage());
             }
             
             
@@ -265,7 +267,6 @@ public class MedicoDAO implements IMedicoDAO {
             Logger.getLogger(MedicoDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new PersistenciaException("Error al consultar el Horario "+ ex.getMessage());
         }
-        return horario;
     }
 
 

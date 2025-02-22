@@ -44,7 +44,7 @@ public interface IMedicoDAO {
     
     public Medico obtenerMedico(String cedula) throws PersistenciaException;
     
-    public Horario obtenerHorarioMedicoPorID (int id) throws PersistenciaException;
+    public List<Horario> obtenerHorariosMedicoPorID (int id) throws PersistenciaException;
             
 }
 

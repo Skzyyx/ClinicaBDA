@@ -24,7 +24,7 @@ public class PrincipalPaciente extends javax.swing.JFrame {
     private static PrincipalPaciente instance;
     
     private VerPerfilPaciente verPerfilPacienteFrame;
-    private AgendarCita registroCitaFrame;
+    private AgendarCita agendarCita;
     
     /**
      * Creates new form InicioDeSesion
@@ -237,10 +237,14 @@ public class PrincipalPaciente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarCitaActionPerformed
 
     private void btnAgendarCitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgendarCitaActionPerformed
-        /*RegistrarCita registrarCita = RegistrarCita.getInstance();
-        registrarCita.setPrincipalPaciente(this);
-        registrarCita.setVisible(true);
-        this.setVisible(false);*/
+        try {
+            AgendarCita agendarCita = AgendarCita.getInstance();
+            agendarCita.setPrincipalPaciente(this);
+            agendarCita.setVisible(true);
+            this.setVisible(false);
+        } catch (NegocioException ex) {
+            Logger.getLogger(PrincipalPaciente.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnAgendarCitaActionPerformed
 
     private void btnHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHistorialActionPerformed
@@ -342,12 +346,12 @@ public class PrincipalPaciente extends javax.swing.JFrame {
         System.exit(0);
     }
 
-    public AgendarCita getRegistroCitaFrame() {
-        return registroCitaFrame;
+    public AgendarCita getAgendarCita() {
+        return agendarCita;
     }
 
-    public void setRegistroCitaFrame(AgendarCita registroCitaFrame) {
-        this.registroCitaFrame = registroCitaFrame;
+    public void setAgendarCita(AgendarCita agendarCita) {
+        this.agendarCita = agendarCita;
     }
     
     

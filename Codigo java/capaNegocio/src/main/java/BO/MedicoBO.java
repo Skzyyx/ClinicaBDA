@@ -6,10 +6,13 @@ package BO;
 
 import DAO.IMedicoDAO;
 import DAO.MedicoDAO;
+import DTO.HorarioViejoDTO;
 import DTO.MedicoViejoDTO;
 import Exception.NegocioException;
+import Mapper.HorarioMapper;
 import Mapper.MedicoMapper;
 import conexion.IConexion;
+import entidades.Horario;
 import entidades.Medico;
 import excepciones.PersistenciaException;
 import java.util.List;
@@ -27,6 +30,7 @@ public class MedicoBO {
     private final IMedicoDAO medicoDAO;
     
     private final MedicoMapper medicoMapper = new MedicoMapper();
+    private final HorarioMapper horarioMapper = new HorarioMapper();
 
     public MedicoBO(IConexion conexion) {
         this.medicoDAO = new MedicoDAO(conexion);
@@ -54,4 +58,18 @@ public class MedicoBO {
         }
     }
     
+    public List<HorarioViejoDTO> obtenerHorariosMedico(String id) throws NegocioException {
+        
+        try {
+        
+            List<Horario> horarios = medicoDAO.obtenerHorariosMedicoPorID(Integer.parseInt(id));
+            
+            List<HorarioViejoDTO> horariosViejoDTO = horarioMapper.toViejoDTO(horarios);
+            
+            return horariosViejoDTO;
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(MedicoBO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new NegocioException("No se pudo obtener los horarios.");
+        }
+    }
 }

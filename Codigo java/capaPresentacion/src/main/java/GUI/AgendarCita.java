@@ -5,6 +5,7 @@
 package GUI;
 
 import BO.MedicoBO;
+import DTO.HorarioViejoDTO;
 import DTO.MedicoViejoDTO;
 import Exception.NegocioException;
 import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
@@ -26,18 +27,38 @@ import javax.swing.table.DefaultTableModel;
  * @author skyro
  */
 public class AgendarCita extends javax.swing.JFrame {
+    
+    private static AgendarCita instance;
 
-    MedicoBO medicoBO = DependencyInjector.crearMedicoBO();
+    private MedicoBO medicoBO = DependencyInjector.crearMedicoBO();
+    
+    private PrincipalPaciente principalPaciente;
     /**
      * Creates new form RegistrarCita
      */
     public AgendarCita() {
         initComponents();
+        setLocationRelativeTo(null);
         cargarListener();
         cargarMedicos();
         cargarEspecialidades();
     }
 
+    public static AgendarCita getInstance() throws NegocioException {
+        if (instance == null) {
+            instance = new AgendarCita();
+        }
+        return instance;
+    }
+
+    public PrincipalPaciente getPrincipalPaciente() {
+        return principalPaciente;
+    }
+
+    public void setPrincipalPaciente(PrincipalPaciente principalPaciente) {
+        this.principalPaciente = principalPaciente;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -260,7 +281,14 @@ public class AgendarCita extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        try {
+            PrincipalPaciente principalPaciente = PrincipalPaciente.getInstance();
+            principalPaciente.setAgendarCita(this);
+            principalPaciente.setVisible(true);
+            this.setVisible(false);
+        } catch (NegocioException ex) {
+            Logger.getLogger(AgendarCita.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -378,7 +406,22 @@ public class AgendarCita extends javax.swing.JFrame {
         }
 
             private void generarHorariosCitas(int id) {
-                //medicoBO.get
+                DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
+                modelo.setRowCount(0);
+                try {
+                    List<HorarioViejoDTO> horarios = medicoBO.obtenerHorariosMedico(String.valueOf(id));
+
+                    for (HorarioViejoDTO horario : horarios) {
+
+                        modelo.addRow(new Object[]{
+                            datePicker1.getDate(),
+                            horario.getHoraEntrada(),
+                            horario.getHoraSalida()
+                        });
+                    }
+                } catch (NegocioException ex) {
+                    JOptionPane.showMessageDialog(AgendarCita.this, "Error al cargar medicos: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
     });
     }

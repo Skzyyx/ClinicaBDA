@@ -12,7 +12,7 @@ import entidades.Usuario;
  */
 public class MedicoViejoDTO {
     
-    private int idMedico;
+    private String idMedico;
     private String nombre;
     private String apellidoPaterno;
     private String apellidoMaterno;
@@ -24,7 +24,7 @@ public class MedicoViejoDTO {
     public MedicoViejoDTO() {
     }
 
-    public MedicoViejoDTO(int idMedico, String nombre, String apellidoPaterno, String apellidoMaterno, String especialidad, String cedula, String estado, Usuario usuario) {
+    public MedicoViejoDTO(String idMedico, String nombre, String apellidoPaterno, String apellidoMaterno, String especialidad, String cedula, String estado, Usuario usuario) {
         this.idMedico = idMedico;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
@@ -45,7 +45,7 @@ public class MedicoViejoDTO {
         this.usuario = usuario;
     }
 
-    public MedicoViejoDTO(int idMedico, String nombre, String apellidoPaterno, String apellidoMaterno, String especialidad, String cedula, String estado) {
+    public MedicoViejoDTO(String idMedico, String nombre, String apellidoPaterno, String apellidoMaterno, String especialidad, String cedula, String estado) {
         this.idMedico = idMedico;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
@@ -55,11 +55,11 @@ public class MedicoViejoDTO {
         this.estado = estado;
     }
 
-    public int getIdMedico() {
+    public String getIdMedico() {
         return idMedico;
     }
 
-    public void setIdMedico(int idMedico) {
+    public void setIdMedico(String idMedico) {
         this.idMedico = idMedico;
     }
 

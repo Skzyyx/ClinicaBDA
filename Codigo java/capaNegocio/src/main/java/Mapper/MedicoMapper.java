@@ -21,7 +21,7 @@ public class MedicoMapper {
         
         for (Medico medico : medicos) {
             medicosViejoDTO.add(new MedicoViejoDTO( 
-                    medico.getIdMedico(),
+                    String.valueOf(medico.getIdMedico()),
                     medico.getNombre(), 
                     medico.getApellidoPaterno(), 
                     medico.getApellidoMaterno(), 
@@ -50,7 +50,7 @@ public class MedicoMapper {
         if (medico == null) return null;
         
         return new MedicoViejoDTO(
-                medico.getIdMedico(),
+                String.valueOf(medico.getIdMedico()),
                 medico.getNombre(),
                 medico.getApellidoPaterno(),
                 medico.getApellidoPaterno(),
