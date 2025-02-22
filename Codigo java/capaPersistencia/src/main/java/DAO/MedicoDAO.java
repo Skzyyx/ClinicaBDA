@@ -9,7 +9,11 @@ import entidades.Medico;
 import excepciones.PersistenciaException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -95,6 +99,83 @@ public class MedicoDAO implements IMedicoDAO {
         } catch (SQLException ex) {
             Logger.getLogger(MedicoDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new PersistenciaException("No se pudo dar de baja al médico.");
+        }
+    }
+    
+    /**
+     * Obtiene una lista con todos los medicos activos
+     * 
+     * @return una lista con todos los medicos activos.
+     * @throws PersistenciaException Si ocurre un error durante la consulta.
+     */
+    @Override
+    public List<Medico> obtenerMedicos() throws PersistenciaException {
+        
+        // Se crea la lista a devolver
+        List<Medico> medicos = new ArrayList<>();
+        
+        // Sentencia SQL a ejecutar
+        String sentenciaSQL = "SELECT * FROM todosLosMedicosConEspecialidad";
+        
+        // Se crea la conexión y se prepara la sentencia
+        try (Connection con = conexion.crearConexion();
+                PreparedStatement ps = con.prepareStatement(sentenciaSQL)) {
+            
+            // Se ejecuta la consulta
+            ResultSet rs = ps.executeQuery();
+            
+            // Se llena la lista con los datos de la consulta
+            while (rs.next()) {
+                if (rs.getString("estado").equals("ACTIVO")) {
+                    medicos.add(new Medico(
+                        rs.getString("nombre"), 
+                        rs.getString("apellidoPaterno"), 
+                        rs.getString("apellidoMaterno"),
+                        rs.getString("especialidad"), 
+                        rs.getString("cedula"), "ACTIVO", null));
+                }
+            }
+            
+            // Se devuelve la lista
+            return medicos;
+        } catch (SQLException ex) {
+            Logger.getLogger(MedicoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PersistenciaException("No se pudieron obtener los medicos");
+        }
+    }
+
+    /**
+     * Obtiene una lista con todas las especialidades médicas
+     * 
+     * @return una lista con todos las especialidades médicas.
+     * @throws PersistenciaException Si ocurre un error durante la consulta.
+     */
+    @Override
+    public List<String> obtenerEspecialidades() throws PersistenciaException {
+        
+        // Se crea la lista a devolver
+        List<String> especialidades = new ArrayList<>();
+        
+        // Sentencia SQL a ejecutar
+        String sentenciaSQL = "SELECT * FROM todasLasEspecialidades";
+        
+        // Se crea la conexion y se prepara la consulta
+        try (Connection con = conexion.crearConexion();
+                PreparedStatement ps = con.prepareStatement(sentenciaSQL)) {
+            
+            // Se ejecuta la consulta
+            ResultSet rs = ps.executeQuery();
+            
+            // Se llena la lista con las especialidades
+            while (rs.next()){ 
+                especialidades.add(rs.getString("especialidad"));
+            }
+            
+            // Se devuelve la lista
+            return especialidades;
+        } catch (SQLException ex) {
+            Logger.getLogger(MedicoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PersistenciaException("No se pudieron obtener las especialidades");
         }
     }
 }

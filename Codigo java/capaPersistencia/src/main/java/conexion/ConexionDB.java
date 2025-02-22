@@ -28,7 +28,7 @@ public class ConexionDB implements IConexion {
     final String USER = "root";
     
     /** Contraseña para la autenticación en la base de datos. */
-    final String PASS = "94972Isl";
+    final String PASS = "itson";
     
     /**
      * Método crearConexion().

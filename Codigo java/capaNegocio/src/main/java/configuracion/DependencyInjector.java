@@ -4,6 +4,7 @@
  */
 package configuracion;
 
+import BO.MedicoBO;
 import BO.PacienteBO;
 import BO.UsuarioBO;
 import conexion.ConexionDB;
@@ -39,5 +40,12 @@ public class DependencyInjector {
         UsuarioBO usuarioBO = new UsuarioBO(conexion);
         
         return usuarioBO;
+    }
+    
+    public static MedicoBO crearMedicoBO() {
+        IConexion conexion = new ConexionDB();
+        MedicoBO medicoBO = new MedicoBO(conexion);
+        
+        return medicoBO;
     }
 }

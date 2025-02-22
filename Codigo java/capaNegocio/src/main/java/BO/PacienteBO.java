@@ -110,6 +110,16 @@ public class PacienteBO {
             throw new NegocioException("El teléfono ya se encuentra registrado.");
         }
         
+        // Validar que el numero de casa solo tiene dígitos
+        if (!pacienteNuevo.getDireccion().getNumero().matches("\\d+")) {
+            throw new NegocioException("El numero exterior debe ser un número.");
+        }
+        
+        // Validar que el codigo postal solo tiene dígitos
+        if (!pacienteNuevo.getDireccion().getCodigoPostal().matches("\\d{5}")) {
+            throw new NegocioException("El código postal debe ser un número de 5 digitos");
+        }
+        
         // Buscar si el paciente ya está registrado (email repetido)
         Paciente pacienteExiste = pacienteDAO.consultarPacientePorEmail(pacienteNuevo.getEmail());
         

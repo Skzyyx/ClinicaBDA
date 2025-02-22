@@ -6,6 +6,8 @@ package DAO;
 
 import entidades.Medico;
 import excepciones.PersistenciaException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Interfaz IMedicoDAO.
@@ -34,5 +36,10 @@ public interface IMedicoDAO {
      * @throws PersistenciaException Si ocurre un error durante la operación.
      */
     public boolean darBajaMedico(Medico medico) throws PersistenciaException;
+    
+    public List<Medico> obtenerMedicos() throws PersistenciaException;
+    
+    public List<String> obtenerEspecialidades() throws PersistenciaException;
+            
 }
 
