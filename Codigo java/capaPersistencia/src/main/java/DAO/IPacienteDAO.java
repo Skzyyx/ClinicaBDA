@@ -5,8 +5,10 @@
 package DAO;
 
 import DTO.PerfilDTO;
+import entidades.Cita;
 import entidades.Paciente;
 import excepciones.PersistenciaException;
+import java.util.List;
 
 /**
  * Interfaz IPacienteDAO.
@@ -63,4 +65,6 @@ public interface IPacienteDAO {
      * @throws PersistenciaException Si hubo un error al consultar los datos.
      */
     public boolean existeTelefonoPaciente(String telefono) throws PersistenciaException;
+    /*
+    public List<Cita> obtenerCitasActivasPaciente(String email);*/
 }

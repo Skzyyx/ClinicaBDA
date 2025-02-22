@@ -279,20 +279,36 @@ END $$
 
 DELIMITER ;
 
--- Procedimiento almacenado obtenerCitasActivasPorId(id)
+-- Procedimiento almacenado obtenerCitasActivasPaciente
 -- Obtiene todas las citas del paciente que tienen como estado 'ACTIVA'
 DELIMITER $$
-
-CREATE PROCEDURE obtenerCitasActivasPorId(
-	IN id INT)
+CREATE PROCEDURE obtenerCitasActivasPaciente(
+	IN emailPaciente VARCHAR(100))
 BEGIN
-	SELECT * 
-    FROM citas
-    WHERE idPaciente = id AND estado = 'ACTIVA';
+	SELECT 
+		c.idCita,
+        c.folio,
+        c.tipo,
+        c.estado AS estado_cita,
+        c.idPaciente,
+        m.idMedico,
+        m.nombre,
+        m.apellidoPaterno,
+        m.apellidoMaterno,
+        m.especialidad,
+        m.cedula,
+        m.estado AS estado_medico
+    FROM citas AS c
+	INNER JOIN medicos AS m
+		ON c.idMedico = m.idMedico
+    WHERE emailPaciente = (SELECT email FROM pacientes WHERE email = emailPaciente)
+    AND c.estado = 'ACTIVA';
 END $$
 
 DELIMITER ;
 
+-- Procedimiento almacena citasActivasPaciente
+-- 
 -- Pruebas
 CALL registrarPaciente(
 	"Ana",
@@ -326,3 +342,5 @@ CALL editarDatosPaciente(
     "85120",
     "$2a$12$Js89fysKM.g1LnzAib/dQO6uNoyVnwLpeIwlzmfceYo2bDHKGfALi"
 );
+
+CALL obtenerCitasActivasPaciente("maria.gomez@example.com");

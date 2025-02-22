@@ -107,7 +107,7 @@ public class UsuarioBO {
             // Si el usuario y la contraseña coinciden
             if (usuarioConsultado.getUsuario().equals(sesion.getUsuario()) && contraseniaValida.verified) {
                 // Guardarlo en la sesión
-                SessionManager.getInstance().iniciarSesion(usuarioConsultado.getUsuario(), usuarioConsultado.getContrasenia());
+                SessionManager.getInstance().iniciarSesion(usuarioConsultado.getUsuario(), usuarioConsultado.getRol());
                 return true;
             // Si no coinciden
             } else {

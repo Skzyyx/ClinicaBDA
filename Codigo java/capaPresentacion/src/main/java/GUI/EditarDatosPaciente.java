@@ -19,44 +19,35 @@ import sesion.SessionManager;
  *
  * @author j_ama
  */
-public class VerPerfilPaciente extends javax.swing.JFrame {
+public class EditarDatosPaciente extends javax.swing.JFrame {
     private PacienteBO pacienteBO = DependencyInjector.crearPacienteBO();
-    private static VerPerfilPaciente instance;
-    private PrincipalPaciente principalPacienteFrame;
-    private EditarDatosPaciente editarDatosFrame;
+    private static EditarDatosPaciente instance;
+    private VerPerfilPaciente verPerfilPacienteFrame;
     
     /**
      * Creates new form InicioDeSesion
      */
-    public VerPerfilPaciente() throws NegocioException {
+    public EditarDatosPaciente() throws NegocioException {
         initComponents();
         setLocationRelativeTo(null);
         setResizable(false);
-        setTitle("Paciente - Ver perfil");
+        setTitle("Paciente - Editar datos");
         mostrarPerfil();
     }
     
-    public static VerPerfilPaciente getInstance() throws NegocioException {
+    public static EditarDatosPaciente getInstance() throws NegocioException {
          if (instance == null) {
-            instance = new VerPerfilPaciente();
+            instance = new EditarDatosPaciente();
         }
         return instance;
     }
 
-    public PrincipalPaciente getPrincipalPacienteFrame() {
-        return principalPacienteFrame;
+    public VerPerfilPaciente getVerPerfilPacienteFrame() {
+        return verPerfilPacienteFrame;
     }
 
-    public void setPrincipalPacienteFrame(PrincipalPaciente principalPacienteFrame) {
-        this.principalPacienteFrame = principalPacienteFrame;
-    }
-
-    public EditarDatosPaciente getEditarDatosFrame() {
-        return editarDatosFrame;
-    }
-
-    public void setEditarDatosFrame(EditarDatosPaciente editarDatosFrame) {
-        this.editarDatosFrame = editarDatosFrame;
+    public void setVerPerfilPacienteFrame(VerPerfilPaciente verPerfilPacienteFrame) {
+        this.verPerfilPacienteFrame = verPerfilPacienteFrame;
     }
 
     /**
@@ -71,8 +62,8 @@ public class VerPerfilPaciente extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        btnEditarDatos = new javax.swing.JButton();
-        btnVolver = new javax.swing.JButton();
+        btnAgendarCita = new javax.swing.JButton();
+        btnCancelarCita = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         lbNombre7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -102,25 +93,25 @@ public class VerPerfilPaciente extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI Semibold", 1, 36)); // NOI18N
         jLabel2.setText("Mi perfil");
 
-        btnEditarDatos.setBackground(new java.awt.Color(0, 0, 0));
-        btnEditarDatos.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
-        btnEditarDatos.setForeground(new java.awt.Color(255, 255, 255));
-        btnEditarDatos.setText("Editar datos");
-        btnEditarDatos.setPreferredSize(new java.awt.Dimension(150, 30));
-        btnEditarDatos.addActionListener(new java.awt.event.ActionListener() {
+        btnAgendarCita.setBackground(new java.awt.Color(0, 0, 0));
+        btnAgendarCita.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
+        btnAgendarCita.setForeground(new java.awt.Color(255, 255, 255));
+        btnAgendarCita.setText("Editar datos");
+        btnAgendarCita.setPreferredSize(new java.awt.Dimension(150, 30));
+        btnAgendarCita.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarDatosActionPerformed(evt);
+                btnAgendarCitaActionPerformed(evt);
             }
         });
 
-        btnVolver.setBackground(new java.awt.Color(0, 0, 0));
-        btnVolver.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
-        btnVolver.setForeground(new java.awt.Color(255, 255, 255));
-        btnVolver.setText("Volver");
-        btnVolver.setPreferredSize(new java.awt.Dimension(150, 30));
-        btnVolver.addActionListener(new java.awt.event.ActionListener() {
+        btnCancelarCita.setBackground(new java.awt.Color(0, 0, 0));
+        btnCancelarCita.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
+        btnCancelarCita.setForeground(new java.awt.Color(255, 255, 255));
+        btnCancelarCita.setText("Volver");
+        btnCancelarCita.setPreferredSize(new java.awt.Dimension(150, 30));
+        btnCancelarCita.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnVolverActionPerformed(evt);
+                btnCancelarCitaActionPerformed(evt);
             }
         });
 
@@ -216,8 +207,8 @@ public class VerPerfilPaciente extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnEditarDatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnAgendarCita, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCancelarCita, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(53, 53, 53))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(332, 332, 332)
@@ -230,9 +221,9 @@ public class VerPerfilPaciente extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(316, 316, 316)
-                        .addComponent(btnEditarDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnAgendarCita, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(26, 26, 26)
-                        .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnCancelarCita, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(65, 65, 65)
                         .addComponent(jLabel2)
@@ -257,21 +248,17 @@ public class VerPerfilPaciente extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+    private void btnCancelarCitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarCitaActionPerformed
         try {
-            volver();
+            guardar();
         } catch (NegocioException ex) {
-            Logger.getLogger(VerPerfilPaciente.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EditarDatosPaciente.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_btnVolverActionPerformed
+    }//GEN-LAST:event_btnCancelarCitaActionPerformed
 
-    private void btnEditarDatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarDatosActionPerformed
-        try {
-            editarDatos();
-        } catch (NegocioException ex) {
-            Logger.getLogger(VerPerfilPaciente.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_btnEditarDatosActionPerformed
+    private void btnAgendarCitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgendarCitaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAgendarCitaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -290,14 +277,18 @@ public class VerPerfilPaciente extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VerPerfilPaciente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditarDatosPaciente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VerPerfilPaciente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditarDatosPaciente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VerPerfilPaciente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditarDatosPaciente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VerPerfilPaciente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditarDatosPaciente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -307,17 +298,17 @@ public class VerPerfilPaciente extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new VerPerfilPaciente().setVisible(true);
+                    new EditarDatosPaciente().setVisible(true);
                 } catch (NegocioException ex) {
-                    Logger.getLogger(VerPerfilPaciente.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(EditarDatosPaciente.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnEditarDatos;
-    private javax.swing.JButton btnVolver;
+    private javax.swing.JButton btnAgendarCita;
+    private javax.swing.JButton btnCancelarCita;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
@@ -340,9 +331,6 @@ public class VerPerfilPaciente extends javax.swing.JFrame {
     private javax.swing.JLabel lbTelefono;
     // End of variables declaration//GEN-END:variables
     
-    /**
-     * Obtiene los datos de perfil del paciente y los muestra.
-     */
     private void mostrarPerfil() {
         try {
             PerfilViejoDTO perfil = pacienteBO.obtenerPerfilPaciente(SessionManager.getInstance().getUser());
@@ -360,29 +348,15 @@ public class VerPerfilPaciente extends javax.swing.JFrame {
                 lbEdad.setText(String.valueOf(perfil.getEdad()));
             }
         } catch (NegocioException | PersistenciaException ex) {
-            Logger.getLogger(VerPerfilPaciente.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EditarDatosPaciente.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    /**
-     * Envía a pestaña de editar datos
-     * @throws NegocioException Si hubo un error al cambiar de pestaña.
-     */
-    private void editarDatos() throws NegocioException {
-        EditarDatosPaciente editarDatosPaciente = EditarDatosPaciente.getInstance();
-        editarDatosPaciente.setVerPerfilPacienteFrame(this);
-        editarDatosPaciente.setVisible(true);
+    private void guardar() throws NegocioException {
+        VerPerfilPaciente verPerfilPaciente = VerPerfilPaciente.getInstance();
+        verPerfilPaciente.setEditarDatosFrame(this);
+        verPerfilPaciente.setVisible(true);
         this.setVisible(false);
     }
-    
-    /**
-     * Envía a pestaña de menú principal de paciente
-     * @throws NegocioException Si hubo un error al cambiar de pestaña.
-     */
-    private void volver() throws NegocioException {
-        PrincipalPaciente principalPaciente = PrincipalPaciente.getInstance();
-        principalPaciente.setVerPerfilPacienteFrame(this);
-        principalPaciente.setVisible(true);
-        this.setVisible(false);
-    }
+
 }

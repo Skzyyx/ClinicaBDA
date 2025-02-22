@@ -6,7 +6,9 @@ package DAO;
 
 import DTO.PerfilDTO;
 import conexion.IConexion;
+import entidades.Cita;
 import entidades.Direccion;
+import entidades.Medico;
 import entidades.Paciente;
 import entidades.Usuario;
 import excepciones.PersistenciaException;
@@ -15,6 +17,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,6 +34,8 @@ public class PacienteDAO implements IPacienteDAO {
     
     /** Conexión a utilizar */
     IConexion conexion;
+    
+    MedicoDAO medicoDAO = new MedicoDAO(conexion);
     
     /**
      * Constructor que inicializa todos los atributos de la clase. 
@@ -280,4 +285,39 @@ public class PacienteDAO implements IPacienteDAO {
             throw new PersistenciaException("Error al consultar teléfono: " + e.getMessage());
         }
     }
+    
+    /*
+    @Override
+    public List<Cita> obtenerCitasActivasPaciente(String email) {
+        String sentenciaSQL = "CALL obtenerCitasActivasPaciente(?)";
+        
+        // Intenta la conexión
+        try (Connection con = conexion.crearConexion();
+             CallableStatement cb = con.prepareCall(sentenciaSQL)) {
+            
+            // Se setea el valor del id a buscar
+            cb.setString(1, email);
+            
+            // Intenta la consulta
+            try (ResultSet rs = cb.executeQuery()) { 
+                // Si se encontró registro
+                while (rs.next()) {
+                    Paciente paciente = consultarPacientePorEmail(email);
+                    
+                    Medico medico = medicoDAO.
+                    Cita cita = new Cita(
+                        rs.getInt("idCita"),
+                        rs.getTimestamp("fechaHoraInicio"),
+                        rs.getString("estado"),
+                        rs.getString("tipo"),
+                        paciente,
+                        medico
+                    );
+                }
+            }
+        // Si ocurre un error
+        } catch (Exception e) {
+            throw new PersistenciaException("Error al consultar paciente: " + e.getMessage());
+        }
+    }*/
 }

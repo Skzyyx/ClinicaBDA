@@ -21,6 +21,10 @@ import sesion.SessionManager;
 public class PrincipalPaciente extends javax.swing.JFrame {
     private PacienteBO pacienteBO = DependencyInjector.crearPacienteBO();
     
+    private static PrincipalPaciente instance;
+    
+    private VerPerfilPaciente verPerfilPacienteFrame;
+    
     /**
      * Creates new form InicioDeSesion
      */
@@ -30,6 +34,21 @@ public class PrincipalPaciente extends javax.swing.JFrame {
         setResizable(false);
         setTitle("Paciente - Menú principal");
         mostrarNombrePaciente();
+    }
+    
+    public static PrincipalPaciente getInstance() throws NegocioException {
+        if (instance == null) {
+            instance = new PrincipalPaciente();
+        }
+        return instance;
+    }
+
+    public VerPerfilPaciente getVerPerfilPacienteFrame() {
+        return verPerfilPacienteFrame;
+    }
+
+    public void setVerPerfilPacienteFrame(VerPerfilPaciente verPerfilPacienteFrame) {
+        this.verPerfilPacienteFrame = verPerfilPacienteFrame;
     }
 
     /**
@@ -63,11 +82,11 @@ public class PrincipalPaciente extends javax.swing.JFrame {
         jPanel1.setMaximumSize(new java.awt.Dimension(800, 600));
         jPanel1.setPreferredSize(new java.awt.Dimension(800, 600));
 
-        jLabel2.setFont(new java.awt.Font("Montserrat", 0, 36)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Segoe UI Semibold", 1, 36)); // NOI18N
         jLabel2.setText("Menú principal");
 
         btnAgendarCita.setBackground(new java.awt.Color(0, 0, 0));
-        btnAgendarCita.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
+        btnAgendarCita.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         btnAgendarCita.setForeground(new java.awt.Color(255, 255, 255));
         btnAgendarCita.setText("Agendar cita");
         btnAgendarCita.setPreferredSize(new java.awt.Dimension(150, 30));
@@ -78,7 +97,7 @@ public class PrincipalPaciente extends javax.swing.JFrame {
         });
 
         btnCancelarCita.setBackground(new java.awt.Color(0, 0, 0));
-        btnCancelarCita.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
+        btnCancelarCita.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         btnCancelarCita.setForeground(new java.awt.Color(255, 255, 255));
         btnCancelarCita.setText("Cancelar cita");
         btnCancelarCita.setPreferredSize(new java.awt.Dimension(150, 30));
@@ -101,7 +120,7 @@ public class PrincipalPaciente extends javax.swing.JFrame {
 
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        lbNombre.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
+        lbNombre.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         lbNombre.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jPanel2.add(lbNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, 220, 30));
 
@@ -110,7 +129,7 @@ public class PrincipalPaciente extends javax.swing.JFrame {
         jPanel2.add(iconPaciente, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 40, 90, 90));
 
         btnVerPerfil.setBackground(new java.awt.Color(0, 0, 0));
-        btnVerPerfil.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
+        btnVerPerfil.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         btnVerPerfil.setForeground(new java.awt.Color(255, 255, 255));
         btnVerPerfil.setText("Ver perfil");
         btnVerPerfil.setPreferredSize(new java.awt.Dimension(150, 30));
@@ -125,7 +144,7 @@ public class PrincipalPaciente extends javax.swing.JFrame {
         jPanel2.add(fondoCredencial, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         btnVerHistorial.setBackground(new java.awt.Color(0, 0, 0));
-        btnVerHistorial.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
+        btnVerHistorial.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         btnVerHistorial.setForeground(new java.awt.Color(255, 255, 255));
         btnVerHistorial.setText("Ver historial");
         btnVerHistorial.setPreferredSize(new java.awt.Dimension(150, 30));
@@ -136,7 +155,7 @@ public class PrincipalPaciente extends javax.swing.JFrame {
         });
 
         btnCerrarSesion.setBackground(new java.awt.Color(0, 0, 0));
-        btnCerrarSesion.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
+        btnCerrarSesion.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         btnCerrarSesion.setForeground(new java.awt.Color(255, 255, 255));
         btnCerrarSesion.setText("Cerrar sesión");
         btnCerrarSesion.setPreferredSize(new java.awt.Dimension(150, 30));
@@ -225,7 +244,11 @@ public class PrincipalPaciente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnHistorialActionPerformed
 
     private void btnVerPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerPerfilActionPerformed
-        // TODO add your handling code here:
+        try {
+            verPerfil();
+        } catch (NegocioException ex) {
+            Logger.getLogger(PrincipalPaciente.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnVerPerfilActionPerformed
 
     private void btnVerHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerHistorialActionPerformed
@@ -296,11 +319,18 @@ public class PrincipalPaciente extends javax.swing.JFrame {
         PacienteViejoDTO paciente = pacienteBO.obtenerPacientePorEmail(SessionManager.getInstance().getUser());
         
         if (paciente != null) {
-            lbNombre.setText(paciente.getNombre());
+            lbNombre.setText(paciente.getNombre() + " " + paciente.getApellidoPaterno());
         } else {
             JOptionPane.showMessageDialog(this, "Ocurrió un error interno. Se ha cerrado la sesión.", "Error", JOptionPane.ERROR_MESSAGE);
             cerrarSesion();
         }
+    }
+    
+    private void verPerfil() throws NegocioException {
+        VerPerfilPaciente verPerfil = VerPerfilPaciente.getInstance();
+        verPerfil.setPrincipalPacienteFrame(this);
+        verPerfil.setVisible(true);
+        this.setVisible(false);
     }
     
     private void cerrarSesion() {

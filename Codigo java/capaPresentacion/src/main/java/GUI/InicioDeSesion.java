@@ -204,11 +204,7 @@ public class InicioDeSesion extends javax.swing.JFrame {
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
 
     private void btnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarseActionPerformed
-        // Obtener la instancia única del formulario de registro
-        RegistrarPacienteForm registro = RegistrarPacienteForm.getInstance();
-        registro.setInicioSesionFrame(this);
-        registro.setVisible(true);
-        this.setVisible(false);
+        registrarPaciente();
     }//GEN-LAST:event_btnRegistrarseActionPerformed
 
     private void txtContraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtContraActionPerformed
@@ -311,7 +307,15 @@ public class InicioDeSesion extends javax.swing.JFrame {
         } catch (NegocioException ex) {
             JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
         }  
-    }    
+    }  
+    
+    private void registrarPaciente() {
+        // Obtener la instancia única del formulario de registro
+        RegistrarPacienteForm registro = RegistrarPacienteForm.getInstance();
+        registro.setInicioSesionFrame(this);
+        registro.setVisible(true);
+        this.setVisible(false);
+    }
 
     public RegistrarPacienteForm getRegistroPascienteFrame() {
         return registroPascienteFrame;
