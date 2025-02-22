@@ -25,6 +25,7 @@ public class PrincipalMedico extends javax.swing.JFrame {
     private static PrincipalMedico instance;
     
     private InicioDeSesion iniciarSesionFrame;
+    private VerPerfilMedico perfilMedicoFrame;
     
     /**
      * Creates new form InicioDeSesion
@@ -51,6 +52,14 @@ public class PrincipalMedico extends javax.swing.JFrame {
 
     public void setIniciarSesionFrame(InicioDeSesion iniciarSesionFrame) {
         this.iniciarSesionFrame = iniciarSesionFrame;
+    }
+
+    public VerPerfilMedico getPerfilMedicoFrame() {
+        return perfilMedicoFrame;
+    }
+
+    public void setPerfilMedicoFrame(VerPerfilMedico perfilMedicoFrame) {
+        this.perfilMedicoFrame = perfilMedicoFrame;
     }
 
     /**
@@ -336,6 +345,10 @@ public class PrincipalMedico extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Ocurrió un error interno. Se ha cerrado la sesión", "Error", JOptionPane.ERROR_MESSAGE);
             cerrarSesion();
         }
+    }
+    
+    private void darseDeBaja() {
+        
     }
     
     /**

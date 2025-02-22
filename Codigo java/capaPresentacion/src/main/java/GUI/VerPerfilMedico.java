@@ -343,7 +343,7 @@ public class VerPerfilMedico extends javax.swing.JFrame {
      */
     private void volver() throws NegocioException {
         PrincipalMedico principalMedico = PrincipalMedico.getInstance();
-        principalMedico.setVerPerfilMedicoFrame(this);
+        principalMedico.setPerfilMedicoFrame(this);
         principalMedico.setVisible(true);
         this.setVisible(false);
     }
