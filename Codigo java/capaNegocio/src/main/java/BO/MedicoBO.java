@@ -72,4 +72,27 @@ public class MedicoBO {
             throw new NegocioException("No se pudo obtener los horarios.");
         }
     }
+    
+    public MedicoViejoDTO obtenerMedicoPorCedula(String cedula) throws NegocioException {
+        // Validar que la cedula no sea null
+        if (cedula == null) {
+            throw new NegocioException("La cédula profesional no puede ser nula.");
+        }
+        
+        try {
+            // Validar si el medico existe
+            Medico medicoExiste = medicoDAO.obtenerMedico(cedula);
+
+            //Si el medico no existe
+            if (medicoExiste == null) {
+                throw new NegocioException("No existe médico con cédula profesional " + cedula + ".");
+            }
+            
+            // Mappear el médico y regresarlo
+            return medicoMapper.toViejoDTO(medicoExiste);
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(MedicoBO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new NegocioException("No se pudo obtener el registro del médico.");
+        }
+    }
 }
