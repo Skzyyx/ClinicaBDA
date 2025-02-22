@@ -131,11 +131,14 @@ public class MedicoDAO implements IMedicoDAO {
             while (rs.next()) {
                 if (rs.getString("estado").equals("ACTIVO")) {
                     medicos.add(new Medico(
+                            rs.getInt("idMedico"),
                         rs.getString("nombre"), 
                         rs.getString("apellidoPaterno"), 
                         rs.getString("apellidoMaterno"),
                         rs.getString("especialidad"), 
-                        rs.getString("cedula"), "ACTIVO", null));
+                        rs.getString("cedula"), 
+                            "ACTIVO",
+                            null));
                 }
             }
             

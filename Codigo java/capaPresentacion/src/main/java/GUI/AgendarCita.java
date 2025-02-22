@@ -15,7 +15,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.temporal.TemporalUnit;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComponent;
@@ -112,13 +115,12 @@ public class AgendarCita extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(2).setMinWidth(0);
-            jTable1.getColumnModel().getColumn(2).setPreferredWidth(0);
-            jTable1.getColumnModel().getColumn(2).setMaxWidth(0);
+            jTable1.getColumnModel().getColumn(2).setMinWidth(10);
+            jTable1.getColumnModel().getColumn(2).setPreferredWidth(10);
         }
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setText("Seleccione un médico:");
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -130,33 +132,33 @@ public class AgendarCita extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(jTable2);
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel3.setText("Fecha:");
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
         datePicker1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel4.setText("Especialidad:");
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
+        jButton1.setText("Atras");
         jButton1.setBackground(new java.awt.Color(44, 45, 45));
         jButton1.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Atras");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
+        jButton2.setText("Aceptar");
         jButton2.setBackground(new java.awt.Color(44, 45, 45));
         jButton2.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Aceptar");
 
+        jButton3.setText("Cita de Emergencia");
         jButton3.setBackground(new java.awt.Color(255, 102, 102));
         jButton3.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
-        jButton3.setText("Cita de Emergencia");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -380,49 +382,91 @@ public class AgendarCita extends javax.swing.JFrame {
 
     private void cargarListener() {
         datePicker1.addDateChangeListener(new DateChangeListener() {
-        @Override
-        public void dateChanged(DateChangeEvent dce) {
-            int filaSeleccionada = jTable1.getSelectedRow();
-    
-            if (filaSeleccionada != -1) {
-                // Obtener la fecha seleccionada
-                LocalDate fechaSeleccionada = datePicker1.getDate();
-                if (fechaSeleccionada != null) {
-                    // Si la fecha seleccionada es anterior a la fecha actual
-                    if (fechaSeleccionada.isBefore(LocalDate.now())) {
-                        datePicker1.closePopup();
-                        JOptionPane.showMessageDialog(AgendarCita.this, "Por favor, selecciona una fecha igual o mayor a la actual.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                        return;
+            @Override
+            public void dateChanged(DateChangeEvent dce) {
+                int filaSeleccionada = jTable1.getSelectedRow();
+
+                if (filaSeleccionada != -1) {
+                    // Obtener la fecha seleccionada
+                    LocalDate fechaSeleccionada = datePicker1.getDate();
+                    if (fechaSeleccionada != null) {
+                        // Si la fecha seleccionada es anterior a la fecha actual
+                        if (fechaSeleccionada.isBefore(LocalDate.now())) {
+                            datePicker1.closePopup();
+                            JOptionPane.showMessageDialog(AgendarCita.this, "Por favor, selecciona una fecha igual o mayor a la actual.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                            return;
+                        }
+
+                        // Convertir el valor de la tabla a Integer
+                        String idMedicoStr = jTable1.getValueAt(filaSeleccionada, 2).toString();
+                        try {
+                            int idMedico = Integer.parseInt(idMedicoStr);
+                            generarHorariosCitas(idMedico);
+                        } catch (NumberFormatException ex) {
+                            JOptionPane.showMessageDialog(AgendarCita.this, "Error: El ID del médico no es válido.", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
                     }
-                    generarHorariosCitas((int) jTable1.getValueAt(filaSeleccionada, 2));
+                } else {
+                    // Ocultar el panel del calendario si está abierto
+                    datePicker1.closePopup();
+
+                    // Mostrar el mensaje de advertencia
+                    JOptionPane.showMessageDialog(AgendarCita.this, "Por favor, selecciona un médico.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 }
-            } else {
-                // Ocultar el panel del calendario si está abierto
-                datePicker1.closePopup();
-                
-                // Mostrar el mensaje de advertencia
-                JOptionPane.showMessageDialog(AgendarCita.this, "Por favor, selecciona un médico.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             }
-        }
+        });
+    }
+                
 
             private void generarHorariosCitas(int id) {
                 DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
                 modelo.setRowCount(0);
+                
                 try {
+                    
+                    LocalDate fechaSeleccionada = datePicker1.getDate();
+                    if (fechaSeleccionada == null) return; // Si no hay fecha seleccionada, no hacer nada
+        
+                    // Obtener el día de la semana de la fecha seleccionada
+                    String diaSemanaSeleccionado = fechaSeleccionada.getDayOfWeek().toString();
+                    diaSemanaSeleccionado = diaSemanaSeleccionado.substring(0, 1) + diaSemanaSeleccionado.substring(1).toLowerCase();
+                    
+                    System.out.println(id);
                     List<HorarioViejoDTO> horarios = medicoBO.obtenerHorariosMedico(String.valueOf(id));
+                    System.out.println(horarios.toString());
 
                     for (HorarioViejoDTO horario : horarios) {
+                        System.out.println("a");
+                        // Verificar si el horario corresponde al día seleccionado
+                        if (horario.getDiaSemana().equalsIgnoreCase(diaSemanaSeleccionado)) {
+                            System.out.println("b");
+                            LocalTime horaInicio = horario.getHoraEntrada();
+                            LocalTime horaFin = horario.getHoraSalida();
 
-                        modelo.addRow(new Object[]{
-                            datePicker1.getDate(),
-                            horario.getHoraEntrada(),
-                            horario.getHoraSalida()
-                        });
+                            // Generar citas de 30 minutos dentro del horario del médico
+                            while (horaInicio.isBefore(horaFin)) {
+                                System.out.println("c");
+                                LocalTime horaCitaFin = horaInicio.plusMinutes(30);
+
+                                // Verificar que la cita no exceda el horario de salida
+                                if (horaCitaFin.isAfter(horaFin)) {
+                                    break;
+                                }
+
+                                // Agregar la cita a la tabla
+                                modelo.addRow(new Object[]{
+                                    fechaSeleccionada,
+                                    horaInicio,
+                                    horaCitaFin
+                                });
+
+                                // Avanzar 30 minutos para la próxima cita
+                                horaInicio = horaInicio.plusMinutes(30);
+                            }
+                        }
                     }
                 } catch (NegocioException ex) {
                     JOptionPane.showMessageDialog(AgendarCita.this, "Error al cargar medicos: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
-    });
-    }
 }
