@@ -198,6 +198,45 @@ public class PacienteDAO implements IPacienteDAO {
     }
     
     /**
+     * Edita los datos de un paciente, excepto la contraseña
+     * @param paciente Paciente para editar
+     * @return True si se editó el registro, false en caso contrario.
+     * @throws PersistenciaException Si hubo un error al intentar editar los datos.
+     */
+    @Override
+    public boolean editarDatosSinContraPaciente(Paciente paciente) throws PersistenciaException {
+        // Sentencia SQL
+        String sentenciaSQL = "CALL editarDatosSinContraPaciente(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        // Intentar la conexión
+        try (Connection con = conexion.crearConexion();
+             CallableStatement cb = con.prepareCall(sentenciaSQL)){
+            
+            // Settea el valor de los ? del paciente
+            cb.setString(1, paciente.getEmail());
+            cb.setString(2, paciente.getNombre());
+            cb.setString(3, paciente.getApellidoPaterno());
+            cb.setString(4, paciente.getApellidoMaterno());
+            cb.setObject(5, paciente.getFechaNacimiento());
+            cb.setString(6, paciente.getTelefono());
+            // Settea el valor de los ? de la dirección del paciente
+            cb.setString(7, paciente.getDireccion().getCalle());
+            cb.setString(8, paciente.getDireccion().getNumero());
+            cb.setString(9, paciente.getDireccion().getColonia());
+            cb.setString(10, paciente.getDireccion().getCodigoPostal());
+            
+            // Se ejecuta el procedimiento
+            cb.executeUpdate();
+            
+            // Si llega aquí, la actualización fue exitosa
+            return true;
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Error al editar paciente", e);
+            throw new PersistenciaException("Error al editar datos del paciente: " + e.getMessage());
+        }
+    }
+    
+    /**
      * Obtiene los datos que se muestran en el perfil de un paciente.
      * @param email Email del paciente a buscar.
      * @return Objeto paciente con los datos de perfil.

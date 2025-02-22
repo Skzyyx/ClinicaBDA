@@ -264,9 +264,7 @@ public class EditarDatosPaciente extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 870, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 6, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 870, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -380,6 +378,7 @@ public class EditarDatosPaciente extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void guardar() throws NegocioException, PersistenciaException {
+        // Obtener los valores de los campos de texto
         String user = SessionManager.getInstance().getUser();
         String rol = SessionManager.getInstance().getRol();
         String nombre = txtNombre.getText().trim();
@@ -394,7 +393,7 @@ public class EditarDatosPaciente extends javax.swing.JFrame {
         String contrasenia = new String(txtContra.getPassword());
         String confirmarContrasenia = new String(txtConfirmarContra.getPassword());
         
-        boolean validados = validarCampos(user, nombre, apellidoPaterno, fechaNacimiento, telefono, calle, numero, colonia, codigoPostal, contrasenia, confirmarContrasenia);
+        boolean validados = validarCampos(nombre, apellidoPaterno, apellidoMaterno, fechaNacimiento, telefono, calle, numero, colonia, codigoPostal, contrasenia, confirmarContrasenia);
         
         if (validados) {
             int confirmacion = JOptionPane.showConfirmDialog(this, "¿Estás seguro que deseas modificar tus datos?", "Mensaje de confirmación", JOptionPane.YES_NO_OPTION);
@@ -404,8 +403,17 @@ public class EditarDatosPaciente extends javax.swing.JFrame {
                     UsuarioNuevoDTO usuario = new UsuarioNuevoDTO(user, contrasenia, rol);
                     DireccionNuevoDTO direccion = new DireccionNuevoDTO(calle, numero, colonia, codigoPostal);
                     PacienteNuevoDTO paciente = new PacienteNuevoDTO(nombre, apellidoPaterno, apellidoMaterno, fechaNacimiento, user, telefono, usuario, direccion);
-                    boolean editado = pacienteBO.editarDatosPaciente(user, paciente);
-
+                    
+                    boolean editado;
+                    // Si no se va a editar la contraseña
+                    if (contrasenia.length() == 0 && confirmarContrasenia.length() == 0) {
+                        editado = pacienteBO.editarDatosSinContraPaciente(user, paciente);
+                    //Si sí se va a editar la contraseña
+                    } else {
+                        editado = pacienteBO.editarDatosPaciente(user, paciente);
+                    }
+                    
+                    // Si se editaron los registros
                     if (editado) {
                         JOptionPane.showMessageDialog(this, "Datos editados con éxito.");
                     } else {
@@ -423,36 +431,35 @@ public class EditarDatosPaciente extends javax.swing.JFrame {
         cargarDatos(user);
     }
     
-    private boolean validarCampos(String user, String nombre, String apellidoPaterno, LocalDate fechaNacimiento, String telefono, String calle, String numero, String colonia, String codigoPostal, String contrasenia, String confirmarContrasenia) throws NegocioException, PersistenciaException {
-        PacienteViejoDTO pacienteViejo = pacienteBO.obtenerPacientePorEmail(user);
-        
-        /**CHECAR ESTO, CÓMO HACERLE PARA Q NO MUESTRE CONTRASEÑA PERO LAS OBTENGA*/
-        /*if (contrasenia.length() == 0 && confirmarContrasenia.length() == 0) {
-            contrasenia = contrasenia;
-        }*/
-        
-        
-        if (nombre.isBlank() || apellidoPaterno.isBlank() ||
-                fechaNacimiento == null || telefono.isBlank() || calle.isBlank() ||
-                numero.isBlank() || colonia.isBlank() || codigoPostal.isBlank() ||
-                contrasenia.length() == 0 || confirmarContrasenia.length() == 0) {
-            JOptionPane.showMessageDialog(null, "Por favor ingrese todos los campos obligatorios.");
-            return false;
-        }
-
+    private boolean validarCampos(String nombre, String apellidoPaterno, String apellidoMaterno, LocalDate fechaNacimiento, String telefono, String calle, String numero, String colonia, String codigoPostal, String contrasenia, String confirmarContrasenia) throws NegocioException, PersistenciaException {
         // Si las contraseñas no coinciden
-        if (!contrasenia.equals(confirmarContrasenia)) {
+        if (contrasenia.length() != 0 && confirmarContrasenia.length() != 0 && !contrasenia.equals(confirmarContrasenia)) {
             JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden.");
             return false;
         }
         
-        String regex = "^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]+$";
+        // Si sí quiere cambiar la contraseña pero solo puso uno
+        if ((contrasenia.length() != 0 && confirmarContrasenia.length() == 0) || (contrasenia.length() == 0 && confirmarContrasenia.length() != 0)) {
+            JOptionPane.showMessageDialog(null, "Complete la contraseña.");
+            return false;
+        }
         
-        if (!txtNombre.getText().trim().matches(regex) || !txtPaterno.getText().trim().matches(regex) || !txtMaterno.getText().trim().matches(regex)) {
+        // Si mandó datos requeridos vacíos
+        if (nombre.isBlank() || apellidoPaterno.isBlank() ||
+                fechaNacimiento == null || telefono.isBlank() || calle.isBlank() ||
+                numero.isBlank() || colonia.isBlank() || codigoPostal.isBlank()) {
+            JOptionPane.showMessageDialog(null, "Por favor ingrese todos los campos obligatorios.");
+            return false;
+        }
+        
+        // Si puso números en el nombre o apellidos
+        String regex = "^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]+$";
+        if (!nombre.matches(regex) || !apellidoPaterno.matches(regex) || (!apellidoMaterno.isBlank() && !apellidoMaterno.matches(regex))) {
             JOptionPane.showMessageDialog(null, "El nombre y apellidos solo deben de contener letras.");
             return false;
         }
-
+        
+        //Si sí fue válido todo
         return true;
     }
     
@@ -483,5 +490,7 @@ public class EditarDatosPaciente extends javax.swing.JFrame {
         verPerfilPaciente.setEditarDatosFrame(this);
         verPerfilPaciente.setVisible(true);
         this.setVisible(false);
+        cargarDatos(SessionManager.getInstance().getUser());
+        verPerfilPaciente.mostrarPerfil();
     }
 }

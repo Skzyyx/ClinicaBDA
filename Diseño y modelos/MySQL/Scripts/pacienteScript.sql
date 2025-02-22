@@ -279,6 +279,83 @@ END $$
 
 DELIMITER ;
 
+-- Procedimiento almacenado editarDatosPaciente
+-- Actualiza los datos del paciente y su dirección, menos contraseña
+-- Solo es posible editar: 
+	-- nombre
+    -- apellidos
+    -- fecha de nacimiento
+    -- telefono
+    -- direccion
+DELIMITER $$
+CREATE PROCEDURE editarDatosSinContraPaciente(
+	IN emailPaciente VARCHAR(100),
+	IN nombrePaciente VARCHAR(50),
+    IN apellidoPaternoPaciente VARCHAR(50),
+    IN apellidoMaternoPaciente VARCHAR(50),
+    IN fechaNacimientoPaciente DATE,
+    IN telefonoPaciente VARCHAR(10),
+    IN callePaciente VARCHAR(100),
+    IN numeroCasa VARCHAR(5),
+    IN coloniaPaciente VARCHAR(100),
+    IN codigoPostalPaciente VARCHAR(5)
+)
+BEGIN
+	DECLARE id INT;
+    
+	-- Manejo de errores
+	DECLARE CONTINUE HANDLER FOR SQLEXCEPTION 
+    BEGIN
+		-- Guarda el ultimo mensaje de error originado
+		GET DIAGNOSTICS CONDITION 1 @errorMensaje = MESSAGE_TEXT;
+        
+        -- Deshace la transacción en caso de error
+        ROLLBACK;
+        -- Lanza error
+        SIGNAL SQLSTATE "45000" SET MESSAGE_TEXT = @errorMensaje;
+    END;
+    
+    -- Empezar transacción
+	START TRANSACTION;
+    -- Verificar si el paciente existe
+	IF NOT EXISTS (SELECT idPaciente FROM pacientes WHERE email = emailPaciente) THEN
+		-- Si no existe, lanza error
+		SIGNAL SQLSTATE "45000" SET MESSAGE_TEXT = "El paciente no existe";
+	ELSE
+		-- Si sí existe, obtiene su id
+		SET id = (SELECT idPaciente FROM pacientes WHERE email = emailPaciente);
+	END IF;
+    
+    -- Verificar si tiene dirección asociada
+    IF NOT EXISTS (SELECT idPaciente FROM direcciones WHERE idPaciente = id) THEN
+		-- Si no existe, lanza error
+		SIGNAL SQLSTATE "45000" SET MESSAGE_TEXT = "El paciente no cuenta con dirección asociada";
+	END IF;
+	
+    -- Actualizar los datos del paciente
+	UPDATE pacientes 
+	SET 
+		nombre = nombrePaciente, 
+		apellidoPaterno = apellidoPaternoPaciente, 
+		apellidoMaterno = apellidoMaternoPaciente,
+		fechaNacimiento = fechaNacimientoPaciente,
+		telefono = telefonoPaciente
+	WHERE email = emailPaciente;
+	
+    -- Actualizar la dirección del paciente
+	UPDATE direcciones
+	SET
+		calle = callePaciente,
+		numero = numeroCasa,
+		colonia = coloniaPaciente,
+		codigoPostal = codigoPostalPaciente
+	WHERE idPaciente = id;
+    
+    -- Confirmar con commit
+	COMMIT;
+END $$
+DELIMITER ;
+
 -- Procedimiento almacenado obtenerCitasActivasPaciente
 -- Obtiene todas las citas del paciente que tienen como estado 'ACTIVA'
 DELIMITER $$

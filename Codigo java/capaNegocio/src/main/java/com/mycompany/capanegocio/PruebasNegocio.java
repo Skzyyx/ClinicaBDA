@@ -32,12 +32,12 @@ public class PruebasNegocio {
     private static final UsuarioBO usuarioBO = new UsuarioBO(conexion);
             
     public static void main(String[] args) throws PersistenciaException, NegocioException {
-        //pruebaRegistrarPaciente();
+        pruebaRegistrarPaciente();
         //pruebaObtenerPerfilPaciente();
         //pruebaEditarDatosPaciente();
         //pruebaEncriptarContrasenia();
         //pruebaConsultarUsuario();
-        pruebaValidarSesion();
+        //pruebaValidarSesion();
     }
     
     /**
@@ -46,12 +46,12 @@ public class PruebasNegocio {
     private static void pruebaRegistrarPaciente() throws PersistenciaException {
         try {
             // Crear instancia de Usuario
-            UsuarioNuevoDTO usuario = new UsuarioNuevoDTO("anazzz@gmail.com", "contra", "PACIENTE");
+            UsuarioNuevoDTO usuario = new UsuarioNuevoDTO("emma@gmail.com", "hola", "PACIENTE");
 
             // Crear instancia de Dirección
             DireccionNuevoDTO direccion = new DireccionNuevoDTO("Calle Reforma", "102", "Centro", "85000");
 
-            PacienteNuevoDTO pacienteAGuardar = new PacienteNuevoDTO("Ana", "Casillas", "López", LocalDate.of(1992, 8, 25), "anazzz@gmail.com", "1245963874", usuario, direccion);
+            PacienteNuevoDTO pacienteAGuardar = new PacienteNuevoDTO("Emma", "Soto", "Soto", LocalDate.of(1992, 8, 25), "emma@gmail.com", "6444235871", usuario, direccion);
 
             boolean pacienteRegistrado = pacienteBO.registrarPaciente(pacienteAGuardar);
             
