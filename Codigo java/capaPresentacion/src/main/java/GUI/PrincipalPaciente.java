@@ -24,6 +24,7 @@ public class PrincipalPaciente extends javax.swing.JFrame {
     private static PrincipalPaciente instance;
     
     private VerPerfilPaciente verPerfilPacienteFrame;
+    private InicioDeSesion iniciarSesionFrame;
     private AgendarCita agendarCita;
     
     /**
@@ -51,6 +52,23 @@ public class PrincipalPaciente extends javax.swing.JFrame {
     public void setVerPerfilPacienteFrame(VerPerfilPaciente verPerfilPacienteFrame) {
         this.verPerfilPacienteFrame = verPerfilPacienteFrame;
     }
+    
+    public AgendarCita getAgendarCita() {
+        return agendarCita;
+    }
+
+    public void setAgendarCita(AgendarCita agendarCita) {
+        this.agendarCita = agendarCita;
+    }
+
+    public InicioDeSesion getIniciarSesionFrame() {
+        return iniciarSesionFrame;
+    }
+
+    public void setIniciarSesionFrame(InicioDeSesion iniciarSesionFrame) {
+        this.iniciarSesionFrame = iniciarSesionFrame;
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -345,14 +363,4 @@ public class PrincipalPaciente extends javax.swing.JFrame {
         SessionManager.getInstance().cerrarSesion();
         System.exit(0);
     }
-
-    public AgendarCita getAgendarCita() {
-        return agendarCita;
-    }
-
-    public void setAgendarCita(AgendarCita agendarCita) {
-        this.agendarCita = agendarCita;
-    }
-    
-    
 }

@@ -28,6 +28,8 @@ public class InicioDeSesion extends javax.swing.JFrame {
     private static InicioDeSesion instance;
     
     private RegistrarPacienteForm registroPascienteFrame;
+    private PrincipalPaciente principalPacienteFrame;
+    private PrincipalMedico principalMedicoForm;
     
     /**
      * Creates new form InicioDeSesion
@@ -44,6 +46,30 @@ public class InicioDeSesion extends javax.swing.JFrame {
             instance = new InicioDeSesion();
         }
         return instance;
+    }
+
+    public RegistrarPacienteForm getRegistroPascienteFrame() {
+        return registroPascienteFrame;
+    }
+
+    public void setRegistroPascienteFrame(RegistrarPacienteForm registroPascienteFrame) {
+        this.registroPascienteFrame = registroPascienteFrame;
+    }
+    
+    public PrincipalPaciente getPrincipalPacienteFrame() {
+        return principalPacienteFrame;
+    }
+
+    public void setPrincipalPacienteFrame(PrincipalPaciente principalPacienteFrame) {
+        this.principalPacienteFrame = principalPacienteFrame;
+    }
+
+    public PrincipalMedico getPrincipalMedicoForm() {
+        return principalMedicoForm;
+    }
+
+    public void setPrincipalMedicoForm(PrincipalMedico principalMedicoForm) {
+        this.principalMedicoForm = principalMedicoForm;
     }
 
     /**
@@ -282,20 +308,19 @@ public class InicioDeSesion extends javax.swing.JFrame {
             
             // Intentar autenticar las credenciales
             boolean autenticado = usuarioBO.autenticarSesion(sesion);
-
+              
+            System.out.println(SessionManager.getInstance().getUser());
+            System.out.println(SessionManager.getInstance().getRol());
+            
             // Si las credenciales son válidas
             if (autenticado) {
                 // Dependiendo el rol, dirige a ventanas diferentes
                 switch (SessionManager.getInstance().getRol()) {
                     case "PACIENTE" -> {
-                        //Abre la siguiente pestaña
-                        PrincipalPaciente menuPrincipalPaciente = new PrincipalPaciente();
-                        menuPrincipalPaciente.setVisible(true);
-                        //Cierra la pestaña actual
-                        this.dispose();
+                        principalPaciente();
                     }
                     case "MEDICO" -> {
-                        
+                        principalMedico();
                     }
                     // Si el rol no es válido
                     default -> JOptionPane.showMessageDialog(this, "Su rol registrado no es válido.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -316,16 +341,20 @@ public class InicioDeSesion extends javax.swing.JFrame {
         registro.setVisible(true);
         this.setVisible(false);
     }
-
-    public RegistrarPacienteForm getRegistroPascienteFrame() {
-        return registroPascienteFrame;
-    }
-
-    public void setRegistroPascienteFrame(RegistrarPacienteForm registroPascienteFrame) {
-        this.registroPascienteFrame = registroPascienteFrame;
+    
+    private void principalPaciente() throws NegocioException {
+        PrincipalPaciente principalPaciente = PrincipalPaciente.getInstance();
+        principalPaciente.setIniciarSesionFrame(this);
+        principalPaciente.setVisible(true);
+        this.setVisible(false);
     }
     
-    
+    private void principalMedico() throws NegocioException {
+        PrincipalMedico principalMedico = PrincipalMedico.getInstance();
+        principalMedico.setIniciarSesionFrame(this);
+        principalMedico.setVisible(true);
+        this.setVisible(false);
+    }
 }
 
 

@@ -32,10 +32,10 @@ public class PruebasNegocio {
     private static final UsuarioBO usuarioBO = new UsuarioBO(conexion);
             
     public static void main(String[] args) throws PersistenciaException, NegocioException {
-        pruebaRegistrarPaciente();
+        //pruebaRegistrarPaciente();
         //pruebaObtenerPerfilPaciente();
         //pruebaEditarDatosPaciente();
-        //pruebaEncriptarContrasenia();
+        pruebaEncriptarContrasenia();
         //pruebaConsultarUsuario();
         //pruebaValidarSesion();
     }
@@ -46,12 +46,12 @@ public class PruebasNegocio {
     private static void pruebaRegistrarPaciente() throws PersistenciaException {
         try {
             // Crear instancia de Usuario
-            UsuarioNuevoDTO usuario = new UsuarioNuevoDTO("emma@gmail.com", "hola", "PACIENTE");
+            UsuarioNuevoDTO usuario = new UsuarioNuevoDTO("eva@gmail.com", "hola", "PACIENTE");
 
             // Crear instancia de Dirección
             DireccionNuevoDTO direccion = new DireccionNuevoDTO("Calle Reforma", "102", "Centro", "85000");
 
-            PacienteNuevoDTO pacienteAGuardar = new PacienteNuevoDTO("Emma", "Soto", "Soto", LocalDate.of(1992, 8, 25), "emma@gmail.com", "6444235871", usuario, direccion);
+            PacienteNuevoDTO pacienteAGuardar = new PacienteNuevoDTO("Eva", "Luna", "Carrillo", LocalDate.of(1992, 8, 25), "eva@gmail.com", "6445781036", usuario, direccion);
 
             boolean pacienteRegistrado = pacienteBO.registrarPaciente(pacienteAGuardar);
             
@@ -122,7 +122,7 @@ public class PruebasNegocio {
      * Prueba de encriptar contraseña
      */
     private static void pruebaEncriptarContrasenia() {
-        String password = "1234";
+        String password = "pedro";
         String bcryptHashString = BCrypt.withDefaults().hashToString(12, password.toCharArray());
         System.out.println(bcryptHashString);
         

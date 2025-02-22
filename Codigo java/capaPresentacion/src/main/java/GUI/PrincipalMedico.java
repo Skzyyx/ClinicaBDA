@@ -4,10 +4,11 @@
  */
 package GUI;
 
-import BO.PacienteBO;
-import DTO.PacienteViejoDTO;
+import BO.MedicoBO;
+import DTO.MedicoViejoDTO;
 import Exception.NegocioException;
 import configuracion.DependencyInjector;
+import java.awt.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -19,7 +20,11 @@ import sesion.SessionManager;
  * @author j_ama
  */
 public class PrincipalMedico extends javax.swing.JFrame {
-    private PacienteBO pacienteBO = DependencyInjector.crearPacienteBO();
+    private MedicoBO medicoBO = DependencyInjector.crearMedicoBO();
+    
+    private static PrincipalMedico instance;
+    
+    private InicioDeSesion iniciarSesionFrame;
     
     /**
      * Creates new form InicioDeSesion
@@ -28,8 +33,24 @@ public class PrincipalMedico extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         setResizable(false);
-        setTitle("Paciente - Menú principal");
-        mostrarNombrePaciente();
+        setTitle("Médico - Menú principal");
+        mostrarDatosMedico();
+        cambiarBotonEstado();
+    }
+    
+    public static PrincipalMedico getInstance() throws NegocioException {
+         if (instance == null) {
+            instance = new PrincipalMedico();
+        }
+        return instance;
+    }
+
+    public InicioDeSesion getIniciarSesionFrame() {
+        return iniciarSesionFrame;
+    }
+
+    public void setIniciarSesionFrame(InicioDeSesion iniciarSesionFrame) {
+        this.iniciarSesionFrame = iniciarSesionFrame;
     }
 
     /**
@@ -45,15 +66,15 @@ public class PrincipalMedico extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         btnVerAgenda = new javax.swing.JButton();
-        btnHistorial = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
+        lbEstado = new javax.swing.JLabel();
         lbNombre = new javax.swing.JLabel();
-        iconPaciente = new javax.swing.JLabel();
+        iconMedico = new javax.swing.JLabel();
         btnVerPerfil = new javax.swing.JButton();
         fondoCredencial = new javax.swing.JLabel();
-        btnConsultarHistorial = new javax.swing.JButton();
+        btnHistorial = new javax.swing.JButton();
         btnCambiarEstado = new javax.swing.JButton();
-        btnCerrarSesion1 = new javax.swing.JButton();
+        btnCerrarSesion = new javax.swing.JButton();
 
         jLabel5.setText("jLabel5");
 
@@ -77,26 +98,19 @@ public class PrincipalMedico extends javax.swing.JFrame {
             }
         });
 
-        btnHistorial.setBackground(new java.awt.Color(0, 0, 0));
-        btnHistorial.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
-        btnHistorial.setForeground(new java.awt.Color(255, 255, 255));
-        btnHistorial.setText("Consultar historial");
-        btnHistorial.setPreferredSize(new java.awt.Dimension(150, 30));
-        btnHistorial.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHistorialActionPerformed(evt);
-            }
-        });
-
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        lbNombre.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
+        lbEstado.setFont(new java.awt.Font("Segoe UI Semilight", 1, 14)); // NOI18N
+        lbEstado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jPanel2.add(lbEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, 220, 30));
+
+        lbNombre.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         lbNombre.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jPanel2.add(lbNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, 220, 30));
 
-        iconPaciente.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
-        iconPaciente.setIcon(new ImageIcon(getClass().getResource("/iconPaciente.JPG")));
-        jPanel2.add(iconPaciente, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 40, 90, 90));
+        iconMedico.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
+        iconMedico.setIcon(new ImageIcon(getClass().getResource("/iconPaciente.JPG")));
+        jPanel2.add(iconMedico, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 40, 100, 90));
 
         btnVerPerfil.setBackground(new java.awt.Color(0, 0, 0));
         btnVerPerfil.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
@@ -111,16 +125,16 @@ public class PrincipalMedico extends javax.swing.JFrame {
         jPanel2.add(btnVerPerfil, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 210, 150, 58));
 
         fondoCredencial.setIcon(new ImageIcon(getClass().getResource("/fondoCredencial.JPG")));
-        jPanel2.add(fondoCredencial, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        jPanel2.add(fondoCredencial, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 240, 290));
 
-        btnConsultarHistorial.setBackground(new java.awt.Color(0, 0, 0));
-        btnConsultarHistorial.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
-        btnConsultarHistorial.setForeground(new java.awt.Color(255, 255, 255));
-        btnConsultarHistorial.setText("Consultar historial");
-        btnConsultarHistorial.setPreferredSize(new java.awt.Dimension(150, 30));
-        btnConsultarHistorial.addActionListener(new java.awt.event.ActionListener() {
+        btnHistorial.setBackground(new java.awt.Color(0, 0, 0));
+        btnHistorial.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
+        btnHistorial.setForeground(new java.awt.Color(255, 255, 255));
+        btnHistorial.setText("Consultar historial");
+        btnHistorial.setPreferredSize(new java.awt.Dimension(150, 30));
+        btnHistorial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnConsultarHistorialActionPerformed(evt);
+                btnHistorialActionPerformed(evt);
             }
         });
 
@@ -135,14 +149,14 @@ public class PrincipalMedico extends javax.swing.JFrame {
             }
         });
 
-        btnCerrarSesion1.setBackground(new java.awt.Color(0, 0, 0));
-        btnCerrarSesion1.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
-        btnCerrarSesion1.setForeground(new java.awt.Color(255, 255, 255));
-        btnCerrarSesion1.setText("Cerrar Sesion");
-        btnCerrarSesion1.setPreferredSize(new java.awt.Dimension(150, 30));
-        btnCerrarSesion1.addActionListener(new java.awt.event.ActionListener() {
+        btnCerrarSesion.setBackground(new java.awt.Color(0, 0, 0));
+        btnCerrarSesion.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
+        btnCerrarSesion.setForeground(new java.awt.Color(255, 255, 255));
+        btnCerrarSesion.setText("Cerrar sesión");
+        btnCerrarSesion.setPreferredSize(new java.awt.Dimension(150, 30));
+        btnCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCerrarSesion1ActionPerformed(evt);
+                btnCerrarSesionActionPerformed(evt);
             }
         });
 
@@ -155,20 +169,16 @@ public class PrincipalMedico extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addGap(253, 253, 253))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(245, 245, 245)
-                .addComponent(btnHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(99, 347, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(106, 106, 106)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 143, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnConsultarHistorial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnHistorial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnCambiarEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(btnVerAgenda, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnCerrarSesion1, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(100, 100, 100))
         );
         jPanel1Layout.setVerticalGroup(
@@ -181,15 +191,13 @@ public class PrincipalMedico extends javax.swing.JFrame {
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnVerAgenda, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnConsultarHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(btnCambiarEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnCerrarSesion1, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(517, 517, 517)
-                .addComponent(btnHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(94, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -214,25 +222,21 @@ public class PrincipalMedico extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnVerAgendaActionPerformed
 
-    private void btnHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHistorialActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnHistorialActionPerformed
-
     private void btnVerPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerPerfilActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnVerPerfilActionPerformed
 
-    private void btnConsultarHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarHistorialActionPerformed
+    private void btnHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHistorialActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnConsultarHistorialActionPerformed
+    }//GEN-LAST:event_btnHistorialActionPerformed
 
     private void btnCambiarEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiarEstadoActionPerformed
-        cerrarSesion();
+        
     }//GEN-LAST:event_btnCambiarEstadoActionPerformed
 
-    private void btnCerrarSesion1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesion1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnCerrarSesion1ActionPerformed
+    private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
+        cerrarSesion();
+    }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
     /**
      * @param args the command line arguments
@@ -278,31 +282,65 @@ public class PrincipalMedico extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCambiarEstado;
-    private javax.swing.JButton btnCerrarSesion1;
-    private javax.swing.JButton btnConsultarHistorial;
+    private javax.swing.JButton btnCerrarSesion;
     private javax.swing.JButton btnHistorial;
     private javax.swing.JButton btnVerAgenda;
     private javax.swing.JButton btnVerPerfil;
     private javax.swing.JLabel fondoCredencial;
-    private javax.swing.JLabel iconPaciente;
+    private javax.swing.JLabel iconMedico;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel lbEstado;
     private javax.swing.JLabel lbNombre;
     // End of variables declaration//GEN-END:variables
-
-    private void mostrarNombrePaciente() throws NegocioException {
-        PacienteViejoDTO paciente = pacienteBO.obtenerPacientePorEmail(SessionManager.getInstance().getUser());
+    
+    /**
+     * Muestra los datos del médico en la credencial
+     * @throws NegocioException 
+     */
+    private void mostrarDatosMedico() throws NegocioException {
+        MedicoViejoDTO medico = medicoBO.obtenerMedicoPorCedula(SessionManager.getInstance().getUser());
         
-        if (paciente != null) {
-            lbNombre.setText(paciente.getNombre());
+        System.out.println(medico.getEstado());
+        System.out.println(medico.getNombre());
+        System.out.println(medico.getCedula());
+        
+        if (medico != null) {
+            lbNombre.setText(medico.getNombre());
+            lbEstado.setText(medico.getEstado());
         } else {
             JOptionPane.showMessageDialog(this, "Ocurrió un error interno. Se ha cerrado la sesión.", "Error", JOptionPane.ERROR_MESSAGE);
             cerrarSesion();
         }
     }
     
+    private void cambiarBotonEstado() throws NegocioException {
+        MedicoViejoDTO medico = medicoBO.obtenerMedicoPorCedula(SessionManager.getInstance().getUser());
+        
+        if (medico != null && medico.getEstado() != null) {
+            switch (medico.getEstado().toUpperCase()) {
+                case "ACTIVO" -> {
+                    btnCambiarEstado.setBackground(Color.red);
+                    btnCambiarEstado.setText("Darse de baja temporal");
+                }
+                case "INACTIVO" -> {
+                    btnCambiarEstado.setBackground(Color.green);
+                    btnCambiarEstado.setText("Darse de alta");
+                }
+                default ->
+                    JOptionPane.showMessageDialog(this, "Tu estado no es válido. Intentalo de nuevo.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Ocurrió un error interno. Se ha cerrado la sesión", "Error", JOptionPane.ERROR_MESSAGE);
+            cerrarSesion();
+        }
+    }
+    
+    /**
+     * Cierra la sesión del usuario
+     */
     private void cerrarSesion() {
         SessionManager.getInstance().cerrarSesion();
         System.exit(0);

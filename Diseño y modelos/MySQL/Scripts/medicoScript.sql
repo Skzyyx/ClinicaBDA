@@ -20,7 +20,8 @@ BEGIN
         u.rol
 	FROM medicos AS m
     INNER JOIN usuarios AS u
-		ON m.idUsuario = u.idUsuario;
+		ON m.idUsuario = u.idUsuario
+	WHERE u.usuario = cedulaMedico;
 END $$
 DELIMITER ;
 

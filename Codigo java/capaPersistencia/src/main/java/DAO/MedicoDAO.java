@@ -188,7 +188,7 @@ public class MedicoDAO implements IMedicoDAO {
     @Override
     public Medico obtenerMedico(String cedula) throws PersistenciaException {
         Medico medico = null;
-        String sentenciaSQL = "CALL obtenerMedico(?)";
+        String sentenciaSQL = "CALL consultarMedico(?)";
         
         // Intenta la conexión
         try (Connection con = conexion.crearConexion();
@@ -206,8 +206,9 @@ public class MedicoDAO implements IMedicoDAO {
                     medico.setNombre(rs.getString("nombre"));
                     medico.setApellidoPaterno(rs.getString("apellidoPaterno"));
                     medico.setApellidoMaterno(rs.getString("apellidoMaterno"));
-                    medico.setEspecialidad("especialidad");
-                    medico.setCedula("cedula");
+                    medico.setEspecialidad(rs.getString("especialidad"));
+                    medico.setCedula(rs.getString("cedula"));
+                    medico.setEstado(rs.getString("estado"));
                     
                     Usuario usuario = new Usuario(
                             rs.getInt("idUsuario"),
