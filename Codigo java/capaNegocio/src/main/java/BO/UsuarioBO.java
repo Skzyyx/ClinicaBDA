@@ -16,6 +16,7 @@ import entidades.Usuario;
 import excepciones.PersistenciaException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import sesion.SessionManager;
 
 /**
  * Clase UsuarioBO.
@@ -103,8 +104,15 @@ public class UsuarioBO {
             // Compara la contraseña en texto (password.toCharArray()) con la contraseña que se obtuvo de la base (encriptada)
             BCrypt.Result contraseniaValida = BCrypt.verifyer().verify(sesion.getContrasenia().toCharArray(), usuarioConsultado.getContrasenia());
             
-            // Regresar si el usuario y la contraseña coinciden o no
-            return usuarioConsultado.getUsuario().equals(sesion.getUsuario()) && contraseniaValida.verified;
+            // Si el usuario y la contraseña coinciden
+            if (usuarioConsultado.getUsuario().equals(sesion.getUsuario()) && contraseniaValida.verified) {
+                // Guardarlo en la sesión
+                SessionManager.getInstance().iniciarSesion(usuarioConsultado.getUsuario(), usuarioConsultado.getContrasenia());
+                return true;
+            // Si no coinciden
+            } else {
+                return false;
+            }
         // En caso de que ocurra un error, lanza una excepcion   
         } catch (PersistenciaException e) {
             logger.log(Level.SEVERE, "Error al autenticar un usuario." , e);

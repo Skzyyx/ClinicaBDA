@@ -100,7 +100,7 @@ public class RegistrarPacienteForm extends javax.swing.JFrame {
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 50, 100, 20));
 
         jLabel3.setText("Confirmar contraseña");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 140, 110, -1));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 140, 130, -1));
 
         txtApellidoP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -200,8 +200,8 @@ public class RegistrarPacienteForm extends javax.swing.JFrame {
         });
         getContentPane().add(txtColonia, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 220, 190, -1));
 
-        jLabel13.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
         jLabel13.setText("Direccion");
+        jLabel13.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
         getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 50, 170, 20));
 
         txtCalle.addActionListener(new java.awt.event.ActionListener() {
@@ -387,9 +387,9 @@ public class RegistrarPacienteForm extends javax.swing.JFrame {
                 try {
                     boolean resultado = this.pacienteBO.registrarPaciente(pacienteNuevo);
                     if (resultado) {
-                        JOptionPane.showMessageDialog(this, "¡Tu registro fue completado");
+                        JOptionPane.showMessageDialog(this, "Se ha registrado con éxito.");
                     } else {
-                        JOptionPane.showMessageDialog(this, "Ocurrió un error inesperado y no pudimos regsitrarte. Intenta de nuevo.");
+                        JOptionPane.showMessageDialog(this, "Ocurrió un error inesperado y no pudimos registrarte. Intenta de nuevo.");
                     }
                 } catch (NegocioException ex) {
                     JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
