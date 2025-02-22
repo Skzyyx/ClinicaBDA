@@ -343,7 +343,7 @@ public class VerPerfilPaciente extends javax.swing.JFrame {
     /**
      * Obtiene los datos de perfil del paciente y los muestra.
      */
-    private void mostrarPerfil() {
+    public void mostrarPerfil() {
         try {
             PerfilViejoDTO perfil = pacienteBO.obtenerPerfilPaciente(SessionManager.getInstance().getUser());
             
@@ -373,6 +373,7 @@ public class VerPerfilPaciente extends javax.swing.JFrame {
         editarDatosPaciente.setVerPerfilPacienteFrame(this);
         editarDatosPaciente.setVisible(true);
         this.setVisible(false);
+        mostrarPerfil();
     }
     
     /**

@@ -67,4 +67,11 @@ public interface IPacienteDAO {
     public boolean existeTelefonoPaciente(String telefono) throws PersistenciaException;
     /*
     public List<Cita> obtenerCitasActivasPaciente(String email);*/
+    
+    /**
+     * Edita los datos de un paciente, excepto la contraseña
+     * @param paciente Paciente para editar
+     * @return True si se editó el registro, false en caso contrario.
+     */
+    public boolean editarDatosSinContraPaciente(Paciente paciente) throws PersistenciaException;
 }
