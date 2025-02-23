@@ -6,6 +6,7 @@ package GUI;
 
 import BO.MedicoBO;
 import BO.PacienteBO;
+import DTO.MedicoViejoDTO;
 import DTO.PerfilViejoDTO;
 import Exception.NegocioException;
 import configuracion.DependencyInjector;
@@ -21,10 +22,9 @@ import sesion.SessionManager;
  * @author j_ama
  */
 public class VerPerfilMedico extends javax.swing.JFrame {
-    private PacienteBO pacienteBO = DependencyInjector.crearPacienteBO();
+    private MedicoBO medicoBO = DependencyInjector.crearMedicoBO();
     private static VerPerfilMedico instance;
-    private PrincipalPaciente principalPacienteFrame;
-    private EditarDatosPaciente editarDatosFrame;
+    private PrincipalMedico principalMedicoFrame;
     
     /**
      * Creates new form InicioDeSesion
@@ -33,8 +33,8 @@ public class VerPerfilMedico extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         setResizable(false);
-        setTitle("Paciente - Ver perfil");
-//        mostrarPerfil();
+        setTitle("Médico - Ver perfil");
+        mostrarPerfil();
     }
     
     public static VerPerfilMedico getInstance() throws NegocioException {
@@ -44,20 +44,12 @@ public class VerPerfilMedico extends javax.swing.JFrame {
         return instance;
     }
 
-    public PrincipalPaciente getPrincipalPacienteFrame() {
-        return principalPacienteFrame;
+    public PrincipalMedico getPrincipalMedicoFrame() {
+        return principalMedicoFrame;
     }
 
-    public void setPrincipalPacienteFrame(PrincipalPaciente principalPacienteFrame) {
-        this.principalPacienteFrame = principalPacienteFrame;
-    }
-
-    public EditarDatosPaciente getEditarDatosFrame() {
-        return editarDatosFrame;
-    }
-
-    public void setEditarDatosFrame(EditarDatosPaciente editarDatosFrame) {
-        this.editarDatosFrame = editarDatosFrame;
+    public void setPrincipalMedicoFrame(PrincipalMedico principalMedicoFrame) {
+        this.principalMedicoFrame = principalMedicoFrame;
     }
 
     /**
@@ -80,12 +72,10 @@ public class VerPerfilMedico extends javax.swing.JFrame {
         lbNombre2 = new javax.swing.JLabel();
         lbNombre3 = new javax.swing.JLabel();
         lbNombre4 = new javax.swing.JLabel();
-        lbNombre5 = new javax.swing.JLabel();
         lbEspecialidad = new javax.swing.JLabel();
         lbNombre8 = new javax.swing.JLabel();
         lbNombre = new javax.swing.JLabel();
-        lbCedulaProfesional = new javax.swing.JLabel();
-        lbHorario = new javax.swing.JLabel();
+        lbCedula = new javax.swing.JLabel();
         lbEstado = new javax.swing.JLabel();
         lbFondo = new javax.swing.JLabel();
 
@@ -128,30 +118,24 @@ public class VerPerfilMedico extends javax.swing.JFrame {
         lbNombre2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lbNombre2.setText("Especialidad");
         lbNombre2.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        jPanel2.add(lbNombre2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 120, 110, 20));
+        jPanel2.add(lbNombre2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 130, 70, 20));
 
         lbNombre3.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
         lbNombre3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lbNombre3.setText("Estado");
         lbNombre3.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        jPanel2.add(lbNombre3, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 80, 50, -1));
+        jPanel2.add(lbNombre3, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 230, 50, -1));
 
         lbNombre4.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
         lbNombre4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lbNombre4.setText("Cedula Profesional");
+        lbNombre4.setText("Cédula profesional");
         lbNombre4.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        jPanel2.add(lbNombre4, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 160, 120, 20));
-
-        lbNombre5.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
-        lbNombre5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lbNombre5.setText("Horario de Trabajo");
-        lbNombre5.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        jPanel2.add(lbNombre5, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 200, 130, 20));
+        jPanel2.add(lbNombre4, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 180, 100, 20));
 
         lbEspecialidad.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
         lbEspecialidad.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lbEspecialidad.setVerifyInputWhenFocusTarget(false);
-        jPanel2.add(lbEspecialidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 130, 180, 30));
+        jPanel2.add(lbEspecialidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 140, 180, 30));
 
         lbNombre8.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
         lbNombre8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -163,20 +147,15 @@ public class VerPerfilMedico extends javax.swing.JFrame {
         lbNombre.setVerifyInputWhenFocusTarget(false);
         jPanel2.add(lbNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 90, 200, 30));
 
-        lbCedulaProfesional.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
-        lbCedulaProfesional.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lbCedulaProfesional.setVerifyInputWhenFocusTarget(false);
-        jPanel2.add(lbCedulaProfesional, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 170, 180, 30));
-
-        lbHorario.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
-        lbHorario.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lbHorario.setVerifyInputWhenFocusTarget(false);
-        jPanel2.add(lbHorario, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 210, 180, 30));
+        lbCedula.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        lbCedula.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbCedula.setVerifyInputWhenFocusTarget(false);
+        jPanel2.add(lbCedula, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 190, 180, 30));
 
         lbEstado.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
         lbEstado.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lbEstado.setVerifyInputWhenFocusTarget(false);
-        jPanel2.add(lbEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 90, 70, 30));
+        jPanel2.add(lbEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 240, 70, 30));
 
         lbFondo.setIcon(new ImageIcon(getClass().getResource("/fondoFicha.JPG")));
         lbFondo.setVerticalAlignment(javax.swing.SwingConstants.TOP);
@@ -299,16 +278,14 @@ public class VerPerfilMedico extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JLabel lbCedulaProfesional;
+    private javax.swing.JLabel lbCedula;
     private javax.swing.JLabel lbEspecialidad;
     private javax.swing.JLabel lbEstado;
     private javax.swing.JLabel lbFondo;
-    private javax.swing.JLabel lbHorario;
     private javax.swing.JLabel lbNombre;
     private javax.swing.JLabel lbNombre2;
     private javax.swing.JLabel lbNombre3;
     private javax.swing.JLabel lbNombre4;
-    private javax.swing.JLabel lbNombre5;
     private javax.swing.JLabel lbNombre8;
     private javax.swing.JLabel lbPerfil;
     // End of variables declaration//GEN-END:variables
@@ -316,26 +293,28 @@ public class VerPerfilMedico extends javax.swing.JFrame {
     /**
      * Obtiene los datos de perfil del medico y los muestra.
      */
-//    public void mostrarPerfil() {
-//        try {
-//            PerfilViejoDTO perfil = MedicoBO.obtenerPerfil(SessionManager.getInstance().getUser());
-//            
-//            if (perfil == null) {
-//                JOptionPane.showMessageDialog(this, "Ocurrió un error al mostrar perfil.", "Error", JOptionPane.ERROR_MESSAGE);
-//            }
-//            else {
-//                lbPerfil.setText(perfil.getNombre());
-//                lbNombre.setText(perfil.getNombre() + " " + perfil.getApellidoPaterno() + " " + perfil.getApellidoMaterno());
-//                lbEspecialidad.setText(perfil.getFechaNacimiento().toString());
-//                lbCedulaProfesional.setText(perfil.getTelefono());
-//                lbHorario.setText(perfil.getEmail());
-//                lbEstado.setText(String.valueOf(perfil.getEdad()));
-//            }
-//        } catch (NegocioException | PersistenciaException ex) {
-//            Logger.getLogger(VerPerfilMedico.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
-    
+    public void mostrarPerfil() {
+        try {
+            // Intenta obtener el perfil
+            MedicoViejoDTO medico = medicoBO.obtenerMedicoPorCedula(SessionManager.getInstance().getUser());
+            
+            // Si no se encontró perfil
+            if (medico == null) {
+                JOptionPane.showMessageDialog(this, "Ocurrió un error al mostrar perfil.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            // Si se encontró perfil
+            else {
+                // Mostrar los datos 
+                lbPerfil.setText(medico.getNombre());
+                lbNombre.setText(medico.getNombre() + " " + medico.getApellidoPaterno() + " " + medico.getApellidoMaterno());
+                lbEspecialidad.setText(medico.getEspecialidad());
+                lbCedula.setText(medico.getCedula());
+                lbEstado.setText(medico.getEstado());
+            }
+        } catch (NegocioException ex) {
+            Logger.getLogger(VerPerfilPaciente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
     /**
      * Envía a pestaña de menú principal de Medico
@@ -347,5 +326,4 @@ public class VerPerfilMedico extends javax.swing.JFrame {
         principalMedico.setVisible(true);
         this.setVisible(false);
     }
-    
 }

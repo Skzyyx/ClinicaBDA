@@ -93,11 +93,11 @@ public class PrincipalMedico extends javax.swing.JFrame {
         jPanel1.setMaximumSize(new java.awt.Dimension(800, 600));
         jPanel1.setPreferredSize(new java.awt.Dimension(800, 600));
 
-        jLabel2.setFont(new java.awt.Font("Montserrat", 0, 36)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Segoe UI Semibold", 1, 36)); // NOI18N
         jLabel2.setText("Menú principal");
 
         btnVerAgenda.setBackground(new java.awt.Color(0, 0, 0));
-        btnVerAgenda.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
+        btnVerAgenda.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         btnVerAgenda.setForeground(new java.awt.Color(255, 255, 255));
         btnVerAgenda.setText("Ver mi agenda");
         btnVerAgenda.setPreferredSize(new java.awt.Dimension(150, 30));
@@ -122,7 +122,7 @@ public class PrincipalMedico extends javax.swing.JFrame {
         jPanel2.add(iconMedico, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 40, 100, 90));
 
         btnVerPerfil.setBackground(new java.awt.Color(0, 0, 0));
-        btnVerPerfil.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
+        btnVerPerfil.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         btnVerPerfil.setForeground(new java.awt.Color(255, 255, 255));
         btnVerPerfil.setText("Ver perfil");
         btnVerPerfil.setPreferredSize(new java.awt.Dimension(150, 30));
@@ -137,7 +137,7 @@ public class PrincipalMedico extends javax.swing.JFrame {
         jPanel2.add(fondoCredencial, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 240, 290));
 
         btnHistorial.setBackground(new java.awt.Color(0, 0, 0));
-        btnHistorial.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
+        btnHistorial.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         btnHistorial.setForeground(new java.awt.Color(255, 255, 255));
         btnHistorial.setText("Consultar historial");
         btnHistorial.setPreferredSize(new java.awt.Dimension(150, 30));
@@ -148,7 +148,7 @@ public class PrincipalMedico extends javax.swing.JFrame {
         });
 
         btnCambiarEstado.setBackground(new java.awt.Color(0, 0, 0));
-        btnCambiarEstado.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
+        btnCambiarEstado.setFont(new java.awt.Font("Segoe UI Semilight", 1, 16)); // NOI18N
         btnCambiarEstado.setForeground(new java.awt.Color(255, 255, 255));
         btnCambiarEstado.setText("Darse de baja/alta");
         btnCambiarEstado.setPreferredSize(new java.awt.Dimension(150, 30));
@@ -159,7 +159,7 @@ public class PrincipalMedico extends javax.swing.JFrame {
         });
 
         btnCerrarSesion.setBackground(new java.awt.Color(0, 0, 0));
-        btnCerrarSesion.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
+        btnCerrarSesion.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         btnCerrarSesion.setForeground(new java.awt.Color(255, 255, 255));
         btnCerrarSesion.setText("Cerrar sesión");
         btnCerrarSesion.setPreferredSize(new java.awt.Dimension(150, 30));
@@ -173,10 +173,6 @@ public class PrincipalMedico extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(253, 253, 253))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(106, 106, 106)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -189,13 +185,17 @@ public class PrincipalMedico extends javax.swing.JFrame {
                         .addComponent(btnVerAgenda, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(100, 100, 100))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(274, 274, 274))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(71, 71, 71)
+                .addGap(68, 68, 68)
                 .addComponent(jLabel2)
-                .addGap(45, 45, 45)
+                .addGap(48, 48, 48)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -206,7 +206,7 @@ public class PrincipalMedico extends javax.swing.JFrame {
                         .addComponent(btnCambiarEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(94, Short.MAX_VALUE))
+                .addContainerGap(90, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -232,7 +232,11 @@ public class PrincipalMedico extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVerAgendaActionPerformed
 
     private void btnVerPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerPerfilActionPerformed
-        // TODO add your handling code here:
+        try {
+            verPerfilMedico();
+        } catch (NegocioException ex) {
+            Logger.getLogger(PrincipalMedico.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnVerPerfilActionPerformed
 
     private void btnHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHistorialActionPerformed
@@ -332,10 +336,12 @@ public class PrincipalMedico extends javax.swing.JFrame {
             switch (medico.getEstado().toUpperCase()) {
                 case "ACTIVO" -> {
                     btnCambiarEstado.setBackground(Color.red);
+                    btnCambiarEstado.setFont(btnCambiarEstado.getFont().deriveFont(16f));
                     btnCambiarEstado.setText("Darse de baja temporal");
                 }
                 case "INACTIVO" -> {
                     btnCambiarEstado.setBackground(Color.green);
+                    btnCambiarEstado.setFont(btnCambiarEstado.getFont().deriveFont(18f));
                     btnCambiarEstado.setText("Darse de alta");
                 }
                 default ->
@@ -383,7 +389,7 @@ public class PrincipalMedico extends javax.swing.JFrame {
             boolean bajaValida = medicoBO.validarBaja(cedula);
             
             if (bajaValida) {
-                int confirmacion = JOptionPane.showConfirmDialog(this, "¿Estás seguro que deseas date de baja temporalmente?", "Mensaje de confirmación", JOptionPane.YES_NO_OPTION);
+                int confirmacion = JOptionPane.showConfirmDialog(this, "¿Estás seguro que deseas darte de baja temporalmente?", "Mensaje de confirmación", JOptionPane.YES_NO_OPTION);
 
                 if (confirmacion == JOptionPane.YES_OPTION) {
                     try {
@@ -410,7 +416,7 @@ public class PrincipalMedico extends javax.swing.JFrame {
      * @throws NegocioException Si hubo un error en el proceso.
      */
     private void darseDeAlta() throws NegocioException {
-        int confirmacion = JOptionPane.showConfirmDialog(this, "¿Estás seguro que deseas date de alta?", "Mensaje de confirmación", JOptionPane.YES_NO_OPTION);
+        int confirmacion = JOptionPane.showConfirmDialog(this, "¿Estás seguro que deseas darte de alta?", "Mensaje de confirmación", JOptionPane.YES_NO_OPTION);
 
         if (confirmacion == JOptionPane.YES_OPTION) {
             try {
@@ -426,6 +432,17 @@ public class PrincipalMedico extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Se ha cancelado el alta.");
         }
+    }
+    
+    /**
+     * Envía a la pestaña de ver perfil de médico
+     * @throws NegocioException Si hubo un error al cambiar de pestaña.
+     */
+    private void verPerfilMedico() throws NegocioException {
+        VerPerfilMedico verPerfilMedico = VerPerfilMedico.getInstance();
+        verPerfilMedico.setPrincipalMedicoFrame(this);
+        verPerfilMedico.setVisible(true);
+        this.setVisible(false);
     }
     
     /**

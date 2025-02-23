@@ -53,7 +53,7 @@ public class MedicoMapper {
                 String.valueOf(medico.getIdMedico()),
                 medico.getNombre(),
                 medico.getApellidoPaterno(),
-                medico.getApellidoPaterno(),
+                medico.getApellidoMaterno(),
                 medico.getEspecialidad(),
                 medico.getCedula(),
                 medico.getEstado(),
@@ -67,7 +67,7 @@ public class MedicoMapper {
         return new MedicoNuevoDTO(
                 medico.getNombre(),
                 medico.getApellidoPaterno(),
-                medico.getApellidoPaterno(),
+                medico.getApellidoMaterno(),
                 medico.getEspecialidad(),
                 medico.getCedula(),
                 medico.getEstado(),
