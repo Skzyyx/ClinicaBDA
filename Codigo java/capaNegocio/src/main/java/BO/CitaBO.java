@@ -43,7 +43,7 @@ public class CitaBO {
         }
         
         try {
-            return citaDAO.registrarCitaEmergencia(citaMapper.toEntity(citaNuevo));
+            return citaDAO.registrarCitaProgramada(citaMapper.toEntity(citaNuevo));
         } catch (PersistenciaException ex) {
             Logger.getLogger(CitaBO.class.getName()).log(Level.SEVERE, null, ex);
             throw new NegocioException("Ocurrió un error inesperado. Lo sentimos.");

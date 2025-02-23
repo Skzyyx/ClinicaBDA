@@ -120,3 +120,24 @@ BEGIN
     COMMIT;
 END $$
 DELIMITER ;
+
+-- Vista todasLasEspecialidades
+-- Muestra todas las especialidades existentes de médicos
+CREATE OR REPLACE VIEW todasLasEspecialides AS 
+SELECT DISTINCT
+	especialidad
+FROM medicos;
+
+-- Vista todosLosMedicosConEspecialidad
+-- Muestra todos los médicos que cuenten con especialidad
+CREATE OR REPLACE VIEW todosLosMedicosConEspecialidad AS
+SELECT 
+	idMedico,
+    nombre,
+    apellidoPaterno,
+    apellidoMaterno, 
+    especialidad,
+    cedula,
+    estado,
+    idUsuario
+FROM medicos;

@@ -36,6 +36,7 @@ public class MedicoMapper {
         if (medicoViejo == null) return null;
         
         return new Medico(
+                Integer.parseInt(medicoViejo.getIdMedico()),
                 medicoViejo.getNombre(),
                 medicoViejo.getApellidoPaterno(),
                 medicoViejo.getApellidoMaterno(),

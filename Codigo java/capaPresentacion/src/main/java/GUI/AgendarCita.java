@@ -53,6 +53,7 @@ public class AgendarCita extends javax.swing.JFrame {
     public AgendarCita() {
         initComponents();
         setLocationRelativeTo(null);
+        choice1.addItem("Ninguno");
         cargarListener();
         cargarMedicos();
         cargarEspecialidades();
@@ -132,6 +133,12 @@ public class AgendarCita extends javax.swing.JFrame {
 
         jLabel2.setText("Seleccione un médico:");
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+
+        choice1.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                choice1ItemStateChanged(evt);
+            }
+        });
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -321,6 +328,12 @@ public class AgendarCita extends javax.swing.JFrame {
         registrarCita();
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void choice1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_choice1ItemStateChanged
+        jTable1.clearSelection();
+        jTable2.clearSelection();
+        cargarMedicos();
+    }//GEN-LAST:event_choice1ItemStateChanged
+
     /**
      * @param args the command line arguments
      */
@@ -393,19 +406,21 @@ public class AgendarCita extends javax.swing.JFrame {
         modelo.setRowCount(0);
         try {
             List<MedicoViejoDTO> medicos = medicoBO.obtenerMedicos();
-            
+            String filtro = choice1.getSelectedItem(); // Obtiene la especialidad seleccionada
+
             for (MedicoViejoDTO medico : medicos) {
-                
-                modelo.addRow(new Object[]{
-                    medico.getNombre(),
-                    medico.getEspecialidad(),
-                    medico.getIdMedico()
-                });
+                // Si el filtro es "Ninguno" (mostrar todos) o la especialidad coincide, agregar al modelo
+                if ("Ninguno".equals(filtro) || medico.getEspecialidad().equals(filtro)) {
+                    modelo.addRow(new Object[]{
+                        medico.getNombre(),
+                        medico.getEspecialidad(),
+                        medico.getIdMedico()
+                    });
+                }
             }
         } catch (NegocioException ex) {
-            JOptionPane.showMessageDialog(this, "Error al cargar medicos: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al cargar médicos: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-        
     }
 
     private void cargarListener() {
@@ -445,64 +460,83 @@ public class AgendarCita extends javax.swing.JFrame {
                 }
             }
         });
+        
+        jTable1.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                int filaSeleccionada = jTable1.getSelectedRow();
+                
+                if (filaSeleccionada == -1) return;
+                
+                // Aquí se maneja la selección de la fila
+                String idMedicoStr = jTable1.getValueAt(filaSeleccionada, 2).toString();
+
+                int idMedico = Integer.parseInt(idMedicoStr);
+                try {
+                    generarHorariosCitas(idMedico);
+                } catch (PersistenciaException ex) {
+                    Logger.getLogger(AgendarCita.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
     }
                 
 
-            private void generarHorariosCitas(int id) throws PersistenciaException {
-                DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
-                modelo.setRowCount(0);
-                
-                try {
-                    
-                    LocalDate fechaSeleccionada = datePicker1.getDate();
-                    if (fechaSeleccionada == null) return; // Si no hay fecha seleccionada, no hacer nada
-        
-                    // Obtener el día de la semana de la fecha seleccionada
-                    String diaSemanaSeleccionado = fechaSeleccionada.getDayOfWeek().toString();
-                    diaSemanaSeleccionado = diaSemanaSeleccionado.substring(0, 1) + diaSemanaSeleccionado.substring(1).toLowerCase();
-                    
-                    System.out.println(id);
-                    List<HorarioViejoDTO> horarios = medicoBO.obtenerHorariosMedico(String.valueOf(id));
-                    System.out.println(horarios.toString());
+    private void generarHorariosCitas(int id) throws PersistenciaException {
+        DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
+        modelo.setRowCount(0);
 
-                    for (HorarioViejoDTO horario : horarios) {
-                        
-                        // Verificar si el horario corresponde al día seleccionado
-                        if (horario.getDiaSemana().equalsIgnoreCase(diaSemanaSeleccionado)) {
-                            LocalTime horaInicio = horario.getHoraEntrada();
-                            LocalTime horaFin = horario.getHoraSalida();
+        try {
 
-                            // Generar citas de 30 minutos dentro del horario del médico
-                            while (horaInicio.isBefore(horaFin)) {
-                                LocalTime horaCitaFin = horaInicio.plusMinutes(30);
+            LocalDate fechaSeleccionada = datePicker1.getDate();
+            if (fechaSeleccionada == null) {
+                return; // Si no hay fecha seleccionada, no hacer nada
+            }
+            // Obtener el día de la semana de la fecha seleccionada
+            String diaSemanaSeleccionado = fechaSeleccionada.getDayOfWeek().toString();
+            diaSemanaSeleccionado = diaSemanaSeleccionado.substring(0, 1) + diaSemanaSeleccionado.substring(1).toLowerCase();
 
-                                // Verificar que la cita no exceda el horario de salida
-                                if (horaCitaFin.isAfter(horaFin)) {
-                                    break;
-                                }
+            System.out.println(id);
+            List<HorarioViejoDTO> horarios = medicoBO.obtenerHorariosMedico(String.valueOf(id));
+            System.out.println(horarios.toString());
 
-                                // Crear un objeto CitaNuevoDTO para verificar si la cita está ocupada
-                                LocalDateTime fechaHoraInicio = LocalDateTime.of(fechaSeleccionada, horaInicio);
-                                System.out.println(fechaHoraInicio.toString());
-                                // Verificar si la cita está ocupada
-                                if (!citaBO.verificarCitaExiste(Timestamp.valueOf(fechaHoraInicio), String.valueOf(id))) {
-                                    // Si la cita no está ocupada, agregarla a la tabla
-                                    modelo.addRow(new Object[]{
-                                        fechaSeleccionada,
-                                        horaInicio,
-                                        horaCitaFin
-                                    });
-                                }
+            for (HorarioViejoDTO horario : horarios) {
 
-                                // Avanzar 30 minutos para la próxima cita
-                                horaInicio = horaInicio.plusMinutes(30);
-                            }
+                // Verificar si el horario corresponde al día seleccionado
+                if (horario.getDiaSemana().equalsIgnoreCase(diaSemanaSeleccionado)) {
+                    LocalTime horaInicio = horario.getHoraEntrada();
+                    LocalTime horaFin = horario.getHoraSalida();
+
+                    // Generar citas de 30 minutos dentro del horario del médico
+                    while (horaInicio.isBefore(horaFin)) {
+                        LocalTime horaCitaFin = horaInicio.plusMinutes(30);
+
+                        // Verificar que la cita no exceda el horario de salida
+                        if (horaCitaFin.isAfter(horaFin)) {
+                            break;
                         }
+
+                        // Crear un objeto CitaNuevoDTO para verificar si la cita está ocupada
+                        LocalDateTime fechaHoraInicio = LocalDateTime.of(fechaSeleccionada, horaInicio);
+                        System.out.println(fechaHoraInicio.toString());
+                        // Verificar si la cita está ocupada
+                        if (!citaBO.verificarCitaExiste(Timestamp.valueOf(fechaHoraInicio), String.valueOf(id))) {
+                            // Si la cita no está ocupada, agregarla a la tabla
+                            modelo.addRow(new Object[]{
+                                fechaSeleccionada,
+                                horaInicio,
+                                horaCitaFin
+                            });
+                        }
+
+                        // Avanzar 30 minutos para la próxima cita
+                        horaInicio = horaInicio.plusMinutes(30);
                     }
-                } catch (NegocioException ex) {
-                    JOptionPane.showMessageDialog(AgendarCita.this, "Error al cargar medicos: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
+        } catch (NegocioException ex) {
+            JOptionPane.showMessageDialog(AgendarCita.this, "Error al cargar medicos: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     private void registrarCita() {
         if (jTable1.getSelectedRow() == -1) {
