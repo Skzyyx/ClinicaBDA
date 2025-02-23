@@ -50,7 +50,8 @@ SELECT
     c.idMedico,
     m.nombre AS nombreMedico,
     m.apellidoPaterno,
-    m.apellidoMaterno
+    m.apellidoMaterno,
+    m.especialidad
 FROM consultas AS co
 LEFT JOIN citas AS c
 	ON co.idCita = c.idCita
