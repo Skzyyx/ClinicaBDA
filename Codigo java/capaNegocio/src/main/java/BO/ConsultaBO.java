@@ -6,9 +6,16 @@ package BO;
 
 import DAO.ConsultaDAO;
 import DAO.IConsultaDAO;
+import DTO.ConsultaViejoDTO;
+import Exception.NegocioException;
 import Mapper.ConsultaMapper;
 import conexion.IConexion;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -23,5 +30,49 @@ public class ConsultaBO {
     
     public ConsultaBO(IConexion conexion) {
         this.consultaDAO = new ConsultaDAO(conexion);
+    }
+    
+    /**
+     * Obtiene las especialidades de las consultas de un paciente en específico.
+     * @param consultas Lista de consultas del paciente.
+     * @return Lista con especialidades.
+     * @throws NegocioException Si hubo un error en el proceso de filtrar.
+     */
+    public List<String> especialidadesConsultas (List<ConsultaViejoDTO> consultas) throws NegocioException {
+        if (consultas == null) {
+            throw new NegocioException("La lista de consultas no puede ser nula.");
+        }
+
+        // Usar un HashSet para evitar duplicados automáticamente
+        Set<String> especialidadesSet = new HashSet<>();
+
+        for (ConsultaViejoDTO consulta : consultas) {
+            especialidadesSet.add(consulta.getCita().getMedico().getEspecialidad());
+        }
+
+        // Convertir el Set a una Lista y devolverlo
+        return List.copyOf(especialidadesSet);
+    }
+    
+    public List<ConsultaViejoDTO> filtrarConsultasPeriodo(List<ConsultaViejoDTO> consultas, LocalDate fechaInicio, LocalDate fechaFin) throws NegocioException {
+        if (consultas == null) {
+            throw new NegocioException("La lista de consultas no puede ser nula.");
+        }
+
+        if (fechaInicio == null || fechaFin == null) {
+            throw new NegocioException("Se requieren ambas fechas (inicio y fin).");
+        }
+
+        if (fechaInicio.isAfter(fechaFin)) {
+            throw new NegocioException("El orden de las fechas no es correcto.");
+        }
+
+        // Filtrar por fecha en el rango usando stream
+        return consultas.stream()
+                .filter(consulta -> {
+                    LocalDate fechaConsulta = consulta.getCita().getFechaHoraInicio().toLocalDate();
+                    return !fechaConsulta.isBefore(fechaInicio) && !fechaConsulta.isAfter(fechaFin);
+                })
+                .collect(Collectors.toList());
     }
 }

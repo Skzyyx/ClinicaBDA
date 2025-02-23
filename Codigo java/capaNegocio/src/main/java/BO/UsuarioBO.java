@@ -79,7 +79,7 @@ public class UsuarioBO {
     public boolean autenticarSesion(SesionNuevoDTO sesion) throws NegocioException {
         // Validar que la sesion no sea nula
         if (sesion == null) {
-            throw new NegocioException("El usuario no puede ser nulo.");
+            throw new NegocioException("La sesion no puede ser nula.");
         }
 
         // Validar que el usuario no sea nulo

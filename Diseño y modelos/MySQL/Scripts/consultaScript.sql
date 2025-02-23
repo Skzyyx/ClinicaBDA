@@ -25,12 +25,11 @@ BEGIN
         tipo,
         idPaciente,
 		idMedico,
-        nombreMedico,
-        apellidoPaterno,
-        apellidoMaterno,
+        cedula,
         especialidad
 	FROM consultasCitas
-    WHERE idPaciente = id;
+    WHERE idPaciente = id
+    ORDER BY fechaHoraInicio DESC;
 END $$
 DELIMITER ;
 
@@ -48,14 +47,13 @@ SELECT
     c.tipo,
     c.idPaciente,
     c.idMedico,
-    m.nombre AS nombreMedico,
-    m.apellidoPaterno,
-    m.apellidoMaterno,
+	m.cedula,
     m.especialidad
 FROM consultas AS co
 LEFT JOIN citas AS c
 	ON co.idCita = c.idCita
 INNER JOIN medicos AS m
 	ON c.idMedico = m.idMedico;
-    
+
+
 CALL obtenerConsultasPaciente("eva@gmail.com");

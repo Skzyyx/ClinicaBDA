@@ -23,6 +23,7 @@ import entidades.Consulta;
 import entidades.Paciente;
 import excepciones.PersistenciaException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -478,6 +479,12 @@ public class PacienteBO {
         }
     }
     
+    /**
+     * Obtiene las consuktas asociadas a un paciente
+     * @param email Email del paciente.
+     * @return Lista con consultas.
+     * @throws NegocioException Si hubo un error al consultar.
+     */
     public List<ConsultaViejoDTO> obtenerConsultasPaciente(String email) throws NegocioException {
         if (email == null) {
             throw new NegocioException("El correo electrónico no puede ser nulo.");

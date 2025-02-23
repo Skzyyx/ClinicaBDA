@@ -124,6 +124,7 @@ public class CitaDAO implements ICitaDAO {
 
     @Override
     public boolean cancelarCita(Cita cita) throws PersistenciaException {
+        System.out.println(cita.toString());
         
         String sql = "CALL cancelarCita(?)";
         
@@ -132,11 +133,9 @@ public class CitaDAO implements ICitaDAO {
             
             cs.setInt(1, cita.getIdCita());
             
-            int resultado = cs.executeUpdate();
+            cs.executeUpdate();
             
-            if (resultado > 0) return true;
-            
-            return false;
+            return true;
         } catch (SQLException ex) {
             Logger.getLogger(CitaDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new PersistenciaException("Error al cancelar la cita.");

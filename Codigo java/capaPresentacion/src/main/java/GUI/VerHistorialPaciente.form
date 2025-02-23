@@ -123,12 +123,12 @@
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="9" rowCount="0">
-                    <Column editable="false" title="Medico" type="java.lang.Object"/>
-                    <Column editable="false" title="Especialidad" type="java.lang.Object"/>
+                    <Column editable="false" title="Fecha y hora" type="java.lang.Object"/>
                     <Column editable="false" title="Tipo de cita" type="java.lang.Object"/>
                     <Column editable="false" title="Folio" type="java.lang.Object"/>
-                    <Column editable="false" title="Fecha y hora" type="java.lang.Object"/>
                     <Column editable="false" title="Estado" type="java.lang.Object"/>
+                    <Column editable="false" title="Medico" type="java.lang.Object"/>
+                    <Column editable="false" title="Especialidad" type="java.lang.Object"/>
                     <Column editable="false" title="Diagn&#xf3;stico" type="java.lang.Object"/>
                     <Column editable="false" title="Tratamiento" type="java.lang.Object"/>
                     <Column editable="false" title="Notas" type="java.lang.Object"/>
@@ -136,32 +136,32 @@
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0">
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="55" resizable="true">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="55" resizable="true">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="10" prefWidth="10" resizable="true">
+                    <Column maxWidth="-1" minWidth="10" prefWidth="25" resizable="true">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="35" resizable="true">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="25" resizable="true">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                    <Column maxWidth="0" minWidth="0" prefWidth="0" resizable="true">
                       <Title/>
                       <Editor/>
                       <Renderer/>
@@ -184,9 +184,9 @@
                   </TableColumnModel>
                 </Property>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Segoe UI Semilight" size="12" style="0"/>
+                  <Font name="Segoe UI Semilight" size="10" style="0"/>
                 </Property>
-                <Property name="rowHeight" type="int" value="50"/>
+                <Property name="rowHeight" type="int" value="40"/>
                 <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                   <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                 </Property>

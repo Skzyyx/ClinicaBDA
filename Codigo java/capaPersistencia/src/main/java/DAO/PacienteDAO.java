@@ -417,10 +417,8 @@ public class PacienteDAO implements IPacienteDAO {
                     
                     Medico medico = new Medico();
                     medico.setIdMedico(rs.getInt(12));
-                    medico.setNombre(rs.getString(13));
-                    medico.setApellidoPaterno(rs.getString(14));
-                    medico.setApellidoPaterno(rs.getString(15));
-                    medico.setEspecialidad(rs.getString(16));
+                    medico.setEspecialidad(rs.getString(14));
+                    medico.setCedula(rs.getString(13));
                     
                     Cita cita = new Cita(
                         rs.getInt(6),

@@ -5,6 +5,7 @@
 package GUI;
 
 import BO.CitaBO;
+import BO.ConsultaBO;
 import BO.MedicoBO;
 import BO.PacienteBO;
 import DTO.CitaNuevoDTO;
@@ -24,6 +25,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,6 +44,9 @@ public class VerHistorialPaciente extends javax.swing.JFrame {
 
     private MedicoBO medicoBO = DependencyInjector.crearMedicoBO();
     private CitaBO citaBO = DependencyInjector.crearCitaBO();
+    private ConsultaBO consultaBO = DependencyInjector.crearConsultaBO();
+    // Formateador de fecha
+    DateTimeFormatter formatoFecha;
     
     private PrincipalPaciente principalPacienteFrame;
     /**
@@ -52,8 +57,8 @@ public class VerHistorialPaciente extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setTitle("Paciente - Historial de consultas");
         chEspecialidad.addItem("Ninguno");
-        //cargarListener();
-        //cargarMedicos();
+        formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        cargarListener();
         cargarEspecialidades();
         cargarHistorial();
     }
@@ -104,7 +109,7 @@ public class VerHistorialPaciente extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Medico", "Especialidad", "Tipo de cita", "Folio", "Fecha y hora", "Estado", "Diagnóstico", "Tratamiento", "Notas"
+                "Fecha y hora", "Tipo de cita", "Folio", "Estado", "Medico", "Especialidad", "Diagnóstico", "Tratamiento", "Notas"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -115,12 +120,19 @@ public class VerHistorialPaciente extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        tabla.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
-        tabla.setRowHeight(50);
+        tabla.setFont(new java.awt.Font("Segoe UI Semilight", 0, 10)); // NOI18N
+        tabla.setRowHeight(40);
         jScrollPane1.setViewportView(tabla);
         if (tabla.getColumnModel().getColumnCount() > 0) {
+            tabla.getColumnModel().getColumn(0).setPreferredWidth(55);
+            tabla.getColumnModel().getColumn(1).setPreferredWidth(55);
             tabla.getColumnModel().getColumn(2).setMinWidth(10);
-            tabla.getColumnModel().getColumn(2).setPreferredWidth(10);
+            tabla.getColumnModel().getColumn(2).setPreferredWidth(25);
+            tabla.getColumnModel().getColumn(3).setPreferredWidth(35);
+            tabla.getColumnModel().getColumn(4).setPreferredWidth(25);
+            tabla.getColumnModel().getColumn(5).setMinWidth(0);
+            tabla.getColumnModel().getColumn(5).setPreferredWidth(0);
+            tabla.getColumnModel().getColumn(5).setMaxWidth(0);
         }
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -254,7 +266,7 @@ public class VerHistorialPaciente extends javax.swing.JFrame {
     private void chEspecialidadItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chEspecialidadItemStateChanged
         tabla.clearSelection();
         tabla.clearSelection();
-        //cargarMedicos();
+        cargarHistorial();
     }//GEN-LAST:event_chEspecialidadItemStateChanged
 
     /**
@@ -312,7 +324,10 @@ public class VerHistorialPaciente extends javax.swing.JFrame {
 
     private void cargarEspecialidades() {
         try {
-            List<String> especialidades = medicoBO.obtenerEspecialidades();
+            // Obtener la lista de activistas desde la capa de negocio (BO)
+            List<ConsultaViejoDTO> consultas = pacienteBO.obtenerConsultasPaciente(SessionManager.getInstance().getUser());
+            // Filtra las especialidades
+            List<String> especialidades = consultaBO.especialidadesConsultas(consultas);
             
             for (String especialidad : especialidades) {
                 chEspecialidad.addItem(especialidad);
@@ -331,105 +346,82 @@ public class VerHistorialPaciente extends javax.swing.JFrame {
         try {
             // Obtener la lista de activistas desde la capa de negocio (BO)
             List<ConsultaViejoDTO> consultas = pacienteBO.obtenerConsultasPaciente(SessionManager.getInstance().getUser());
-
+            
+            String filtro = chEspecialidad.getSelectedItem(); // Obtiene la especialidad seleccionada
+            
             // Recorrer la lista de activistas y agregarlos como filas en la tabla
             for (ConsultaViejoDTO consulta : consultas) {
-                modelo.addRow(new Object[]{
-                    consulta.getCita().getMedico().getNombre() + " " + consulta.getCita().getMedico().getApellidoPaterno(),
-                    consulta.getCita().getMedico().getEspecialidad(),
-                    consulta.getCita().getTipo(),
-                    consulta.getCita().getFolio(),
-                    consulta.getCita().getFechaHoraInicio(),
-                    consulta.getEstado(),
-                    consulta.getDiagnostico(),
-                    consulta.getTratamiento(),
-                    consulta.getNotas(),
-                });
+                // Si el filtro es "Ninguno" (mostrar todos) o la especialidad coincide, agregar al modelo
+                if ("Ninguno".equals(filtro) || consulta.getCita().getMedico().getEspecialidad().equals(filtro)) {
+                    modelo.addRow(new Object[]{
+                        consulta.getCita().getFechaHoraInicio().format(formatoFecha),
+                        consulta.getCita().getTipo(),
+                        consulta.getCita().getFolio(),
+                        consulta.getEstado(),
+                        consulta.getCita().getMedico().getCedula(),
+                        consulta.getCita().getMedico().getEspecialidad(),
+                        consulta.getDiagnostico(),
+                        consulta.getTratamiento(),
+                        consulta.getNotas(),});
+                }
+
             }
         } catch (NegocioException ex) {
             // Manejo de errores en caso de que falle la obtención de datos
-            JOptionPane.showMessageDialog(this, "Error al cargar activistas: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al cargar consulta: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+    
 
-    /*private void cargarMedicos() {
-        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-        modelo.setRowCount(0);
-        try {
-            List<MedicoViejoDTO> medicos = medicoBO.obtenerMedicos();
-            String filtro = chEspecialidad.getSelectedItem(); // Obtiene la especialidad seleccionada
-
-            for (MedicoViejoDTO medico : medicos) {
-                // Si el filtro es "Ninguno" (mostrar todos) o la especialidad coincide, agregar al modelo
-                if ("Ninguno".equals(filtro) || medico.getEspecialidad().equals(filtro)) {
-                    modelo.addRow(new Object[]{
-                        medico.getNombre(),
-                        medico.getEspecialidad(),
-                        medico.getIdMedico()
-                    });
-                }
-            }
-        } catch (NegocioException ex) {
-            JOptionPane.showMessageDialog(this, "Error al cargar médicos: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }*/
-
-    /*private void cargarListener() {
-        dpFin.addDateChangeListener(new DateChangeListener() {
+    private void cargarListener() {
+        DateChangeListener listenerPeriodo = new DateChangeListener() {
             @Override
             public void dateChanged(DateChangeEvent dce) {
-                int filaSeleccionada = tabla.getSelectedRow();
-
-                if (filaSeleccionada != -1) {
-                    // Obtener la fecha seleccionada
-                    LocalDate fechaSeleccionada = dpFin.getDate();
-                    if (fechaSeleccionada != null) {
-                        // Si la fecha seleccionada es anterior a la fecha actual
-                        if (fechaSeleccionada.isBefore(LocalDate.now())) {
-                            dpFin.closePopup();
-                            JOptionPane.showMessageDialog(VerHistorialPaciente.this, "Por favor, selecciona una fecha igual o mayor a la actual.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                            return;
-                        }
-
-                        // Convertir el valor de la tabla a Integer
-                        String idMedicoStr = tabla.getValueAt(filaSeleccionada, 2).toString();
-                        try {
-                            int idMedico = Integer.parseInt(idMedicoStr);
-
-                        } catch (NumberFormatException ex) {
-                            JOptionPane.showMessageDialog(VerHistorialPaciente.this, "Error: El ID del médico no es válido.", "Error", JOptionPane.ERROR_MESSAGE);
-                        } catch (PersistenciaException ex) {
-                            Logger.getLogger(VerHistorialPaciente.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-                } else {
-                    // Ocultar el panel del calendario si está abierto
-                    dpFin.closePopup();
-
-                    // Mostrar el mensaje de advertencia
-                    JOptionPane.showMessageDialog(VerHistorialPaciente.this, "Por favor, selecciona un médico.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                // Obtener la fecha seleccionada
+                LocalDate fechaInicio = dpInicio.getDate();
+                LocalDate fechaFin = dpFin.getDate();
+                if (fechaInicio == null || fechaFin == null) {
+                    return;
                 }
-            }
-        });
-        
-        tabla.getSelectionModel().addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting()) {
-                int filaSeleccionada = tabla.getSelectedRow();
-                
-                if (filaSeleccionada == -1) return;
-                
-                // Aquí se maneja la selección de la fila
-                String idMedicoStr = tabla.getValueAt(filaSeleccionada, 2).toString();
+                // Si la fecha seleccionada es anterior a la fecha actual
+                if (fechaInicio.isAfter(fechaFin) || fechaFin.isBefore(fechaInicio)) {
+                    dpInicio.closePopup();
+                    dpFin.closePopup();
+                    JOptionPane.showMessageDialog(VerHistorialPaciente.this, "Por favor, selecciona un orden correcto de fechas.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
 
-                int idMedico = Integer.parseInt(idMedicoStr);
+                // Obtener el modelo de la tabla y limpiar cualquier dato previo
+                DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+                modelo.setRowCount(0); // Limpiar todas las filas existentes en la tabla
+
                 try {
-                    generarHorariosCitas(idMedico);
-                } catch (PersistenciaException ex) {
+                    List<ConsultaViejoDTO> consultas = pacienteBO.obtenerConsultasPaciente(SessionManager.getInstance().getUser());
+                    List<ConsultaViejoDTO> consultasFiltradas = consultaBO.filtrarConsultasPeriodo(consultas, fechaInicio, fechaFin);
+
+                    // Agregar las consultas filtradas a la tabla
+                    for (ConsultaViejoDTO consulta : consultasFiltradas) {
+                        modelo.addRow(new Object[]{
+                            consulta.getCita().getFechaHoraInicio().format(formatoFecha),
+                            consulta.getCita().getTipo(),
+                            consulta.getCita().getFolio(),
+                            consulta.getEstado(),
+                            consulta.getCita().getMedico().getCedula(),
+                            consulta.getCita().getMedico().getEspecialidad(),
+                            consulta.getDiagnostico(),
+                            consulta.getTratamiento(),
+                            consulta.getNotas(),});
+                    }
+                } catch (NegocioException ex) {
                     Logger.getLogger(VerHistorialPaciente.class.getName()).log(Level.SEVERE, null, ex);
                 }
+
             }
-        });
-    }*/
+        };
+
+        dpInicio.addDateChangeListener(listenerPeriodo);
+        dpFin.addDateChangeListener(listenerPeriodo);
+    }
     
     /**
      * Envía al menú principal de paciente
