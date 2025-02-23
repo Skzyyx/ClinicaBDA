@@ -22,16 +22,27 @@ public class CitaNuevoDTO {
     /** Paciente asociado a la cita. */
     private PacienteNuevoDTO paciente;
     /** Médico que atenderá la cita. */
-    private MedicoNuevoDTO medico;
+    private MedicoViejoDTO medico;
 
     public CitaNuevoDTO() {
     }
 
-    public CitaNuevoDTO(LocalDateTime fechaHoraInicio, String estado, String folio, String tipo, PacienteNuevoDTO paciente, MedicoNuevoDTO medico) {
+    public CitaNuevoDTO(LocalDateTime fechaHoraInicio, String estado, String folio, String tipo, PacienteNuevoDTO paciente, MedicoViejoDTO medico) {
         this.fechaHoraInicio = fechaHoraInicio;
         this.estado = estado;
         this.folio = folio;
         this.tipo = tipo;
+        this.paciente = paciente;
+        this.medico = medico;
+    }
+    
+    public CitaNuevoDTO(LocalDateTime fechaHoraInici, MedicoViejoDTO medico) {
+        this.fechaHoraInicio = fechaHoraInicio;
+        this.medico = medico;
+    }
+
+    public CitaNuevoDTO(LocalDateTime fechaHoraInicio, PacienteNuevoDTO paciente, MedicoViejoDTO medico) {
+        this.fechaHoraInicio = fechaHoraInicio;
         this.paciente = paciente;
         this.medico = medico;
     }
@@ -76,11 +87,11 @@ public class CitaNuevoDTO {
         this.paciente = paciente;
     }
 
-    public MedicoNuevoDTO getMedico() {
+    public MedicoViejoDTO getMedico() {
         return medico;
     }
 
-    public void setMedico(MedicoNuevoDTO medico) {
+    public void setMedico(MedicoViejoDTO medico) {
         this.medico = medico;
     }
 

@@ -32,6 +32,20 @@ public class MedicoMapper {
         return medicosViejoDTO;
     }
     
+    public Medico toEntity(MedicoViejoDTO medicoViejo) {
+        if (medicoViejo == null) return null;
+        
+        return new Medico(
+                medicoViejo.getNombre(),
+                medicoViejo.getApellidoPaterno(),
+                medicoViejo.getApellidoMaterno(),
+                medicoViejo.getEspecialidad(),
+                medicoViejo.getCedula(),
+                medicoViejo.getEstado(),
+                medicoViejo.getUsuario()
+        );
+    }
+    
     public Medico toEntity(MedicoNuevoDTO medicoNuevo) {
         if (medicoNuevo == null) return null;
         

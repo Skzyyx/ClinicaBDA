@@ -61,7 +61,7 @@ public class CitaMapper {
         if (cita == null) return null;
         
         PacienteNuevoDTO pacienteNuevo = mapperPaciente.toNuevoDTO(cita.getPaciente());
-        MedicoNuevoDTO medicoNuevo = mapperMedico.toNuevoDTO(cita.getMedico());
+        MedicoViejoDTO medicoNuevo = mapperMedico.toViejoDTO(cita.getMedico());
         
         return new CitaNuevoDTO(
                 cita.getFechaHoraInicio(),

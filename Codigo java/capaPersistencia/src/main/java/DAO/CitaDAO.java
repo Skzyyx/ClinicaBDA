@@ -9,8 +9,10 @@ import entidades.Cita;
 import excepciones.PersistenciaException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.sql.Types;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -48,7 +50,7 @@ public class CitaDAO implements ICitaDAO {
      */
     @Override
     public boolean registrarCitaProgramada(Cita cita) throws PersistenciaException {
-        
+        System.out.println(cita.getPaciente().getEmail());
         String sentenciaSQL = "CALL registrarCita(?, ?, ?, ?, ?)";
         
         try (Connection con = conexion.crearConexion();
@@ -57,7 +59,7 @@ public class CitaDAO implements ICitaDAO {
             cs.setTimestamp(1, Timestamp.valueOf(cita.getFechaHoraInicio()));
             cs.setString(2, cita.getFolio());
             cs.setString(3, "PROGRAMADA");
-            cs.setInt(4, cita.getPaciente().getIdPaciente());
+            cs.setString(4, cita.getPaciente().getEmail());
             cs.setInt(5, cita.getMedico().getIdMedico());
             
             cs.execute();
@@ -97,6 +99,30 @@ public class CitaDAO implements ICitaDAO {
             throw new PersistenciaException("No se pudo registrar la cita de emergencia.");
         }
     }
+
+    @Override
+    public boolean verificarCitaExiste(Timestamp fechaHoraInicio, int idMedico) throws PersistenciaException {
+        
+        String sentenciaSQL = "CALL verificarCitaExiste(?, ?, ?)";
+        
+        try (Connection con = conexion.crearConexion();
+                CallableStatement cs = con.prepareCall(sentenciaSQL)) {
+            
+            cs.setTimestamp(1, fechaHoraInicio);
+            cs.setInt(2, idMedico);
+            
+            cs.registerOutParameter(3, Types.BOOLEAN);
+            
+            cs.execute();
+            
+            return cs.getBoolean(3);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(CitaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PersistenciaException("Error a obtener el resultado.");
+        }
+    }
+    
     
     
 }

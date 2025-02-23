@@ -4,18 +4,27 @@
  */
 package GUI;
 
+import BO.CitaBO;
 import BO.MedicoBO;
+import DTO.CitaNuevoDTO;
 import DTO.HorarioViejoDTO;
+import DTO.MedicoNuevoDTO;
 import DTO.MedicoViejoDTO;
+import DTO.PacienteNuevoDTO;
+import DTO.PacienteViejoDTO;
 import Exception.NegocioException;
 import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import configuracion.DependencyInjector;
+import excepciones.PersistenciaException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalUnit;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -24,6 +33,7 @@ import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import sesion.SessionManager;
 
 /**
  *
@@ -34,6 +44,7 @@ public class AgendarCita extends javax.swing.JFrame {
     private static AgendarCita instance;
 
     private MedicoBO medicoBO = DependencyInjector.crearMedicoBO();
+    private CitaBO citaBO = DependencyInjector.crearCitaBO();
     
     private PrincipalPaciente principalPaciente;
     /**
@@ -129,7 +140,15 @@ public class AgendarCita extends javax.swing.JFrame {
             new String [] {
                 "Día", "Hora Inicio", "Hora Fin"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane2.setViewportView(jTable2);
 
         jLabel3.setText("Fecha:");
@@ -154,6 +173,11 @@ public class AgendarCita extends javax.swing.JFrame {
         jButton2.setBackground(new java.awt.Color(44, 45, 45));
         jButton2.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Cita de Emergencia");
         jButton3.setBackground(new java.awt.Color(255, 102, 102));
@@ -293,6 +317,10 @@ public class AgendarCita extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        registrarCita();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -404,6 +432,8 @@ public class AgendarCita extends javax.swing.JFrame {
                             generarHorariosCitas(idMedico);
                         } catch (NumberFormatException ex) {
                             JOptionPane.showMessageDialog(AgendarCita.this, "Error: El ID del médico no es válido.", "Error", JOptionPane.ERROR_MESSAGE);
+                        } catch (PersistenciaException ex) {
+                            Logger.getLogger(AgendarCita.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
                 } else {
@@ -418,7 +448,7 @@ public class AgendarCita extends javax.swing.JFrame {
     }
                 
 
-            private void generarHorariosCitas(int id) {
+            private void generarHorariosCitas(int id) throws PersistenciaException {
                 DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
                 modelo.setRowCount(0);
                 
@@ -436,16 +466,14 @@ public class AgendarCita extends javax.swing.JFrame {
                     System.out.println(horarios.toString());
 
                     for (HorarioViejoDTO horario : horarios) {
-                        System.out.println("a");
+                        
                         // Verificar si el horario corresponde al día seleccionado
                         if (horario.getDiaSemana().equalsIgnoreCase(diaSemanaSeleccionado)) {
-                            System.out.println("b");
                             LocalTime horaInicio = horario.getHoraEntrada();
                             LocalTime horaFin = horario.getHoraSalida();
 
                             // Generar citas de 30 minutos dentro del horario del médico
                             while (horaInicio.isBefore(horaFin)) {
-                                System.out.println("c");
                                 LocalTime horaCitaFin = horaInicio.plusMinutes(30);
 
                                 // Verificar que la cita no exceda el horario de salida
@@ -453,12 +481,18 @@ public class AgendarCita extends javax.swing.JFrame {
                                     break;
                                 }
 
-                                // Agregar la cita a la tabla
-                                modelo.addRow(new Object[]{
-                                    fechaSeleccionada,
-                                    horaInicio,
-                                    horaCitaFin
-                                });
+                                // Crear un objeto CitaNuevoDTO para verificar si la cita está ocupada
+                                LocalDateTime fechaHoraInicio = LocalDateTime.of(fechaSeleccionada, horaInicio);
+                                System.out.println(fechaHoraInicio.toString());
+                                // Verificar si la cita está ocupada
+                                if (!citaBO.verificarCitaExiste(Timestamp.valueOf(fechaHoraInicio), String.valueOf(id))) {
+                                    // Si la cita no está ocupada, agregarla a la tabla
+                                    modelo.addRow(new Object[]{
+                                        fechaSeleccionada,
+                                        horaInicio,
+                                        horaCitaFin
+                                    });
+                                }
 
                                 // Avanzar 30 minutos para la próxima cita
                                 horaInicio = horaInicio.plusMinutes(30);
@@ -469,4 +503,43 @@ public class AgendarCita extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(AgendarCita.this, "Error al cargar medicos: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
+
+    private void registrarCita() {
+        if (jTable1.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(this, "Debes seleccionar un doctor.", "Error", JOptionPane.WARNING_MESSAGE);
+        } else if (jTable2.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(this, "Debes seleccionar un horario.", "Error", JOptionPane.WARNING_MESSAGE);
+        } else if (datePicker1.getDate() == null) {
+            JOptionPane.showMessageDialog(this, "Debes seleccionar una fecha.", "Error", JOptionPane.WARNING_MESSAGE);
+        }
+        
+        LocalDate fechaSeleccionada = datePicker1.getDate();
+        LocalTime horaInicio = (LocalTime) jTable2.getValueAt(jTable2.getSelectedRow(), 1);
+        
+        String idMedico = String.valueOf(jTable1.getValueAt(jTable1.getSelectedRow(), 2));
+
+        MedicoViejoDTO medico = new MedicoViejoDTO(idMedico);
+        PacienteNuevoDTO paciente = new PacienteNuevoDTO();
+        System.out.println(SessionManager.getInstance().getUser());
+        paciente.setEmail(SessionManager.getInstance().getUser());
+        
+        LocalDateTime fechaHoraInicio = LocalDateTime.of(fechaSeleccionada, horaInicio);
+        System.out.println("fechaHora: " + fechaHoraInicio);
+        CitaNuevoDTO cita = new CitaNuevoDTO();
+        cita.setFechaHoraInicio(fechaHoraInicio);
+        cita.setMedico(medico);
+        cita.setPaciente(paciente);
+        
+        try {
+            boolean resultado = citaBO.registrarCitaProgramada(cita);
+            
+            if (resultado) {
+                JOptionPane.showMessageDialog(this, "Tu cita ha sido registrada.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Tu cita no se ha podido registrar.", "Error", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (NegocioException ex) {
+            Logger.getLogger(AgendarCita.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

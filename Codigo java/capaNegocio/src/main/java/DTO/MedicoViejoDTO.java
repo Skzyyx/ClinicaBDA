@@ -55,6 +55,10 @@ public class MedicoViejoDTO {
         this.estado = estado;
     }
 
+    public MedicoViejoDTO(String idMedico) {
+        this.idMedico = idMedico;
+    }
+
     public String getIdMedico() {
         return idMedico;
     }

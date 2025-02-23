@@ -6,6 +6,7 @@ package DAO;
 
 import entidades.Cita;
 import excepciones.PersistenciaException;
+import java.sql.Timestamp;
 
 /**
  * Interfaz ICitaDAO.
@@ -34,6 +35,10 @@ public interface ICitaDAO {
      * @throws PersistenciaException Si ocurre un error durante la operación.
      */
     public boolean registrarCitaEmergencia(Cita cita) throws PersistenciaException;
+    
+    public boolean verificarCitaExiste(Timestamp fechaHoraInicio, int idMedico) throws PersistenciaException;
+    
+    
     
 }
 

@@ -86,6 +86,10 @@ public class PacienteViejoDTO {
         this.direccion = direccion;
     }
 
+    public PacienteViejoDTO() {
+        
+    }
+
     /**
      * Obtiene el identificador único del paciente.
      * 
