@@ -26,6 +26,7 @@ public class PrincipalMedico extends javax.swing.JFrame {
     
     private InicioDeSesion iniciarSesionFrame;
     private VerPerfilMedico perfilMedicoFrame;
+    private VerAgenda verAgenda;
     
     /**
      * Creates new form InicioDeSesion
@@ -62,6 +63,14 @@ public class PrincipalMedico extends javax.swing.JFrame {
         this.perfilMedicoFrame = perfilMedicoFrame;
     }
 
+    public VerAgenda getVerAgenda() {
+        return verAgenda;
+    }
+
+    public void setVerAgenda(VerAgenda verAgenda) {
+        this.verAgenda = verAgenda;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -228,7 +237,10 @@ public class PrincipalMedico extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVerAgendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerAgendaActionPerformed
-        // TODO add your handling code here:
+        VerAgenda verAgenda = VerAgenda.getInstance();
+        verAgenda.setPrincipalMedico(this);
+        verAgenda.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_btnVerAgendaActionPerformed
 
     private void btnVerPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerPerfilActionPerformed
