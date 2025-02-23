@@ -28,16 +28,18 @@ DELIMITER ;
 
 -- Procedimiento consultarHorariosMedicoPorID
 -- Consultar los horarios de un médico con un id específico
-DELIMITER &&
+DELIMITER $$
 CREATE PROCEDURE consultarHorariosMedicoPorID(
-IN id_Medico int)
-
+	IN id_Medico INT
+)
 BEGIN 
-SELECT h.diaSemana, h.horaEntrada, h.horaSalida
-FROM horarios as h
-WHERE h.idMedico=id_Medico;
-
-END &&
+	SELECT 
+		h.diaSemana, 
+		h.horaEntrada, 
+        h.horaSalida
+	FROM horarios AS h
+	WHERE h.idMedico = id_Medico;
+END $$
 DELIMITER ;
 
 -- Función contarMedicosActivos
@@ -87,5 +89,34 @@ BEGIN
     WHERE cedula = cedulaMedico;
     
     RETURN cantidadCitasActivas;
+END $$
+DELIMITER ;
+
+-- Procedimiento almacenado cambiarEstadoMedico
+-- Cambia el estado de un médico (da de baja o alta)
+DELIMITER $$
+CREATE PROCEDURE cambiarEstadoMedico(
+    IN cedulaMedico VARCHAR(8),
+    IN nuevoEstado ENUM('ACTIVO', 'INACTIVO')
+)
+BEGIN
+    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION 
+    BEGIN
+        GET DIAGNOSTICS CONDITION 1 @errorMensaje = MESSAGE_TEXT;
+        ROLLBACK;
+        SIGNAL SQLSTATE "45000" SET MESSAGE_TEXT = @errorMensaje;
+    END;
+
+    START TRANSACTION;
+    
+    -- Verificar si el médico existe antes de actualizar
+    IF NOT EXISTS (SELECT 1 FROM medicos WHERE cedula = cedulaMedico) THEN
+        SIGNAL SQLSTATE "45000" SET MESSAGE_TEXT = "El médico no existe";
+    END IF;
+    
+    -- Actualizar el estado del médico
+    UPDATE medicos SET estado = nuevoEstado WHERE cedula = cedulaMedico;
+    
+    COMMIT;
 END $$
 DELIMITER ;

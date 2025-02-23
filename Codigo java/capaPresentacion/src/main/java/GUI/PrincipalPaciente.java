@@ -340,7 +340,11 @@ public class PrincipalPaciente extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lbNombre;
     // End of variables declaration//GEN-END:variables
-
+    
+    /**
+     * Muestra el nombre en la credencial de paciente.
+     * @throws NegocioException Si hubo un error al intentar mostrar el nombre.
+     */
     private void mostrarNombrePaciente() throws NegocioException {
         PacienteViejoDTO paciente = pacienteBO.obtenerPacientePorEmail(SessionManager.getInstance().getUser());
         
@@ -352,6 +356,10 @@ public class PrincipalPaciente extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Envía a la pestaña perfil de paciente
+     * @throws NegocioException Si hubo un error
+     */
     private void verPerfil() throws NegocioException {
         VerPerfilPaciente verPerfil = VerPerfilPaciente.getInstance();
         verPerfil.setPrincipalPacienteFrame(this);
@@ -359,6 +367,9 @@ public class PrincipalPaciente extends javax.swing.JFrame {
         this.setVisible(false);
     }
     
+    /**
+     * Cierra la sesión del usuario y la aplicación.
+     */
     private void cerrarSesion() {
         SessionManager.getInstance().cerrarSesion();
         System.exit(0);

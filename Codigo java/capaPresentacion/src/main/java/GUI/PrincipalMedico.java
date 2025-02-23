@@ -240,7 +240,11 @@ public class PrincipalMedico extends javax.swing.JFrame {
     }//GEN-LAST:event_btnHistorialActionPerformed
 
     private void btnCambiarEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiarEstadoActionPerformed
-        
+        try {
+            cambiarEstado();
+        } catch (NegocioException ex) {
+            Logger.getLogger(PrincipalMedico.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnCambiarEstadoActionPerformed
 
     private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
@@ -312,10 +316,6 @@ public class PrincipalMedico extends javax.swing.JFrame {
     private void mostrarDatosMedico() throws NegocioException {
         MedicoViejoDTO medico = medicoBO.obtenerMedicoPorCedula(SessionManager.getInstance().getUser());
         
-        System.out.println(medico.getEstado());
-        System.out.println(medico.getNombre());
-        System.out.println(medico.getCedula());
-        
         if (medico != null) {
             lbNombre.setText(medico.getNombre());
             lbEstado.setText(medico.getEstado());
@@ -341,18 +341,95 @@ public class PrincipalMedico extends javax.swing.JFrame {
                 default ->
                     JOptionPane.showMessageDialog(this, "Tu estado no es válido. Intentalo de nuevo.", "Error", JOptionPane.ERROR_MESSAGE);
             }
+            mostrarDatosMedico();
         } else {
             JOptionPane.showMessageDialog(this, "Ocurrió un error interno. Se ha cerrado la sesión", "Error", JOptionPane.ERROR_MESSAGE);
             cerrarSesion();
         }
     }
     
-    private void darseDeBaja() {
+    /**
+     * Inicia el proceso para cambiar el estado de un médico.
+     * @throws NegocioException Si hubo un error en el proceso.
+     */
+    private void cambiarEstado() throws NegocioException {
+        MedicoViejoDTO medico = medicoBO.obtenerMedicoPorCedula(SessionManager.getInstance().getUser());
         
+        if (medico != null && medico.getEstado() != null) {
+            switch (medico.getEstado().toUpperCase()) {
+                case "ACTIVO" -> {
+                    darseDeBaja();
+                }
+                case "INACTIVO" -> {
+                    darseDeAlta();
+                }
+                default ->
+                    JOptionPane.showMessageDialog(this, "Tu estado no es válido. Intentalo de nuevo.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            cambiarBotonEstado();
+        } else {
+            JOptionPane.showMessageDialog(this, "Ocurrió un error interno. Se ha cerrado la sesión", "Error", JOptionPane.ERROR_MESSAGE);
+            cerrarSesion();
+        }
     }
     
     /**
-     * Cierra la sesión del usuario
+     * Inicia el proceso para dar de baja temporal a un médico.
+     * @throws NegocioException Si hubo un error en el proceso.
+     */
+    private void darseDeBaja() throws NegocioException {
+        String cedula = SessionManager.getInstance().getUser();
+        try {
+            boolean bajaValida = medicoBO.validarBaja(cedula);
+            
+            if (bajaValida) {
+                int confirmacion = JOptionPane.showConfirmDialog(this, "¿Estás seguro que deseas date de baja temporalmente?", "Mensaje de confirmación", JOptionPane.YES_NO_OPTION);
+
+                if (confirmacion == JOptionPane.YES_OPTION) {
+                    try {
+                        boolean baja = medicoBO.darseDeBaja(cedula);
+                        if (baja) {
+                            JOptionPane.showMessageDialog(this, "Tu baja temporal ha sido confirmada.");
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Ha ocurrido un error al realizar la baja.");
+                        }
+                    } catch (NegocioException ex) {
+                        JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "Se ha cancelado la baja temporal.");
+                }
+            }
+        } catch (NegocioException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    /**
+     * Inicia el proceso para dar de alta a un médico.
+     * @throws NegocioException Si hubo un error en el proceso.
+     */
+    private void darseDeAlta() throws NegocioException {
+        int confirmacion = JOptionPane.showConfirmDialog(this, "¿Estás seguro que deseas date de alta?", "Mensaje de confirmación", JOptionPane.YES_NO_OPTION);
+
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            try {
+                boolean alta = medicoBO.darseDeAlta(SessionManager.getInstance().getUser());
+                if (alta) {
+                    JOptionPane.showMessageDialog(this, "Tu alta ha sido confirmada.");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Ha ocurrido un error al realizar el alta.");
+                }
+            } catch (NegocioException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Se ha cancelado el alta.");
+        }
+    }
+    
+    /**
+     * Cierra la sesión del usuario y la aplicación.
      */
     private void cerrarSesion() {
         SessionManager.getInstance().cerrarSesion();

@@ -7,7 +7,6 @@ package DAO;
 import entidades.Horario;
 import entidades.Medico;
 import excepciones.PersistenciaException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,30 +20,56 @@ import java.util.List;
 public interface IMedicoDAO {
     
     /**
-     * Registra un nuevo médico en la base de datos.
-     * 
-     * @param medico Objeto Medico con los datos del nuevo médico.
-     * @return true si el médico se da de alta exitosamente, false en caso contrario.
-     * @throws PersistenciaException Si ocurre un error durante la operación.
+     * Cambia el estado de un médico específico (da de baja o alta).
+     * @param cedula Cédula profesional del médico.
+     * @param nuevoEstado Nuevo estado para cambiar.
+     * @return True si se cambió el estado, false en caso contrario.
+     * @throws PersistenciaException Si hubo un error al intentar cambiar el estado.
      */
-    public boolean darAltaMedico(Medico medico) throws PersistenciaException;
+    public boolean cambiarEstadoMedico(String cedula, String nuevoEstado) throws PersistenciaException;
     
     /**
-     * Elimina un médico de la base de datos.
-     * 
-     * @param medico Objeto Medico con los datos del médico a dar de baja.
-     * @return true si el médico se da de baja exitosamente, false en caso contrario.
-     * @throws PersistenciaException Si ocurre un error durante la operación.
+     * Obtiene los registros de todos los médicos.
+     * @return Lista con los registros de los médicos encontrados.
+     * @throws PersistenciaException Si hubo un error al consultar los médicos.
      */
-    public boolean darBajaMedico(Medico medico) throws PersistenciaException;
-    
     public List<Medico> obtenerMedicos() throws PersistenciaException;
     
+    /**
+     * Obtiene todas las especialidades de los médicos.
+     * @return Lista con las especialidades encontradas.
+     * @throws PersistenciaException Si hubo un error al consultar las especialidades.
+     */
     public List<String> obtenerEspecialidades() throws PersistenciaException;
     
+    /**
+     * Obtiene el registro de un médico específico.
+     * @param cedula Cédula profesional a consultar.
+     * @return Registro del médico si se encontró, null en caso contrario.
+     * @throws PersistenciaException Si hubo un error al consultar el médico.
+     */
     public Medico obtenerMedico(String cedula) throws PersistenciaException;
     
+    /**
+     * Obtiene los horarios asociados a un médico específico.
+     * @param id Id del médico a consultar.
+     * @return Lista con los horarios del médico.
+     * @throws PersistenciaException Si hubo un error al consultar los horarios.
+     */
     public List<Horario> obtenerHorariosMedicoPorID (int id) throws PersistenciaException;
-            
+    
+    /**
+     * Cuenta la cantidad de médicos que se encuentren activos.
+     * @return Cantidad de médicos con estado "ACTIVO".
+     * @throws excepciones.PersistenciaException Si hubo un error al contar médicos.
+     */
+    public int contarMedicosActivos() throws PersistenciaException;
+    
+    /**
+     * Verifica si un médico específico tiene citas activas.
+     * @param cedula Cédula profesional del médico a consultar.
+     * @return True si tiene citas activas, false en caso contrario.
+     * @throws PersistenciaException Si hubo un error al consultar.
+     */
+    public boolean tieneCitasActivas(String cedula) throws PersistenciaException;
 }
-

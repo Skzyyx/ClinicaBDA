@@ -20,8 +20,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author skyro
+ * Clase MedicoBO.
+ * Representa el BO para la clase Medico.
+ * 
+ * @author 00000207653 Jesus Octavio Amarillas Amaya 
+ * @author 00000252574 Jose Luis Islas Molina 
+ * @author 00000253301 Isabel Valenzuela Rocha  
  */
 public class MedicoBO {
     
@@ -31,13 +35,104 @@ public class MedicoBO {
     
     private final MedicoMapper medicoMapper = new MedicoMapper();
     private final HorarioMapper horarioMapper = new HorarioMapper();
-
+    
+    /**
+     * Constructor de la clase.
+     * Inicializa la conexión a utilizar.
+     * @param conexion Conexión a base de datos.
+     */
     public MedicoBO(IConexion conexion) {
         this.medicoDAO = new MedicoDAO(conexion);
     }
     
-    public List<MedicoViejoDTO> obtenerMedicos() throws NegocioException {
+    /**
+     * Da de baja temporal a un médico específico.
+     * @param cedula Cédula profesional del médico.
+     * @return True si se dio de baja, false en caso contrario.
+     * @throws NegocioException Si hubo un error al intentar dar de baja.
+     */
+    public boolean darseDeBaja(String cedula) throws NegocioException {
+        // Validar que la cedula no sea null
+        if (cedula == null) {
+            throw new NegocioException("La cédula profesional no puede ser nula.");
+        }
+
+        // Intentar dar de baja al médico
+        try {
+            return medicoDAO.cambiarEstadoMedico(cedula, "INACTIVO");
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(MedicoBO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new NegocioException("Hubo un error al consultar cantidad de citas activas.");
+        }
+    }
+
+    public boolean validarBaja(String cedula) throws NegocioException {
+        // Validar que la cedula no sea null
+        if (cedula == null) {
+            throw new NegocioException("La cédula profesional no puede ser nula.");
+        }
         
+        // Validar dar de baja
+        try {
+            // Si el médico existe
+            if (medicoExiste(cedula)) {
+                // Si no tiene citas activas
+                if (!tieneCitasActivas(cedula))
+                    // Si hay más médicos activos
+                    if (cantidadMedicosActivos() > 1) {
+                        return true;
+                    // Si es el único médico activo
+                    } else {
+                        throw new NegocioException("Es necesario al menos un médico activo más.");
+                    }
+                // Si tiene citas activas
+                else {
+                    throw new NegocioException("Cuentas con citas próximas en tu agenda, no es posible darse de baja.");
+                }
+            // Si el médico no existe
+            } else {
+                throw new NegocioException("No existe médico con cédula profesional " + cedula + ".");
+            }
+        } catch (NegocioException ex) {
+            Logger.getLogger(MedicoBO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new NegocioException("Hubo un error en el proceso de dar de baja temporal.");
+        }
+    }
+    
+    /**
+     * Da de alta a un médico en específico.
+     * @param cedula Cédula profesional del médico.
+     * @return True si se dio de alta, false en caso contrario.
+     * @throws NegocioException Si hubo un error al darse de alta.
+     */
+    public boolean darseDeAlta(String cedula) throws NegocioException {
+        // Validar que la cedula no sea null
+        if (cedula == null) {
+            throw new NegocioException("La cédula profesional no puede ser nula.");
+        }
+        
+        // Intentar dar de alta al médico
+        try {
+            // Si el médico existe
+            if (medicoExiste(cedula)) {
+                return cambiarEstadoMedico(cedula, "ACTIVO");
+            // Si el médico no existe
+            } else {
+                throw new NegocioException("No existe médico con cédula profesional " + cedula + ".");
+            }
+        } catch (NegocioException ex) {
+            Logger.getLogger(MedicoBO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new NegocioException("Hubo un error al intentar dar de alta.");
+        }
+    }
+    
+    
+    /**
+     * Obtiene los registros de todos los médicos activos.
+     * @return Lista con medicos activos.
+     * @throws NegocioException Si hubo un error al consultar los médicos.
+     */
+    public List<MedicoViejoDTO> obtenerMedicos() throws NegocioException {
         try {
             List<Medico> medicos = medicoDAO.obtenerMedicos();
             
@@ -48,8 +143,12 @@ public class MedicoBO {
         }
     }
     
+    /**
+     * Obtiene todas las especialidades registradas.
+     * @return Lista con nombre de especialidades.
+     * @throws NegocioException Si hubo un error al consultar especialidades.
+     */
     public List<String> obtenerEspecialidades() throws NegocioException {
-        
         try {
             return medicoDAO.obtenerEspecialidades();
         } catch (PersistenciaException ex) {
@@ -58,10 +157,14 @@ public class MedicoBO {
         }
     }
     
+    /**
+     * Obtiene los horarios de un médico específico mediante su id.
+     * @param id Id del médico.
+     * @return Lista con horarios.
+     * @throws NegocioException Si hubo un error al consultar horarios.
+     */
     public List<HorarioViejoDTO> obtenerHorariosMedico(String id) throws NegocioException {
-        
         try {
-        
             List<Horario> horarios = medicoDAO.obtenerHorariosMedicoPorID(Integer.parseInt(id));
             
             List<HorarioViejoDTO> horariosViejoDTO = horarioMapper.toViejoDTO(horarios);
@@ -73,6 +176,12 @@ public class MedicoBO {
         }
     }
     
+    /**
+     * Obtiene un médico específico mediante su cédula profesional.
+     * @param cedula Cédula profesional del médico.
+     * @return Médico si se encontró.
+     * @throws NegocioException Si hubo un error al consultar el médico.
+     */
     public MedicoViejoDTO obtenerMedicoPorCedula(String cedula) throws NegocioException {
         // Validar que la cedula no sea null
         if (cedula == null) {
@@ -93,6 +202,91 @@ public class MedicoBO {
         } catch (PersistenciaException ex) {
             Logger.getLogger(MedicoBO.class.getName()).log(Level.SEVERE, null, ex);
             throw new NegocioException("No se pudo obtener el registro del médico.");
+        }
+    }
+    
+    /**
+     * Verifica si un médico existe.
+     * @param cedula Cedula profesional del médico.
+     * @return True si el médico existe, false en contrario.
+     * @throws NegocioException Si hubo un error al intentar consultar el médico.
+     */
+    private boolean medicoExiste(String cedula) throws NegocioException {
+        // Validar que la cedula no sea null
+        if (cedula == null) {
+            throw new NegocioException("La cédula profesional no puede ser nula.");
+        }
+        
+        // Verificar si el registro existe o no
+        try {
+            return medicoDAO.obtenerMedico(cedula) != null;
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(MedicoBO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new NegocioException("Hubo un error al consultar existencia de médico.");
+        }
+    }
+    
+    /**
+     * Verifica si un médico cuenta con citas activas.
+     * @param cedula Cédula profesional del médico.
+     * @return True si cuenta con citas activas, false en caso contrario.
+     * @throws NegocioException Si hubo un error al consultar.
+     */
+    private boolean tieneCitasActivas(String cedula) throws NegocioException {
+        // Validar que la cedula no sea null
+        if (cedula == null) {
+            throw new NegocioException("La cédula profesional no puede ser nula.");
+        }
+        
+        try {
+            if (medicoExiste(cedula)) {
+                return medicoDAO.tieneCitasActivas(cedula);
+            }
+            
+            throw new NegocioException("No existe médico con cédula profesional " + cedula + ".");
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(MedicoBO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new NegocioException("Hubo un error al consultar cantidad de citas activas.");
+        }
+    }
+    
+    /**
+     * Obtiene la cantidad de médicos activos.
+     * @return número de médicos activos.
+     * @throws NegocioException Si hubo un error al consultar médicos.
+     */
+    private int cantidadMedicosActivos() throws NegocioException {
+        try {
+            return medicoDAO.contarMedicosActivos();
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(MedicoBO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new NegocioException("No se pudo contar a los médicos áctivos.");
+        }
+    }
+    
+    /**
+     * Cambia el estado de un médico específico.
+     * @param cedula Cédula profesional del médico.
+     * @param nuevoEstado Nuevo estado para cambiar.
+     * @return True si se cambió el estado, false en caso contrario.
+     * @throws PersistenciaException Si hubo un error al intentar cambiar el estado.
+     */
+    private boolean cambiarEstadoMedico(String cedula, String nuevoEstado) throws NegocioException {
+        // Validar que la cedula no sea null
+        if (cedula == null) {
+            throw new NegocioException("La cédula profesional no puede ser nula.");
+        }
+        
+        // Validar el estado nuevo
+        if (nuevoEstado == null || (!"ACTIVO".equals(nuevoEstado) && !"INACTIVO".equals(nuevoEstado))) {
+            throw new NegocioException("El estado no es válido.");
+        }
+        
+        try {
+            return medicoDAO.cambiarEstadoMedico(cedula, nuevoEstado);
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(MedicoBO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new NegocioException("No se pudo cambiar el estado del médico.");
         }
     }
 }

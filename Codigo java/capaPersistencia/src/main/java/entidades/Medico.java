@@ -80,7 +80,18 @@ public class Medico {
         this.estado = estado;
         this.usuario = usuario;
     }
+    
+    /**
+     * Constructor que inicializa todos los atributos excepto el Usuario.
 
+     * @param idMedico Identificador único del médico.
+     * @param nombre Nombre del médico.
+     * @param apellidoPaterno Apellido paterno del médico.
+     * @param apellidoMaterno Apellido materno del médico.
+     * @param especialidad Especialidad médica del médico.
+     * @param cedula Cédula profesional del médico.
+     * @param estado Estado actual del médico.
+     */
     public Medico(int idMedico, String nombre, String apellidoPaterno, String apellidoMaterno, String especialidad, String cedula, String estado) {
         this.idMedico = idMedico;
         this.nombre = nombre;

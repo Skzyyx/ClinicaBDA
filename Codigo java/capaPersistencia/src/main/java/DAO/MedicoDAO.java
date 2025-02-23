@@ -14,19 +14,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Implementación de la interfaz IMedicoDAO.
- * Gestiona el alta y baja de médicos en la base de datos.
+ * Clase MedicoDAO.
+ * Representa el DAO para la clase Medico.
  * 
  * @author 00000207653 Jesus Octavio Amarillas Amaya 
  * @author 00000252574 Jose Luis Islas Molina 
- * @author 00000253301 Isabel Valenzuela Rocha 
+ * @author 00000253301 Isabel Valenzuela Rocha  
  */
 public class MedicoDAO implements IMedicoDAO {
     
@@ -34,39 +33,37 @@ public class MedicoDAO implements IMedicoDAO {
 
     /**
      * Constructor que recibe una conexión a la base de datos.
-     * 
      * @param conexion Objeto de tipo IConexion para gestionar la conexión con la base de datos.
      */
     public MedicoDAO(IConexion conexion) {
         this.conexion = conexion;
     }
-
+    
     /**
-     * Da de alta a un médico en la base de datos.
-     * 
-     * @param medico Objeto Medico con los datos del médico a registrar.
-     * @return true si la operación se realizó con éxito, false en caso contrario.
-     * @throws PersistenciaException Si ocurre un error durante la operación.
+     * Cambia el estado de un médico específico (da de baja o alta).
+     * @param cedula Cédula profesional del médico.
+     * @param nuevoEstado Nuevo estado para cambiar.
+     * @return True si se cambió el estado, false en caso contrario.
+     * @throws PersistenciaException Si hubo un error al intentar cambiar el estado.
      */
     @Override
-    public boolean darAltaMedico(Medico medico) throws PersistenciaException {
-        
+    public boolean cambiarEstadoMedico(String cedula, String nuevoEstado) throws PersistenciaException {
         // Sentencia SQL para llamar al procedimiento almacenado
-        String sentenciaSQL = "CALL darAltaMedico(?)";
+        String sentenciaSQL = "CALL cambiarEstadoMedico(?, ?)";
         
         // Se abre la conexión y se prepara la sentencia
         try (Connection con = conexion.crearConexion();
                 CallableStatement cs = con.prepareCall(sentenciaSQL)) {
             
-            // Se establece el ID del médico a dar de alta
-            cs.setInt(1, medico.getIdMedico());
+            // Se establece la cedula y el estado nuevo
+            cs.setString(1, cedula);
+            cs.setString(2, nuevoEstado);
             
             // Se ejecuta la consulta
             cs.executeUpdate();
             
             // Si llega aquí, el médico fue dado de alta con éxito.
             return true;
-            
         } catch (SQLException ex) {
             Logger.getLogger(MedicoDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new PersistenciaException("No se pudo dar de alta al médico.");
@@ -74,46 +71,12 @@ public class MedicoDAO implements IMedicoDAO {
     }
 
     /**
-     * Da de baja a un médico en la base de datos.
-     * 
-     * @param medico Objeto Medico con los datos del médico a eliminar.
-     * @return true si la operación se realizó con éxito, false en caso contrario.
-     * @throws PersistenciaException Si ocurre un error durante la operación.
-     */
-    @Override
-    public boolean darBajaMedico(Medico medico) throws PersistenciaException {
-        
-        // Sentencia SQL para llamar al procedimiento almacenado
-        String sentenciaSQL = "CALL darBajaMedico(?)";
-        
-        // Se abre la conexión y se prepara la sentencia
-        try (Connection con = conexion.crearConexion();
-                CallableStatement cs = con.prepareCall(sentenciaSQL)) {
-            
-            // Se establece el ID del médico a dar de baja
-            cs.setInt(1, medico.getIdMedico());
-            
-            // Se ejecuta la consulta
-            cs.executeUpdate();
-            
-            // Si llega aquí, el médico fue dado de baja con éxito.
-            return true;
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(MedicoDAO.class.getName()).log(Level.SEVERE, null, ex);
-            throw new PersistenciaException("No se pudo dar de baja al médico.");
-        }
-    }
-    
-    /**
-     * Obtiene una lista con todos los medicos activos
-     * 
-     * @return una lista con todos los medicos activos.
-     * @throws PersistenciaException Si ocurre un error durante la consulta.
+     * Obtiene los registros de todos los médicos.
+     * @return Lista con los registros de los médicos encontrados.
+     * @throws PersistenciaException Si hubo un error al consultar los médicos.
      */
     @Override
     public List<Medico> obtenerMedicos() throws PersistenciaException {
-        
         // Se crea la lista a devolver
         List<Medico> medicos = new ArrayList<>();
         
@@ -137,8 +100,7 @@ public class MedicoDAO implements IMedicoDAO {
                         rs.getString("apellidoMaterno"),
                         rs.getString("especialidad"), 
                         rs.getString("cedula"), 
-                            "ACTIVO",
-                            null));
+                            "ACTIVO"));
                 }
             }
             
@@ -151,8 +113,7 @@ public class MedicoDAO implements IMedicoDAO {
     }
 
     /**
-     * Obtiene una lista con todas las especialidades médicas
-     * 
+     * Obtiene una lista con todas las especialidades médicas.
      * @return una lista con todos las especialidades médicas.
      * @throws PersistenciaException Si ocurre un error durante la consulta.
      */
@@ -185,6 +146,11 @@ public class MedicoDAO implements IMedicoDAO {
         }
     }
     
+    /**
+     * Obtiene los registros de todos los médicos.
+     * @return Lista con los registros de los médicos encontrados.
+     * @throws PersistenciaException Si hubo un error al consultar los médicos.
+     */
     @Override
     public Medico obtenerMedico(String cedula) throws PersistenciaException {
         Medico medico = null;
@@ -232,8 +198,12 @@ public class MedicoDAO implements IMedicoDAO {
         return medico;
     }
 
-
-
+    /**
+     * Obtiene los horarios asociados a un médico específico.
+     * @param id Id del médico a consultar.
+     * @return Lista con los horarios del médico.
+     * @throws PersistenciaException Si hubo un error al consultar los horarios.
+     */
     @Override
     public List<Horario> obtenerHorariosMedicoPorID(int id) throws PersistenciaException {
         List<Horario> horarios = new ArrayList<>();
@@ -249,7 +219,6 @@ public class MedicoDAO implements IMedicoDAO {
             
             //Intenta la Busqueda
             try (ResultSet rs =cb.executeQuery()){
-                
                 while (rs.next()){
                     horarios.add(new Horario(
                         rs.getString("diaSemana"),
@@ -264,15 +233,70 @@ public class MedicoDAO implements IMedicoDAO {
                 Logger.getLogger(MedicoDAO.class.getName()).log(Level.SEVERE, null, ex);
                 throw new PersistenciaException("Error inesperado: " + ex.getMessage());
             }
-            
-            
-            
         } catch (SQLException ex) {
             Logger.getLogger(MedicoDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new PersistenciaException("Error al consultar el Horario "+ ex.getMessage());
         }
     }
-
-
+    
+    /**
+     * Cuenta la cantidad de médicos que se encuentren activos.
+     * @return Cantidad de médicos con estado "ACTIVO".
+     * @throws excepciones.PersistenciaException Si hubo un error al contar médicos.
+     */
+    @Override
+    public int contarMedicosActivos() throws PersistenciaException {
+        String sentenciaSQL = "SELECT contarMedicosActivos()";
+        int cantidadMedicosActivos = 0;
+        
+        // Intenta la conexión
+        try (Connection con = conexion.crearConexion();
+             PreparedStatement ps = con.prepareStatement(sentenciaSQL)) {
+            
+            // Intenta la búsqueda
+            try (ResultSet rs = ps.executeQuery()) {
+                // Si encontró coincidencia
+                if (rs.next()) {
+                    // Asignar el valor obtenido a la variable
+                    cantidadMedicosActivos = rs.getInt(1);
+                }
+            }
+        return cantidadMedicosActivos;
+        // Si ocurre un error
+        } catch (Exception e) {
+            throw new PersistenciaException("Error al contar médicos activos: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Verifica si un médico específico tiene citas activas.
+     * @param cedula Cédula profesional del médico a consultar.
+     * @return True si tiene citas activas, false en caso contrario.
+     * @throws PersistenciaException Si hubo un error al consultar.
+     */
+    @Override
+    public boolean tieneCitasActivas(String cedula) throws PersistenciaException {
+        String sentenciaSQL = "SELECT citasActivasMedico(?)";
+        
+        // Intenta la conexión
+        try (Connection con = conexion.crearConexion();
+             PreparedStatement ps = con.prepareStatement(sentenciaSQL)) {
+            
+            // Asignar el parámetro a la consulta
+            ps.setString(1, cedula);
+            
+            // Intenta la búsqueda
+            try (ResultSet rs = ps.executeQuery()) {
+                // Si encontró coincidencia
+                if (rs.next()) {
+                    // Regresar si tiene más de 0 citas
+                    return rs.getInt(1) > 0;
+                }
+            }
+            return false;
+        // Si ocurre un error
+        } catch (Exception e) {
+            throw new PersistenciaException("Error al contar médicos activos: " + e.getMessage());
+        }
+    }
 }
-
