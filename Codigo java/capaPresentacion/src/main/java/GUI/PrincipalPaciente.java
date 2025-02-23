@@ -26,6 +26,7 @@ public class PrincipalPaciente extends javax.swing.JFrame {
     private VerPerfilPaciente verPerfilPacienteFrame;
     private InicioDeSesion iniciarSesionFrame;
     private AgendarCita agendarCita;
+    private VerHistorialPaciente historialPacienteFrame;
     
     /**
      * Creates new form InicioDeSesion
@@ -68,7 +69,14 @@ public class PrincipalPaciente extends javax.swing.JFrame {
     public void setIniciarSesionFrame(InicioDeSesion iniciarSesionFrame) {
         this.iniciarSesionFrame = iniciarSesionFrame;
     }
-    
+
+    public VerHistorialPaciente getHistorialPacienteFrame() {
+        return historialPacienteFrame;
+    }
+
+    public void setHistorialPacienteFrame(VerHistorialPaciente historialPacienteFrame) {
+        this.historialPacienteFrame = historialPacienteFrame;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -84,7 +92,6 @@ public class PrincipalPaciente extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         btnAgendarCita = new javax.swing.JButton();
         btnCancelarCita = new javax.swing.JButton();
-        btnHistorial = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         lbNombre = new javax.swing.JLabel();
         iconPaciente = new javax.swing.JLabel();
@@ -123,17 +130,6 @@ public class PrincipalPaciente extends javax.swing.JFrame {
         btnCancelarCita.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelarCitaActionPerformed(evt);
-            }
-        });
-
-        btnHistorial.setBackground(new java.awt.Color(0, 0, 0));
-        btnHistorial.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
-        btnHistorial.setForeground(new java.awt.Color(255, 255, 255));
-        btnHistorial.setText("Consultar historial");
-        btnHistorial.setPreferredSize(new java.awt.Dimension(150, 30));
-        btnHistorial.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHistorialActionPerformed(evt);
             }
         });
 
@@ -189,14 +185,9 @@ public class PrincipalPaciente extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(245, 245, 245)
-                        .addComponent(btnHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(106, 106, 106)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addGap(106, 106, 106)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 154, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(btnVerHistorial, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
@@ -216,10 +207,7 @@ public class PrincipalPaciente extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addGap(47, 47, 47)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(517, 517, 517)
-                        .addComponent(btnHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(9, 9, 9)
                         .addComponent(btnAgendarCita, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -229,7 +217,7 @@ public class PrincipalPaciente extends javax.swing.JFrame {
                         .addComponent(btnVerHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(103, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -265,10 +253,6 @@ public class PrincipalPaciente extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnAgendarCitaActionPerformed
 
-    private void btnHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHistorialActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnHistorialActionPerformed
-
     private void btnVerPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerPerfilActionPerformed
         try {
             verPerfil();
@@ -278,7 +262,7 @@ public class PrincipalPaciente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVerPerfilActionPerformed
 
     private void btnVerHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerHistorialActionPerformed
-        // TODO add your handling code here:
+        verHistorial();
     }//GEN-LAST:event_btnVerHistorialActionPerformed
 
     private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
@@ -329,7 +313,6 @@ public class PrincipalPaciente extends javax.swing.JFrame {
     private javax.swing.JButton btnAgendarCita;
     private javax.swing.JButton btnCancelarCita;
     private javax.swing.JButton btnCerrarSesion;
-    private javax.swing.JButton btnHistorial;
     private javax.swing.JButton btnVerHistorial;
     private javax.swing.JButton btnVerPerfil;
     private javax.swing.JLabel fondoCredencial;
@@ -353,6 +336,20 @@ public class PrincipalPaciente extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Ocurrió un error interno. Se ha cerrado la sesión.", "Error", JOptionPane.ERROR_MESSAGE);
             cerrarSesion();
+        }
+    }
+    
+    /**
+     * Envía a la pestaña de ver historial de consultas
+     */
+    private void verHistorial(){
+        try {
+            VerHistorialPaciente historialPaciente = VerHistorialPaciente.getInstance();
+            historialPaciente.setPrincipalPacienteFrame(this);
+            historialPaciente.setVisible(true);
+            this.setVisible(false);
+        } catch (NegocioException ex) {
+            Logger.getLogger(VerHistorialPaciente.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

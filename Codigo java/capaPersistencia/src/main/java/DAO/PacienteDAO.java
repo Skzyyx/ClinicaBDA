@@ -7,6 +7,7 @@ package DAO;
 import DTO.PerfilDTO;
 import conexion.IConexion;
 import entidades.Cita;
+import entidades.Consulta;
 import entidades.Direccion;
 import entidades.Medico;
 import entidades.Paciente;
@@ -393,5 +394,66 @@ public class PacienteDAO implements IPacienteDAO {
             Logger.getLogger(PacienteDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return citas;
+    }
+    
+    @Override
+    public List<Consulta> obtenerConsultasPaciente(String email) {
+        String sentenciaSQL = "CALL obtenerConsultasPaciente(?)";
+        List<Consulta> consultas = new ArrayList<>();
+        
+        // Intenta la conexión
+        try (Connection con = conexion.crearConexion();
+             CallableStatement cb = con.prepareCall(sentenciaSQL)) {
+            
+            // Se setea el valor del id a buscar
+            cb.setString(1, email);
+            
+            // Intenta la consulta
+            try (ResultSet rs = cb.executeQuery()) { 
+                // Si se encontró registro
+                while (rs.next()) {
+                    Paciente paciente = new Paciente ();
+                    paciente.setIdPaciente(rs.getInt(11));
+                    
+                    Medico medico = new Medico();
+                    medico.setIdMedico(rs.getInt(12));
+                    medico.setNombre(rs.getString(13));
+                    medico.setApellidoPaterno(rs.getString(14));
+                    medico.setApellidoPaterno(rs.getString(15));
+                    medico.setEspecialidad(rs.getString(16));
+                    
+                    Cita cita = new Cita(
+                        rs.getInt(6),
+                        rs.getTimestamp(7).toLocalDateTime(),
+                        rs.getString(8),
+                        rs.getString(9),
+                        rs.getString(10),
+                        paciente,
+                        medico
+                    );
+                    
+                    Consulta consulta = new Consulta(
+                            rs.getInt(1),
+                            rs.getString(2),
+                            rs.getString(3),
+                            rs.getString(4),
+                            rs.getString(5),
+                            cita
+                    );
+                    
+                    consultas.add(consulta);
+                }
+            }
+        // Si ocurre un error
+        } catch (SQLException e) {
+            try {
+                throw new PersistenciaException("Error al consultar citas: " + e.getMessage());
+            } catch (PersistenciaException ex) {
+                Logger.getLogger(PacienteDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(PacienteDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return consultas;
     }
 }

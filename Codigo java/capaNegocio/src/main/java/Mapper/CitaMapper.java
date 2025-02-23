@@ -6,7 +6,6 @@ package Mapper;
 
 import DTO.CitaNuevoDTO;
 import DTO.CitaViejoDTO;
-import DTO.MedicoNuevoDTO;
 import DTO.MedicoViejoDTO;
 import DTO.PacienteNuevoDTO;
 import DTO.PacienteViejoDTO;
@@ -47,7 +46,7 @@ public class CitaMapper {
         MedicoViejoDTO medicoViejo = mapperMedico.toViejoDTO(cita.getMedico());
         
         return new CitaViejoDTO(
-                cita.getIdCita(),
+                String.valueOf(cita.getIdCita()),
                 cita.getFechaHoraInicio(),
                 cita.getEstado(),
                 cita.getFolio(),

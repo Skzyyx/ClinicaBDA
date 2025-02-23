@@ -79,6 +79,17 @@ public class Cita {
         this.medico = medico;
     }
 
+    public Cita(int idCita, LocalDateTime fechaHoraInicio, String estado, String folio, String tipo, Medico medico) {
+        this.idCita = idCita;
+        this.fechaHoraInicio = fechaHoraInicio;
+        this.estado = estado;
+        this.folio = folio;
+        this.tipo = tipo;
+        this.medico = medico;
+    }
+    
+    
+
     /**
      * Obtiene el identificador de la cita.
      * @return Identificador de la cita

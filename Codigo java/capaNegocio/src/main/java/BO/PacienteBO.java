@@ -7,16 +7,19 @@ package BO;
 import DAO.IPacienteDAO;
 import DAO.PacienteDAO;
 import DTO.CitaViejoDTO;
+import DTO.ConsultaViejoDTO;
 import DTO.PacienteNuevoDTO;
 import DTO.PacienteViejoDTO;
 import DTO.PerfilDTO;
 import DTO.PerfilViejoDTO;
 import Exception.NegocioException;
 import Mapper.CitaMapper;
+import Mapper.ConsultaMapper;
 import Mapper.PacienteMapper;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import conexion.IConexion;
 import entidades.Cita;
+import entidades.Consulta;
 import entidades.Paciente;
 import excepciones.PersistenciaException;
 import java.time.LocalDate;
@@ -43,6 +46,7 @@ public class PacienteBO {
     // Creacion y uso del mapper/convertidor que se encargara de convertir los DTO a Entidades
     private final PacienteMapper mapper = new PacienteMapper();
     private final CitaMapper mapperCita = new CitaMapper();
+    private final ConsultaMapper mapperConsulta = new ConsultaMapper();
 
     /**
      * Constructor de la clase PacienteBO
@@ -468,6 +472,21 @@ public class PacienteBO {
             List<Cita> citasActivas = pacienteDAO.obtenerCitasActivasPaciente(email);
             
             return mapperCita.toViejoDTOList(citasActivas);
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(MedicoBO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new NegocioException("No se pudo obtener los médicos");
+        }
+    }
+    
+    public List<ConsultaViejoDTO> obtenerConsultasPaciente(String email) throws NegocioException {
+        if (email == null) {
+            throw new NegocioException("El correo electrónico no puede ser nulo.");
+        }
+        
+        try {
+            List<Consulta> consultas = pacienteDAO.obtenerConsultasPaciente(email);
+            
+            return mapperConsulta.toViejoDTOList(consultas);
         } catch (PersistenciaException ex) {
             Logger.getLogger(MedicoBO.class.getName()).log(Level.SEVERE, null, ex);
             throw new NegocioException("No se pudo obtener los médicos");

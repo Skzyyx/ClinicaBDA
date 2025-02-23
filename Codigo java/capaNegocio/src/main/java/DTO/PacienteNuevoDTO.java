@@ -4,8 +4,6 @@
  */
 package DTO;
 
-import entidades.Direccion;
-import entidades.Usuario;
 import java.time.LocalDate;
 
 /**

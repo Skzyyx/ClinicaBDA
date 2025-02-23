@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 /**
- * Clase Usuario.
+ * Clase Paciente.
  * Maneja la entidad Paciente, usado para guardar los datos de un paciente.
  * 
  * @author 00000207653 Jesus Octavio Amarillas Amaya 
@@ -99,7 +99,7 @@ public class Paciente {
         this.email = email;
         this.telefono = telefono;
     }
-
+    
     /**
      * Método getIdPaciente().
      * Obtiene el id del paciente

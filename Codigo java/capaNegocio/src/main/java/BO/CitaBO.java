@@ -5,8 +5,8 @@
 package BO;
 
 import DAO.CitaDAO;
+import DAO.ICitaDAO;
 import DTO.CitaNuevoDTO;
-import DTO.CitaViejoDTO;
 import Exception.NegocioException;
 import Mapper.CitaMapper;
 import conexion.IConexion;
@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  */
 public class CitaBO {
     
-    private CitaDAO citaDAO;
+    private ICitaDAO citaDAO;
     
     private CitaMapper citaMapper = new CitaMapper();
 

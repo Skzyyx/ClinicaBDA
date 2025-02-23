@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  */
 public class CitaViejoDTO {
     /** Identificador único de la cita. */
-    private int idCita;
+    private String idCita;
     /** Fecha y hora del inicio de la cita. */
     private LocalDateTime fechaHoraInicio;
     /** Estado actual de la cita (pendiente, confirmada, cancelada, etc.). */
@@ -29,7 +29,7 @@ public class CitaViejoDTO {
     public CitaViejoDTO() {
     }
     
-    public CitaViejoDTO(int idCita, LocalDateTime fechaHoraInicio, String estado, String folio, String tipo, PacienteViejoDTO paciente, MedicoViejoDTO medico) {
+    public CitaViejoDTO(String idCita, LocalDateTime fechaHoraInicio, String estado, String folio, String tipo, PacienteViejoDTO paciente, MedicoViejoDTO medico) {
         this.idCita = idCita;
         this.fechaHoraInicio = fechaHoraInicio;
         this.estado = estado;
@@ -39,11 +39,11 @@ public class CitaViejoDTO {
         this.medico = medico;
     }
 
-    public int getIdCita() {
+    public String getIdCita() {
         return idCita;
     }
 
-    public void setIdCita(int idCita) {
+    public void setIdCita(String idCita) {
         this.idCita = idCita;
     }
 

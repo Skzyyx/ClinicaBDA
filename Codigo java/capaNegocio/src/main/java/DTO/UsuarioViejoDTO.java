@@ -14,7 +14,7 @@ package DTO;
  */
 public class UsuarioViejoDTO {
     /** Identificador único del usuario. */
-    private int idUsuario;
+    private String idUsuario;
     /** User (email para paciente, cédula profesional para médico). */
     private String usuario;
     /** Contraseña del usuario. */
@@ -35,18 +35,18 @@ public class UsuarioViejoDTO {
      * @param contrasenia Contraseña del usuario.
      * @param rol Rol del usuario.
      */
-    public UsuarioViejoDTO(int idUsuario, String usuario, String contrasenia, String rol) {
+    public UsuarioViejoDTO(String idUsuario, String usuario, String contrasenia, String rol) {
         this.idUsuario = idUsuario;
         this.usuario = usuario;
         this.contrasenia = contrasenia;
         this.rol = rol;
     }
 
-    public int getIdUsuario() {
+    public String getIdUsuario() {
         return idUsuario;
     }
 
-    public void setIdUsuario(int idUsuario) {
+    public void setIdUsuario(String idUsuario) {
         this.idUsuario = idUsuario;
     }
 

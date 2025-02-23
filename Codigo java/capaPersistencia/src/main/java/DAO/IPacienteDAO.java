@@ -6,6 +6,7 @@ package DAO;
 
 import DTO.PerfilDTO;
 import entidades.Cita;
+import entidades.Consulta;
 import entidades.Paciente;
 import excepciones.PersistenciaException;
 import java.util.List;
@@ -78,7 +79,9 @@ public interface IPacienteDAO {
      * Edita los datos de un paciente, excepto la contraseña
      * @param paciente Paciente para editar
      * @return True si se editó el registro, false en caso contrario.
-     * @throws excepciones.PersistenciaExceptionSi hubo un error al editar los datos.
+     * @throws excepciones.PersistenciaException Si hubo un error al editar los datos.
      */
     public boolean editarDatosSinContraPaciente(Paciente paciente) throws PersistenciaException;
+    
+    public List<Consulta> obtenerConsultasPaciente(String email) throws PersistenciaException;
 }

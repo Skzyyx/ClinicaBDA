@@ -8,7 +8,6 @@ import BO.PacienteBO;
 import DTO.DireccionNuevoDTO;
 import DTO.PacienteNuevoDTO;
 import DTO.PacienteViejoDTO;
-import DTO.PerfilViejoDTO;
 import DTO.UsuarioNuevoDTO;
 import Exception.NegocioException;
 import configuracion.DependencyInjector;
@@ -16,7 +15,6 @@ import excepciones.PersistenciaException;
 import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import sesion.SessionManager;
 

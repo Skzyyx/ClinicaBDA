@@ -38,7 +38,7 @@ public class UsuarioMapper {
         if (usuario == null) return null;
 
         return new UsuarioViejoDTO(
-                usuario.getIdUsuario(),
+                String.valueOf(usuario.getIdUsuario()),
                 usuario.getUsuario(),
                 usuario.getContrasenia(),
                 usuario.getRol()
