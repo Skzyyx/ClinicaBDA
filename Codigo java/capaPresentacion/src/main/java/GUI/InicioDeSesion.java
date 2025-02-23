@@ -308,9 +308,6 @@ public class InicioDeSesion extends javax.swing.JFrame {
             
             // Intentar autenticar las credenciales
             boolean autenticado = usuarioBO.autenticarSesion(sesion);
-              
-            System.out.println(SessionManager.getInstance().getUser());
-            System.out.println(SessionManager.getInstance().getRol());
             
             // Si las credenciales son válidas
             if (autenticado) {
@@ -334,14 +331,20 @@ public class InicioDeSesion extends javax.swing.JFrame {
         }  
     }  
     
+    /**
+     * Envía a la pestaña registrar paciente
+     */
     private void registrarPaciente() {
-        // Obtener la instancia única del formulario de registro
         RegistrarPacienteForm registro = RegistrarPacienteForm.getInstance();
         registro.setInicioSesionFrame(this);
         registro.setVisible(true);
         this.setVisible(false);
     }
     
+    /**
+     * Envía a la pestana menú principal de paciente
+     * @throws NegocioException Si hubo un error
+     */
     private void principalPaciente() throws NegocioException {
         PrincipalPaciente principalPaciente = PrincipalPaciente.getInstance();
         principalPaciente.setIniciarSesionFrame(this);
@@ -349,6 +352,10 @@ public class InicioDeSesion extends javax.swing.JFrame {
         this.setVisible(false);
     }
     
+    /**
+     * Envía a la pestana menú principal de médico
+     * @throws NegocioException Si hubo un error
+     */
     private void principalMedico() throws NegocioException {
         PrincipalMedico principalMedico = PrincipalMedico.getInstance();
         principalMedico.setIniciarSesionFrame(this);
@@ -356,5 +363,3 @@ public class InicioDeSesion extends javax.swing.JFrame {
         this.setVisible(false);
     }
 }
-
-
