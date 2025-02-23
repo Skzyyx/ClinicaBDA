@@ -123,7 +123,7 @@ DELIMITER ;
 
 -- Vista todasLasEspecialidades
 -- Muestra todas las especialidades existentes de médicos
-CREATE OR REPLACE VIEW todasLasEspecialides AS 
+CREATE OR REPLACE VIEW todasLasEspecialidades AS 
 SELECT DISTINCT
 	especialidad
 FROM medicos;
