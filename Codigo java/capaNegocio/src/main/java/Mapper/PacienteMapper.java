@@ -5,11 +5,13 @@
 package Mapper;
 
 import DTO.DireccionNuevoDTO;
+import DTO.DireccionViejoDTO;
 import DTO.PacienteNuevoDTO;
 import DTO.PacienteViejoDTO;
 import DTO.PerfilDTO;
 import DTO.PerfilViejoDTO;
 import DTO.UsuarioNuevoDTO;
+import DTO.UsuarioViejoDTO;
 import entidades.Direccion;
 import entidades.Paciente;
 import entidades.Usuario;
@@ -48,6 +50,25 @@ public class PacienteMapper {
             pacienteNuevo.getFechaNacimiento(),
             pacienteNuevo.getEmail(),
             pacienteNuevo.getTelefono(),
+            usuario,
+            direccion
+        );
+    }
+    
+    public Paciente toEntity(PacienteViejoDTO pacienteViejo) {
+        if (pacienteViejo == null) return null;
+        
+        Usuario usuario = mapperUsuario.toEntity(pacienteViejo.getUsuario());
+        Direccion direccion = mapperDireccion.toEntity(pacienteViejo.getDireccion());
+        
+        return new Paciente(
+            Integer.parseInt(pacienteViejo.getIdPaciente()),
+            pacienteViejo.getNombre(),
+            pacienteViejo.getApellidoPaterno(),
+            pacienteViejo.getApellidoMaterno(),
+            pacienteViejo.getFechaNacimiento(),
+            pacienteViejo.getEmail(),
+            pacienteViejo.getTelefono(),
             usuario,
             direccion
         );
@@ -95,6 +116,9 @@ public class PacienteMapper {
         
         if (paciente == null) return null;
         
+        UsuarioViejoDTO usuario = mapperUsuario.toViejoDTO(paciente.getUsuario());
+        DireccionViejoDTO direccion = mapperDireccion.toViejoTO(paciente.getDireccion());
+                
         return new PacienteViejoDTO(
                 String.valueOf(paciente.getIdPaciente()), 
                 paciente.getNombre(), 
@@ -103,8 +127,8 @@ public class PacienteMapper {
                 paciente.getFechaNacimiento(), 
                 paciente.getEmail(), 
                 paciente.getTelefono(), 
-                paciente.getUsuario(), 
-                paciente.getDireccion()
+                usuario, 
+                direccion
         );
     }
     

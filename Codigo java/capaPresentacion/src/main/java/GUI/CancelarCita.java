@@ -23,6 +23,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.sql.Timestamp;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -106,9 +107,16 @@ public class CancelarCita extends javax.swing.JFrame {
                 "idCita", "Medico", "Especialidad", "Fecha", "Hora"
             }
         ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class
+            };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false
             };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -249,8 +257,12 @@ public class CancelarCita extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        CitaViejoDTO cita = new CitaViejoDTO();
-        cita.setIdCita(String.valueOf(jTable1.getValueAt(jTable1.getSelectedRow(), 0)));
+        if (jTable1.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(this, "Debes seleccionar una cita.", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        cancelarCita();
+        cargarCitas();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -309,17 +321,56 @@ public class CancelarCita extends javax.swing.JFrame {
             List<CitaViejoDTO> citas = pacienteBO.obtenerCitasActivasPaciente(SessionManager.getInstance().getUser());
 
             for (CitaViejoDTO cita : citas) {
-                
-                    modelo.addRow(new Object[]{
-                        cita.getIdCita(),
-                        cita.getMedico().getNombre() + " " + cita.getMedico().getApellidoPaterno(),
-                        cita.getMedico().getEspecialidad(),
-                        cita.getFechaHoraInicio().toLocalDate(),
-                        cita.getFechaHoraInicio().toLocalTime()
-                    });
+                    if (!cita.getTipo().equalsIgnoreCase("EMERGENCIA")) {
+                        modelo.addRow(new Object[]{
+                            cita.getIdCita(),
+                            cita.getMedico().getNombre() + " " + cita.getMedico().getApellidoPaterno(),
+                            cita.getMedico().getEspecialidad(),
+                            cita.getFechaHoraInicio().toLocalDate(),
+                            cita.getFechaHoraInicio().toLocalTime()
+                        });
+                    }
                 }
             } catch (NegocioException ex) {
             Logger.getLogger(CancelarCita.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void cancelarCita() {
+        int resultado = JOptionPane.showConfirmDialog(this, "¿Estas seguro que deseas cancelar la cita?", "Cacenlar cita", JOptionPane.YES_NO_OPTION);
+        
+        if (resultado == JOptionPane.YES_OPTION) {
+            int filaSeleccionada = jTable1.getSelectedRow();
+            
+            // Convertir el valor de la tabla a String
+            String valorFecha = jTable1.getValueAt(filaSeleccionada, 3).toString();
+            String valorHora = jTable1.getValueAt(filaSeleccionada, 4).toString();
+            
+            // Combinar ambas cadenas en una única cadena en formato ISO
+            String fechaHoraCombinada = valorFecha + "T" + valorHora;
+
+            // Convertir a LocalDateTime usando el formateador ISO
+            LocalDateTime fechaInicio = LocalDateTime.parse(fechaHoraCombinada, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+            long duracionHoras = Duration.between(LocalDateTime.now(), fechaInicio).toHours();
+            
+            if (duracionHoras >= 24) {
+                JOptionPane.showConfirmDialog(this, "Solo puedes cancelar citas 24 horas antes de su horario.", "Error", JOptionPane.OK_OPTION);
+                return;
+            }
+            
+            try {
+                CitaViejoDTO cita = new CitaViejoDTO();
+                cita.setIdCita(String.valueOf(jTable1.getValueAt(jTable1.getSelectedRow(), 0)));
+
+                boolean resultadoCita = citaBO.cancelarCita(cita);
+                
+                if (resultadoCita) {
+                    JOptionPane.showMessageDialog(this, "La cita fue cancelada exitosamente");
+                }
+            } catch (NegocioException ex) {
+                Logger.getLogger(CancelarCita.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error inesperado", JOptionPane.OK_OPTION);
+            }
         }
     }
 }

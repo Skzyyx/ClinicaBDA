@@ -39,6 +39,23 @@ public class CitaMapper {
         );
     }
     
+    public Cita toEntity(CitaViejoDTO citaViejo) {
+        if (citaViejo == null) return null;
+        
+        Paciente paciente = mapperPaciente.toEntity(citaViejo.getPaciente());
+        Medico medico = mapperMedico.toEntity(citaViejo.getMedico());
+        
+        return new Cita(
+                Integer.parseInt(citaViejo.getIdCita()),
+                citaViejo.getFechaHoraInicio(),
+                citaViejo.getEstado(),
+                citaViejo.getFolio(),
+                citaViejo.getTipo(),
+                paciente,
+                medico
+        );
+    }
+    
     public CitaViejoDTO toViejoDTO (Cita cita) {
         if (cita == null) return null;
         

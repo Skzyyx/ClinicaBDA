@@ -38,7 +38,7 @@ public interface ICitaDAO {
     
     public boolean verificarCitaExiste(Timestamp fechaHoraInicio, int idMedico) throws PersistenciaException;
     
-    
+    public boolean cancelarCita(Cita cita) throws PersistenciaException;
     
 }
 

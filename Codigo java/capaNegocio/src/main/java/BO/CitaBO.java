@@ -7,6 +7,7 @@ package BO;
 import DAO.CitaDAO;
 import DAO.ICitaDAO;
 import DTO.CitaNuevoDTO;
+import DTO.CitaViejoDTO;
 import Exception.NegocioException;
 import Mapper.CitaMapper;
 import conexion.IConexion;
@@ -56,6 +57,18 @@ public class CitaBO {
         }
         
             return citaDAO.verificarCitaExiste(fechaHoraInicio, Integer.parseInt(idMedico));
+    }
+    
+    public boolean cancelarCita(CitaViejoDTO citaViejo) throws NegocioException {
+        if (citaViejo.getIdCita() == null) {
+            throw new NegocioException("El id de la cita no puede ser nulo.");
+        }
+        try {
+            return citaDAO.cancelarCita(citaMapper.toEntity(citaViejo));
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(CitaBO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new NegocioException("No se pudo cancelar la cita.");
+        }
     }
     
 }

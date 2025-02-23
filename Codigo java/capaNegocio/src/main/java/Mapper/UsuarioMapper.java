@@ -24,6 +24,17 @@ public class UsuarioMapper {
         );
     }
     
+    public Usuario toEntity(UsuarioViejoDTO usuarioViejo) {
+        if (usuarioViejo == null) return null;
+        
+        return new Usuario(
+                Integer.parseInt(usuarioViejo.getIdUsuario()),
+                usuarioViejo.getUsuario(),
+                usuarioViejo.getContrasenia(),
+                usuarioViejo.getRol()
+        );
+    }
+    
     public UsuarioNuevoDTO toNuevoDTO(Usuario usuario) {
         if (usuario == null) return null;
       

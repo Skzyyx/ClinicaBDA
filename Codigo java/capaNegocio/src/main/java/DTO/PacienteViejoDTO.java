@@ -33,9 +33,9 @@ public class PacienteViejoDTO {
     /* Teléfono del paciente. */
     private String telefono;
     /* Usuario asociado al paciente. */
-    private Usuario usuario;
+    private UsuarioViejoDTO usuario;
     /* Dirección del paciente. */
-    private Direccion direccion;
+    private DireccionViejoDTO direccion;
     
     /**
      * Constructor de la clase PacienteViejoDTO con todos los atributos, incluido el ID del paciente.
@@ -51,7 +51,7 @@ public class PacienteViejoDTO {
      * @param direccion El objeto Direccion relacionado con el paciente.
      */
 
-    public PacienteViejoDTO(String idPaciente, String nombre, String apellidoPaterno, String apellidoMaterno, LocalDate fechaNacimiento, String email, String telefono, Usuario usuario, Direccion direccion) {
+    public PacienteViejoDTO(String idPaciente, String nombre, String apellidoPaterno, String apellidoMaterno, LocalDate fechaNacimiento, String email, String telefono, UsuarioViejoDTO usuario, DireccionViejoDTO direccion) {
         this.idPaciente = idPaciente;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
@@ -75,7 +75,7 @@ public class PacienteViejoDTO {
      * @param usuario El objeto Usuario relacionado con el paciente.
      * @param direccion El objeto Direccion relacionado con el paciente.
      */
-    public PacienteViejoDTO(String nombre, String apellidoPaterno, String apellidoMaterno, LocalDate fechaNacimiento, String email, String telefono, Usuario usuario, Direccion direccion) {
+    public PacienteViejoDTO(String nombre, String apellidoPaterno, String apellidoMaterno, LocalDate fechaNacimiento, String email, String telefono, UsuarioViejoDTO usuario, DireccionViejoDTO direccion) {
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
@@ -221,7 +221,7 @@ public class PacienteViejoDTO {
      * 
      * @return El objeto Usuario relacionado con el paciente.
      */
-    public Usuario getUsuario() {
+    public UsuarioViejoDTO getUsuario() {
         return usuario;
     }
 
@@ -230,7 +230,7 @@ public class PacienteViejoDTO {
      * 
      * @param usuario El objeto Usuario relacionado con el paciente.
      */
-    public void setUsuario(Usuario usuario) {
+    public void setUsuario(UsuarioViejoDTO usuario) {
         this.usuario = usuario;
     }
 
@@ -239,7 +239,7 @@ public class PacienteViejoDTO {
      * 
      * @return El objeto Direccion relacionado con el paciente.
      */
-    public Direccion getDireccion() {
+    public DireccionViejoDTO getDireccion() {
         return direccion;
     }
 
@@ -248,7 +248,7 @@ public class PacienteViejoDTO {
      * 
      * @param direccion El objeto Direccion relacionado con el paciente.
      */
-    public void setDireccion(Direccion direccion) {
+    public void setDireccion(DireccionViejoDTO direccion) {
         this.direccion = direccion;
     }
 

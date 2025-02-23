@@ -121,6 +121,27 @@ public class CitaDAO implements ICitaDAO {
             throw new PersistenciaException("Error a obtener el resultado.");
         }
     }
+
+    @Override
+    public boolean cancelarCita(Cita cita) throws PersistenciaException {
+        
+        String sql = "CALL cancelarCita(?)";
+        
+        try (Connection con = conexion.crearConexion();
+                CallableStatement cs = con.prepareCall(sql)) {
+            
+            cs.setInt(1, cita.getIdCita());
+            
+            int resultado = cs.executeUpdate();
+            
+            if (resultado > 0) return true;
+            
+            return false;
+        } catch (SQLException ex) {
+            Logger.getLogger(CitaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PersistenciaException("Error al cancelar la cita.");
+        }
+    }
     
     
     

@@ -90,5 +90,14 @@ END$$
 
 DELIMITER ;
 
+DELIMITER $$
+CREATE PROCEDURE cancelarCita(
+	IN id_cita INT
+)
+BEGIN
+	UPDATE citas SET estado = 'CANCELADA' WHERE idCita = id_cita;
+END$$
+DELIMITER ;
+
 CALL verificarCitaExiste('2025-02-22 17:30:00', 1, @existeCita);
 SELECT @existeCita;
