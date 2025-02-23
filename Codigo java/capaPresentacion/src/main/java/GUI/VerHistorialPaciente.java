@@ -156,8 +156,8 @@ public class VerHistorialPaciente extends javax.swing.JFrame {
 
         dpInicio.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI Semilight", 1, 12)); // NOI18N
         jLabel5.setText("Inicio:");
+        jLabel5.setFont(new java.awt.Font("Segoe UI Semilight", 1, 12)); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -197,9 +197,8 @@ public class VerHistorialPaciente extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(dpFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -219,6 +218,7 @@ public class VerHistorialPaciente extends javax.swing.JFrame {
         );
 
         btnVolver.setContentAreaFilled(false);
+        btnVolver.setBorderPainted(false);
         btnVolver.setOpaque(false);
         btnVolver.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
             @Override

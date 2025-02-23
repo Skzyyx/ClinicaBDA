@@ -26,6 +26,7 @@ public class PrincipalPaciente extends javax.swing.JFrame {
     private VerPerfilPaciente verPerfilPacienteFrame;
     private InicioDeSesion iniciarSesionFrame;
     private AgendarCita agendarCita;
+    private CancelarCita cancelarCita;
     private VerHistorialPaciente historialPacienteFrame;
     
     /**
@@ -77,6 +78,16 @@ public class PrincipalPaciente extends javax.swing.JFrame {
     public void setHistorialPacienteFrame(VerHistorialPaciente historialPacienteFrame) {
         this.historialPacienteFrame = historialPacienteFrame;
     }
+
+    public CancelarCita getCancelarCita() {
+        return cancelarCita;
+    }
+
+    public void setCancelarCita(CancelarCita cancelarCita) {
+        this.cancelarCita = cancelarCita;
+    }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -239,7 +250,14 @@ public class PrincipalPaciente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCancelarCitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarCitaActionPerformed
-        // TODO add your handling code here:
+        try {
+            CancelarCita cancelarCita = CancelarCita.getInstance();
+            cancelarCita.setPrincipalPaciente(this);
+            cancelarCita.setVisible(true);
+            this.setVisible(false);
+        } catch (NegocioException ex) {
+            Logger.getLogger(PrincipalPaciente.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnCancelarCitaActionPerformed
 
     private void btnAgendarCitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgendarCitaActionPerformed
