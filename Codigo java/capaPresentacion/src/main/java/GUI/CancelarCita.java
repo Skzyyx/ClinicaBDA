@@ -314,7 +314,7 @@ public class CancelarCita extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 
-    private void cargarCitas() {
+    public void cargarCitas() {
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
         modelo.setRowCount(0);
         try {
@@ -352,15 +352,16 @@ public class CancelarCita extends javax.swing.JFrame {
             // Convertir a LocalDateTime usando el formateador ISO
             LocalDateTime fechaInicio = LocalDateTime.parse(fechaHoraCombinada, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
             long duracionHoras = Duration.between(LocalDateTime.now(), fechaInicio).toHours();
+            System.out.println(duracionHoras);
             
-            if (duracionHoras >= 24) {
-                JOptionPane.showConfirmDialog(this, "Solo puedes cancelar citas 24 horas antes de su horario.", "Error", JOptionPane.OK_OPTION);
+            if (duracionHoras < 24) {
+                JOptionPane.showMessageDialog(this, "Solo puedes cancelar citas con 24 horas de anticipación.", "Error", JOptionPane.WARNING_MESSAGE);
                 return;
             }
             
             try {
                 CitaViejoDTO cita = new CitaViejoDTO();
-                cita.setIdCita(String.valueOf(jTable1.getValueAt(jTable1.getSelectedRow(), 0)));
+                cita.setIdCita((String) jTable1.getValueAt(jTable1.getSelectedRow(), 0));
 
                 boolean resultadoCita = citaBO.cancelarCita(cita);
                 
@@ -369,7 +370,7 @@ public class CancelarCita extends javax.swing.JFrame {
                 }
             } catch (NegocioException ex) {
                 Logger.getLogger(CancelarCita.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error inesperado", JOptionPane.OK_OPTION);
+                JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error inesperado", JOptionPane.WARNING_MESSAGE);
             }
         }
     }

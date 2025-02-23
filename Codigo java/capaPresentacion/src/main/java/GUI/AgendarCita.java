@@ -509,7 +509,6 @@ public class AgendarCita extends javax.swing.JFrame {
 
             System.out.println(id);
             List<HorarioViejoDTO> horarios = medicoBO.obtenerHorariosMedico(String.valueOf(id));
-            System.out.println(horarios.toString());
 
             for (HorarioViejoDTO horario : horarios) {
 
@@ -532,12 +531,15 @@ public class AgendarCita extends javax.swing.JFrame {
                         System.out.println(fechaHoraInicio.toString());
                         // Verificar si la cita está ocupada
                         if (!citaBO.verificarCitaExiste(Timestamp.valueOf(fechaHoraInicio), String.valueOf(id))) {
-                            // Si la cita no está ocupada, agregarla a la tabla
+                            
+                            if (fechaHoraInicio.isAfter(LocalDateTime.now())) {
+                                // Si la cita no está ocupada, agregarla a la tabla
                             modelo.addRow(new Object[]{
                                 fechaSeleccionada,
                                 horaInicio,
                                 horaCitaFin
                             });
+                            }
                         }
 
                         // Avanzar 30 minutos para la próxima cita
@@ -570,7 +572,6 @@ public class AgendarCita extends javax.swing.JFrame {
         paciente.setEmail(SessionManager.getInstance().getUser());
         
         LocalDateTime fechaHoraInicio = LocalDateTime.of(fechaSeleccionada, horaInicio);
-        System.out.println("fechaHora: " + fechaHoraInicio);
         CitaNuevoDTO cita = new CitaNuevoDTO();
         cita.setFechaHoraInicio(fechaHoraInicio);
         cita.setMedico(medico);
@@ -581,6 +582,9 @@ public class AgendarCita extends javax.swing.JFrame {
             
             if (resultado) {
                 JOptionPane.showMessageDialog(this, "Tu cita ha sido registrada.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                // Actualizar la lista de citas en la interfaz de cancelar citas
+                CancelarCita cancelarCita = CancelarCita.getInstance();
+                cancelarCita.cargarCitas();
             } else {
                 JOptionPane.showMessageDialog(this, "Tu cita no se ha podido registrar.", "Error", JOptionPane.WARNING_MESSAGE);
             }
