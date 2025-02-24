@@ -56,6 +56,26 @@ public class ConsultaBO {
         return List.copyOf(especialidadesSet);
     }
     
+    public List<String> nombresPacientesConsultas(List<ConsultaViejoDTO> consultas) throws NegocioException {
+        if (consultas == null) {
+            throw new NegocioException("La lista de consultas no puede ser nula.");
+        }
+
+        // Usar un HashSet para evitar duplicados automáticamente
+        Set<String> nombresSet = new HashSet<>();
+
+        for (ConsultaViejoDTO consulta : consultas) {
+            if (consulta.getCita().getPaciente().getApellidoMaterno() == null) {
+                consulta.getCita().getPaciente().setApellidoMaterno(" ");
+            }
+            String nombreCompleto = consulta.getCita().getPaciente().getNombre() + " " + consulta.getCita().getPaciente().getApellidoPaterno() + " " + consulta.getCita().getPaciente().getApellidoMaterno();
+            nombresSet.add(nombreCompleto);
+        }
+
+        // Convertir el Set a una Lista y devolverlo
+        return List.copyOf(nombresSet);
+    }
+    
     public List<ConsultaViejoDTO> filtrarConsultasPeriodo(List<ConsultaViejoDTO> consultas, LocalDate fechaInicio, LocalDate fechaFin) throws NegocioException {
         if (consultas == null) {
             throw new NegocioException("La lista de consultas no puede ser nula.");

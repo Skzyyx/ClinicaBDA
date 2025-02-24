@@ -48,7 +48,7 @@ public class VerHistorialMedico extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         setTitle("Paciente - Historial de consultas");
-        chEspecialidad.addItem("Ninguno");
+        chNombre.addItem("Ninguno");
         formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         /*cargarListener();
         cargarEspecialidades();
@@ -82,7 +82,7 @@ public class VerHistorialMedico extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
-        chEspecialidad = new java.awt.Choice();
+        chNombre = new java.awt.Choice();
         jLabel4 = new javax.swing.JLabel();
         btnVolver = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -121,9 +121,9 @@ public class VerHistorialMedico extends javax.swing.JFrame {
             tabla.getColumnModel().getColumn(4).setResizable(false);
         }
 
-        chEspecialidad.addItemListener(new java.awt.event.ItemListener() {
+        chNombre.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                chEspecialidadItemStateChanged(evt);
+                chNombreItemStateChanged(evt);
             }
         });
 
@@ -167,7 +167,7 @@ public class VerHistorialMedico extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chEspecialidad, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(chNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -187,7 +187,7 @@ public class VerHistorialMedico extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(4, 4, 4)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(chEspecialidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(chNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -230,11 +230,11 @@ public class VerHistorialMedico extends javax.swing.JFrame {
         //volver();
     }//GEN-LAST:event_btnVolverActionPerformed
 
-    private void chEspecialidadItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chEspecialidadItemStateChanged
+    private void chNombreItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chNombreItemStateChanged
         tabla.clearSelection();
         tabla.clearSelection();
         cargarHistorial();
-    }//GEN-LAST:event_chEspecialidadItemStateChanged
+    }//GEN-LAST:event_chNombreItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -280,7 +280,7 @@ public class VerHistorialMedico extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnVolver;
-    private java.awt.Choice chEspecialidad;
+    private java.awt.Choice chNombre;
     private com.github.lgooddatepicker.components.DatePicker dpInicio;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
@@ -290,21 +290,21 @@ public class VerHistorialMedico extends javax.swing.JFrame {
     private javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables
 
-    /*private void cargarNombres() {
+    private void cargarNombres() {
         try {
             // Obtener la lista de activistas desde la capa de negocio (BO)
-            List<ConsultaViejoDTO> consultas = medicoBO
+            List<ConsultaViejoDTO> consultas = medicoBO.obtenerConsultasPorMedico(SessionManager.getInstance().getUser());
             // Filtra las especialidades
-            List<String> especialidades = consultaBO.especialidadesConsultas(consultas);
+            List<String> nombres = consultaBO.nombresPacientesConsultas(consultas);
             
-            for (String especialidad : especialidades) {
-                chEspecialidad.addItem(especialidad);
+            for (String nombre : nombres) {
+                chNombre.addItem(nombre);
             }
         } catch (NegocioException ex) {
             Logger.getLogger(VerHistorialMedico.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(this, "Error al cargar especialidades: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al cargar nombres de pacientes: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }*/
+    }
 
     public void cargarHistorial() {
         // Obtener el modelo de la tabla y limpiar cualquier dato previo
@@ -313,26 +313,24 @@ public class VerHistorialMedico extends javax.swing.JFrame {
 
         try {
             // Obtener la lista de activistas desde la capa de negocio (BO)
-            List<ConsultaViejoDTO> consultas = pacienteBO.obtenerConsultasPaciente(SessionManager.getInstance().getUser());
+            List<ConsultaViejoDTO> consultas = medicoBO.obtenerConsultasPorMedico(SessionManager.getInstance().getUser());
             
-            String filtro = chEspecialidad.getSelectedItem(); // Obtiene la especialidad seleccionada
+            String filtro = chNombre.getSelectedItem(); // Obtiene la especialidad seleccionada
             
             // Recorrer la lista de activistas y agregarlos como filas en la tabla
             for (ConsultaViejoDTO consulta : consultas) {
+                String nombreCompleto = consulta.getCita().getPaciente().getNombre() + " " + consulta.getCita().getPaciente().getApellidoPaterno() + " " + consulta.getCita().getPaciente().getApellidoMaterno();
                 // Si el filtro es "Ninguno" (mostrar todos) o la especialidad coincide, agregar al modelo
-                if ("Ninguno".equals(filtro) || consulta.getCita().getMedico().getEspecialidad().equals(filtro)) {
+                if ("Ninguno".equals(filtro) || nombreCompleto.equals(filtro)) {
                     modelo.addRow(new Object[]{
                         consulta.getCita().getFechaHoraInicio().format(formatoFecha),
                         consulta.getCita().getTipo(),
                         consulta.getCita().getFolio(),
+                        nombreCompleto,
                         consulta.getEstado(),
-                        consulta.getCita().getMedico().getCedula(),
-                        consulta.getCita().getMedico().getEspecialidad(),
                         consulta.getDiagnostico(),
-                        consulta.getTratamiento(),
-                        consulta.getNotas(),});
+                        consulta.getTratamiento()});
                 }
-
             }
         } catch (NegocioException ex) {
             // Manejo de errores en caso de que falle la obtención de datos

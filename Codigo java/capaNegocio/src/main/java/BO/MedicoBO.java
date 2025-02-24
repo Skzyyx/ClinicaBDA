@@ -7,14 +7,17 @@ package BO;
 import DAO.IMedicoDAO;
 import DAO.MedicoDAO;
 import DTO.CitaViejoDTO;
+import DTO.ConsultaViejoDTO;
 import DTO.HorarioViejoDTO;
 import DTO.MedicoViejoDTO;
 import Exception.NegocioException;
 import Mapper.CitaMapper;
+import Mapper.ConsultaMapper;
 import Mapper.HorarioMapper;
 import Mapper.MedicoMapper;
 import conexion.IConexion;
 import entidades.Cita;
+import entidades.Consulta;
 import entidades.Horario;
 import entidades.Medico;
 import excepciones.PersistenciaException;
@@ -40,6 +43,7 @@ public class MedicoBO {
     private final MedicoMapper medicoMapper = new MedicoMapper();
     private final HorarioMapper horarioMapper = new HorarioMapper();
     private final CitaMapper citaMapper = new CitaMapper();
+    private final ConsultaMapper consultaMapper = new ConsultaMapper();
     
     /**
      * Constructor de la clase.
@@ -100,7 +104,7 @@ public class MedicoBO {
             }
         } catch (NegocioException ex) {
             Logger.getLogger(MedicoBO.class.getName()).log(Level.SEVERE, null, ex);
-            throw new NegocioException("Hubo un error en el proceso de dar de baja temporal.");
+            throw new NegocioException(ex.getMessage());
         }
     }
     
@@ -265,7 +269,7 @@ public class MedicoBO {
             return medicoDAO.contarMedicosActivos();
         } catch (PersistenciaException ex) {
             Logger.getLogger(MedicoBO.class.getName()).log(Level.SEVERE, null, ex);
-            throw new NegocioException("No se pudo contar a los médicos áctivos.");
+            throw new NegocioException("No se pudo contar a los médicos activos.");
         }
     }
     
@@ -298,6 +302,10 @@ public class MedicoBO {
     public List<CitaViejoDTO> obtenerCitasPorMedico(MedicoViejoDTO medicoViejo) throws NegocioException {
         List<CitaViejoDTO> citasViejo = new ArrayList<>();
         try {
+            if (medicoViejo == null) {
+                throw new NegocioException("El médico no puede ser nulo");
+            }
+            
             if (medicoViejo.getCedula() == null) {
                 throw new NegocioException("La cedula no puede ser nula");
             }
@@ -309,7 +317,22 @@ public class MedicoBO {
             return citasViejo;
         } catch (PersistenciaException ex) {
             Logger.getLogger(MedicoBO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new NegocioException("No se pudo obtener las citas del médico.", ex);
         }
-        return citasViejo;
-    } 
+    }
+    
+    public List<ConsultaViejoDTO> obtenerConsultasPorMedico(String cedula) throws NegocioException {
+        if (cedula == null) {
+            throw new NegocioException("La cédula profesional no puede ser nula.");
+        }
+
+        try {
+            List<Consulta> consultas = medicoDAO.obtenerConsultasPorMedico(cedula);
+            
+            return consultaMapper.toViejoDTOList(consultas);
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(MedicoBO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new NegocioException("No se pudo obtener las consultas del médico.");
+        }
+    }
 }

@@ -5,6 +5,7 @@
 package DAO;
 
 import entidades.Cita;
+import entidades.Consulta;
 import entidades.Horario;
 import entidades.Medico;
 import excepciones.PersistenciaException;
@@ -75,4 +76,6 @@ public interface IMedicoDAO {
     public boolean tieneCitasActivas(String cedula) throws PersistenciaException;
     
     public List<Cita> obtenerCitasPorMedico(Medico medico) throws PersistenciaException;
+    
+    public List<Consulta> obtenerConsultasPorMedico(String cedula) throws PersistenciaException;
 }

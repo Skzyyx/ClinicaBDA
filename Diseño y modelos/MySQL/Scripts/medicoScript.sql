@@ -157,3 +157,28 @@ BEGIN
     AND c.estado = "ACTIVA";
 END$$
 DELIMITER ;
+
+-- Procedimiento almacenado obtenerConsultasPorMedico
+-- Obtiene todas las consultas asociadas a un médico
+DELIMITER $$
+CREATE PROCEDURE obtenerConsultasPorMedico(
+	IN cedulaMedico VARCHAR(8)
+)
+BEGIN 
+	SELECT 
+		co.estado,
+        co.diagnostico,
+        co.tratamiento,
+        c.fechaHoraInicio,
+        c.folio,
+        c.tipo,
+        p.nombre,
+        p.apellidoPaterno,
+        IFNULL(" ", p.apellidoMaterno)
+    FROM consultas AS co
+    INNER JOIN citas AS c ON co.idCita = c.idCita
+    INNER JOIN medicos AS m ON c.idMedico = m.idMedico 
+    INNER JOIN pacientes AS p ON p.idPaciente = c.idPaciente
+    WHERE m.cedula = cedulaMedico;
+END$$
+DELIMITER ;

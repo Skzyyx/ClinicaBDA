@@ -6,6 +6,7 @@ package DAO;
 
 import conexion.IConexion;
 import entidades.Cita;
+import entidades.Consulta;
 import entidades.Horario;
 import entidades.Medico;
 import entidades.Paciente;
@@ -16,8 +17,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -345,6 +344,45 @@ public class MedicoDAO implements IMedicoDAO {
         } catch (SQLException ex) {
             Logger.getLogger(MedicoDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new PersistenciaException("Error al obtener las citas.");
+        }
+    }
+    
+    @Override
+    public List<Consulta> obtenerConsultasPorMedico(String cedula) throws PersistenciaException {
+        String sentenciaSQL = "CALL obtenerConsultasPorMedico(?)";
+        List<Consulta> consultas = new ArrayList<>();
+     
+        try (Connection con = conexion.crearConexion(); 
+             CallableStatement cs = con.prepareCall(sentenciaSQL)) {
+
+            cs.setString(1, cedula);
+
+            try (ResultSet rs = cs.executeQuery()) {
+                while (rs.next()) {
+                    Paciente paciente = new Paciente();
+                    paciente.setNombre(rs.getString(7));
+                    paciente.setApellidoPaterno(rs.getString(8));
+                    paciente.setApellidoMaterno(rs.getString(9));
+                    
+                    Cita cita = new Cita();
+                    cita.setFechaHoraInicio(rs.getTimestamp(4).toLocalDateTime());
+                    cita.setFolio(rs.getString(5));
+                    cita.setTipo(rs.getString(6));
+                    cita.setPaciente(paciente);
+                    
+                    Consulta consulta = new Consulta();
+                    consulta.setEstado(rs.getString(1));
+                    consulta.setDiagnostico(rs.getString(2));
+                    consulta.setTratamiento(rs.getString(3));
+                    consulta.setCita(cita);
+                    
+                    consultas.add(consulta);
+                }
+            }
+            return consultas;
+        } catch (SQLException ex) {
+            Logger.getLogger(MedicoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PersistenciaException("Error al obtener las consultas.");
         }
     }
 }

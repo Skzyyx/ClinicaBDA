@@ -57,13 +57,13 @@ INNER JOIN medicos AS m
 
 DELIMITER $$
 CREATE FUNCTION obtenerEstadoConsulta( id_cita INT)
-RETURNS TEXT
+RETURNS VARCHAR(50)
 DETERMINISTIC
 BEGIN
-	DECLARE estadoConsulta TEXT;
+	DECLARE estadoConsulta VARCHAR(50);
     
     SELECT estado
-    INTO estadoCita
+    INTO estadoConsulta
     FROM consultas
     WHERE idCita = id_cita;
     
