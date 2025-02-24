@@ -138,4 +138,17 @@ public class ConsultaBO {
             throw new NegocioException("Error inesperado al obtener la consulta.");
         }
     }
+    
+    public boolean editarDatosConsulta(ConsultaViejoDTO consultaViejo) throws NegocioException {
+        if (consultaViejo.getIdConsulta().trim() == null) {
+            throw new NegocioException("El id de la consulta no puede ser nulo.");
+        }
+        
+        try {
+            return consultaDAO.editarDatosConsulta(mapper.toEntity(consultaViejo));
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(ConsultaBO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new NegocioException("Ocurrio un error al editar los datos de la consulta.");
+        }
+    }
 }

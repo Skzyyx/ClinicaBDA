@@ -116,3 +116,15 @@ BEGIN
     COMMIT; -- Si todo se ejecutó correctamente, guardar cambios
 END $$
 DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE editarDatosConsulta(
+	IN id_consulta INT,
+    IN diagnostico_consulta TEXT,
+    IN tratamiento_consulta TEXT,
+    IN notas_consulta TEXT
+)
+BEGIN
+	UPDATE consultas SET diagnostico = diagnostico_consulta, tratamiento = tratamiento_consulta, notas = notas_consulta WHERE idConsulta = id_consulta; 
+END$$
+DELIMITER ;

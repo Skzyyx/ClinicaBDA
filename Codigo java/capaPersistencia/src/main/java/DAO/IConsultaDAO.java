@@ -16,4 +16,6 @@ public interface IConsultaDAO {
     public String obtenerEstadoConsulta(int idCita) throws PersistenciaException;
     
     public Consulta obtenerConsultaPorIdCita(int idCita) throws PersistenciaException;
+    
+    public boolean editarDatosConsulta(Consulta conuslta) throws PersistenciaException;
 }
