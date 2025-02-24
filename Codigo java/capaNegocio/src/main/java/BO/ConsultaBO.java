@@ -10,10 +10,12 @@ import DTO.ConsultaViejoDTO;
 import Exception.NegocioException;
 import Mapper.ConsultaMapper;
 import conexion.IConexion;
+import excepciones.PersistenciaException;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -75,5 +77,21 @@ public class ConsultaBO {
                 })
                 .collect(Collectors.toList());
     }
+<<<<<<< Updated upstream
     
+=======
+
+    public String obtenerEstadoConsulta(String idCita) throws NegocioException {
+        if (idCita == null) {
+            throw new NegocioException("El id no puede ser nulo");
+        }
+        
+        try {
+            return consultaDAO.obtenerEstadoConsulta(Integer.parseInt(idCita));
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(ConsultaBO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+>>>>>>> Stashed changes
 }
