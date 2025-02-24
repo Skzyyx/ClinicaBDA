@@ -19,6 +19,7 @@ import java.awt.RenderingHints;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComponent;
@@ -52,7 +53,6 @@ public class VerHistorialMedico extends javax.swing.JFrame {
         chNombre.addItem("Ninguno");
         formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         cargarListener();
-        cargarNombres();
         cargarHistorial();
     }
 
@@ -296,10 +296,12 @@ public class VerHistorialMedico extends javax.swing.JFrame {
         try {
             // Obtener la lista de activistas desde la capa de negocio (BO)
             List<ConsultaViejoDTO> consultas = medicoBO.obtenerConsultasPorMedico(SessionManager.getInstance().getUser());
-            // Filtra las especialidades
+            // Filtra los nombres
             List<String> nombres = consultaBO.nombresPacientesConsultas(consultas);
             
+            System.out.println(nombres.size());
             for (String nombre : nombres) {
+                
                 chNombre.addItem(nombre);
             }
         } catch (NegocioException ex) {
@@ -318,11 +320,13 @@ public class VerHistorialMedico extends javax.swing.JFrame {
             // Obtener la lista de activistas desde la capa de negocio (BO)
             List<ConsultaViejoDTO> consultas = medicoBO.obtenerConsultasPorMedico(SessionManager.getInstance().getUser());
             
-            String filtro = chNombre.getSelectedItem(); // Obtiene la especialidad seleccionada
+            String filtro = chNombre.getSelectedItem(); // Obtiene el nombre seleccionado
             
             // Recorrer la lista de activistas y agregarlos como filas en la tabla
             for (ConsultaViejoDTO consulta : consultas) {
-                String nombreCompleto = consulta.getCita().getPaciente().getNombre() + " " + consulta.getCita().getPaciente().getApellidoPaterno() + " " + consulta.getCita().getPaciente().getApellidoMaterno();
+                String apellidoMaterno = Objects.requireNonNullElse(consulta.getCita().getPaciente().getApellidoMaterno(), "");
+                
+                String nombreCompleto = consulta.getCita().getPaciente().getNombre() + " " + consulta.getCita().getPaciente().getApellidoPaterno() + " " + apellidoMaterno;
                 // Si el filtro es "Ninguno" (mostrar todos) o la especialidad coincide, agregar al modelo
                 if ("Ninguno".equals(filtro) || nombreCompleto.equals(filtro)) {
                     modelo.addRow(new Object[]{

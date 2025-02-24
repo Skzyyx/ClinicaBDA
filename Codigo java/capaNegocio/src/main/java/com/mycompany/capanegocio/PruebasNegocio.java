@@ -4,6 +4,8 @@
 
 package com.mycompany.capanegocio;
 
+import BO.ConsultaBO;
+import BO.MedicoBO;
 import BO.PacienteBO;
 import BO.UsuarioBO;
 import DTO.DireccionNuevoDTO;
@@ -28,9 +30,11 @@ public class PruebasNegocio {
     private static final IConexion conexion = new ConexionDB();
     private static final PacienteBO pacienteBO = new PacienteBO(conexion);
     private static final UsuarioBO usuarioBO = new UsuarioBO(conexion);
+    private static final MedicoBO medicoBO = new MedicoBO(conexion);
+    private static final ConsultaBO consultaBO = new ConsultaBO(conexion);
             
     public static void main(String[] args) throws PersistenciaException, NegocioException {
-        pruebaRegistrarPaciente();
+        //pruebaRegistrarPaciente();
         //pruebaObtenerPerfilPaciente();
         //pruebaEditarDatosPaciente();
         //pruebaEncriptarContrasenia();
@@ -162,5 +166,5 @@ public class PruebasNegocio {
         } else {
             System.out.println("La sesión no es válida.");
         }
-    }    
+    }   
 }

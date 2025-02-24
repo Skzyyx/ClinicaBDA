@@ -328,7 +328,7 @@ public class MedicoBO {
 
         try {
             List<Consulta> consultas = medicoDAO.obtenerConsultasPorMedico(cedula);
-            
+
             return consultaMapper.toViejoDTOList(consultas);
         } catch (PersistenciaException ex) {
             Logger.getLogger(MedicoBO.class.getName()).log(Level.SEVERE, null, ex);

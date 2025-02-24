@@ -12,6 +12,7 @@ import Mapper.ConsultaMapper;
 import conexion.IConexion;
 import excepciones.PersistenciaException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -61,21 +62,30 @@ public class ConsultaBO {
             throw new NegocioException("La lista de consultas no puede ser nula.");
         }
 
-        // Usar un HashSet para evitar duplicados automáticamente
-        Set<String> nombresSet = new HashSet<>();
+        List<String> nombresLista = new ArrayList<>();
 
         for (ConsultaViejoDTO consulta : consultas) {
-            if (consulta.getCita().getPaciente().getApellidoMaterno() == null) {
-                consulta.getCita().getPaciente().setApellidoMaterno(" ");
+            String nombre = consulta.getCita().getPaciente().getNombre().trim();
+            String apellidoPaterno = consulta.getCita().getPaciente().getApellidoPaterno().trim();
+            String apellidoMaterno = consulta.getCita().getPaciente().getApellidoMaterno();
+
+            // Si el apellido materno es null, lo convertimos en una cadena vacía para evitar "null"
+            if (apellidoMaterno == null) {
+                apellidoMaterno = "";
             }
-            String nombreCompleto = consulta.getCita().getPaciente().getNombre() + " " + consulta.getCita().getPaciente().getApellidoPaterno() + " " + consulta.getCita().getPaciente().getApellidoMaterno();
-            nombresSet.add(nombreCompleto);
+
+            // Formar el nombre completo
+            String nombreCompleto = (nombre + " " + apellidoPaterno + " " + apellidoMaterno);
+            
+            // Agregar a la lista solo si no está presente
+            if (!nombresLista.contains(nombreCompleto)) {
+                nombresLista.add(nombreCompleto);
+            }
         }
 
-        // Convertir el Set a una Lista y devolverlo
-        return List.copyOf(nombresSet);
+        return nombresLista;
     }
-    
+  
     public List<ConsultaViejoDTO> filtrarConsultasPeriodo(List<ConsultaViejoDTO> consultas, LocalDate fechaInicio, LocalDate fechaFin) throws NegocioException {
         if (consultas == null) {
             throw new NegocioException("La lista de consultas no puede ser nula.");
