@@ -10,7 +10,6 @@ CREATE PROCEDURE registrarCita(
     IN idMedicoCita INT
 )
 BEGIN
-
 	DECLARE idPacienteCita INT;
     
     -- Manejador de errores. Por si ocurre un error, la transacción no queda abierta
@@ -69,6 +68,8 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- Procedimiento verificarCitaExiste
+-- Verifica si una cita existe
 DELIMITER $$
 CREATE PROCEDURE verificarCitaExiste(
 	IN fechaHoraInicio_cita DATETIME,
@@ -76,7 +77,6 @@ CREATE PROCEDURE verificarCitaExiste(
     OUT existe BOOL
 )
 BEGIN
-    
     IF EXISTS (
     SELECT * 
     FROM citas AS c
@@ -87,15 +87,30 @@ BEGIN
 		SET existe = FALSE;
 	END IF;
 END$$
-
 DELIMITER ;
 
+-- Procedimiento cancelarCita
+-- Cambia el estado a 'CANCELADA' de una cita específica
 DELIMITER $$
 CREATE PROCEDURE cancelarCita(
 	IN id_cita INT
 )
 BEGIN
 	UPDATE citas SET estado = 'CANCELADA' WHERE idCita = id_cita;
+END$$
+DELIMITER ;
+
+-- Trigger citaCancelada
+-- Cambia el estado de la consulta a 'NO ASISTIO' cuando se cancela su cita relacionada
+DELIMITER $$
+CREATE TRIGGER citaCancelada 
+AFTER UPDATE ON citas
+FOR EACH ROW
+BEGIN
+	IF OLD.estado = "ACTIVA" AND NEW.estado = "CANCELADA" THEN 
+		UPDATE consultas SET estado = "NO ASISTIO" 
+        WHERE idCita = OLD.idCita;
+	END IF;
 END$$
 DELIMITER ;
 

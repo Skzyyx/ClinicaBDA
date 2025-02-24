@@ -75,4 +75,5 @@ public class ConsultaBO {
                 })
                 .collect(Collectors.toList());
     }
+    
 }
