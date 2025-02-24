@@ -114,5 +114,28 @@ BEGIN
 END$$
 DELIMITER ;
 
-CALL verificarCitaExiste('2025-02-22 17:30:00', 1, @existeCita);
-SELECT @existeCita;
+-- Procedimiento almacenado obtenerCitaEmergencia
+-- Obtiene una cita de emergencia con un folio específico
+DELIMITER $$
+CREATE PROCEDURE obtenerCitaEmergencia(
+	IN folioCita VARCHAR(8)
+)
+BEGIN
+	IF folioCita IS NOT NULL AND NOT EXISTS (SELECT 1 FROM citas WHERE folio = folioCita) THEN
+		SIGNAL SQLSTATE "45000" SET MESSAGE_TEXT = "No existe cita con el folio ingresado";
+	END IF;
+    
+	SELECT
+		folio,
+        fechaHoraInicio,
+        nombre,
+        apellidoPaterno,
+        IFNULL(" ", apellidoMaterno) AS apellidoMaterno,
+		cedula
+	FROM citas AS c
+    INNER JOIN medicos AS m
+		ON c.idMedico = m.idMedico
+	WHERE tipo = "EMERGENCIA"
+    AND folio = folioCita;
+END$$
+DELIMITER ;

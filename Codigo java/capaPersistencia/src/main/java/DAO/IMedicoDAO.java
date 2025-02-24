@@ -78,4 +78,6 @@ public interface IMedicoDAO {
     public List<Cita> obtenerCitasPorMedico(Medico medico) throws PersistenciaException;
     
     public List<Consulta> obtenerConsultasPorMedico(String cedula) throws PersistenciaException;
+    
+    public String obtenerPrimerMedicoDisponible() throws PersistenciaException;
 }

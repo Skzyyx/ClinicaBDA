@@ -6,6 +6,7 @@ package DAO;
 
 import conexion.IConexion;
 import entidades.Cita;
+import entidades.Medico;
 import excepciones.PersistenciaException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -14,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -70,27 +72,17 @@ public class CitaDAO implements ICitaDAO {
             throw new PersistenciaException("No se pudo registrar la cita programada.");
         }
     }
-
-    /**
-     * Registra una cita de emergencia en la base de datos.
-     * Actualmente no está implementado.
-     * 
-     * @param cita Objeto Cita que contiene la información de la cita de emergencia.
-     * @return true si la cita se registra exitosamente, false en caso contrario.
-     * @throws PersistenciaException Si ocurre un error al registrar la cita en la base de datos.
-     */
+    
     @Override
     public boolean registrarCitaEmergencia(Cita cita) throws PersistenciaException {
-        
         String sentenciaSQL = "CALL registrarCita(?, ?, ?, ?, ?)";
         
         try (Connection con = conexion.crearConexion();
              CallableStatement cs = con.prepareCall(sentenciaSQL)) {
-            
-            cs.setTimestamp(1, Timestamp.valueOf(cita.getFechaHoraInicio()));
+            cs.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
             cs.setString(2, cita.getFolio());
             cs.setString(3, "EMERGENCIA");
-            cs.setInt(4, cita.getPaciente().getIdPaciente());
+            cs.setString(4, cita.getPaciente().getEmail());
             cs.setInt(5, cita.getMedico().getIdMedico());
             
             cs.execute();
@@ -141,6 +133,37 @@ public class CitaDAO implements ICitaDAO {
         } catch (SQLException ex) {
             Logger.getLogger(CitaDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new PersistenciaException("Error al cancelar la cita.");
+        }
+    }
+    
+    @Override
+    public Cita obtenerCitaEmergencia(String folio) throws PersistenciaException {
+        String sentenciaSQL = "CALL obtenerCitaEmergencia(?)";
+        Cita cita = null;
+
+        try (Connection con = conexion.crearConexion(); 
+             CallableStatement cs = con.prepareCall(sentenciaSQL)) {
+
+            cs.setString(1, folio);
+
+            ResultSet rs = cs.executeQuery();
+
+            if (rs.next()) {
+                Medico medico = new Medico();
+                medico.setNombre(rs.getString("nombre"));
+                medico.setApellidoPaterno(rs.getString("apellidoPaterno"));
+                medico.setApellidoMaterno(rs.getString("apellidoMaterno"));
+                medico.setCedula(rs.getString("cedula"));
+
+                cita = new Cita();
+                cita.setFolio(rs.getString("folio"));
+                cita.setFechaHoraInicio(rs.getTimestamp("fechaHoraInicio").toLocalDateTime());
+                cita.setMedico(medico);
+            }
+            return cita;
+        } catch (SQLException ex) {
+            Logger.getLogger(ConsultaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PersistenciaException("No se pudo obtener la consulta");
         }
     }
  

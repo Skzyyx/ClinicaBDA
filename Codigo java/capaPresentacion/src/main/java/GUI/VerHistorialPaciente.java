@@ -38,7 +38,7 @@ public class VerHistorialPaciente extends javax.swing.JFrame {
     private CitaBO citaBO = DependencyInjector.crearCitaBO();
     private ConsultaBO consultaBO = DependencyInjector.crearConsultaBO();
     // Formateador de fecha
-    DateTimeFormatter formatoFecha;
+    private DateTimeFormatter formatoFecha;
     
     private PrincipalPaciente principalPacienteFrame;
     /**

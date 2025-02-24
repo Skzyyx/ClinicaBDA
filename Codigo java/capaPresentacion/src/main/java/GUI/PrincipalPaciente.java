@@ -30,6 +30,7 @@ public class PrincipalPaciente extends javax.swing.JFrame {
     private AgendarCita agendarCita;
     private CancelarCita cancelarCita;
     private VerHistorialPaciente historialPacienteFrame;
+    private AgendarCitaEmergencia citaEmergenciaFrame;
     
     /**
      * Creates new form InicioDeSesion
@@ -87,6 +88,14 @@ public class PrincipalPaciente extends javax.swing.JFrame {
 
     public void setCancelarCita(CancelarCita cancelarCita) {
         this.cancelarCita = cancelarCita;
+    }
+
+    public AgendarCitaEmergencia getCitaEmergenciaFrame() {
+        return citaEmergenciaFrame;
+    }
+
+    public void setCitaEmergenciaFrame(AgendarCitaEmergencia citaEmergenciaFrame) {
+        this.citaEmergenciaFrame = citaEmergenciaFrame;
     }
     
     

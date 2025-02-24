@@ -7,8 +7,10 @@ package com.mycompany.capapersistencia;
 
 import DAO.CitaDAO;
 import DAO.ICitaDAO;
+import DAO.IMedicoDAO;
 import DAO.IPacienteDAO;
 import DAO.IUsuarioDAO;
+import DAO.MedicoDAO;
 import DAO.PacienteDAO;
 import DAO.UsuarioDAO;
 import DTO.PerfilDTO;
@@ -39,6 +41,7 @@ public class PruebasPersistencia {
     private static final IPacienteDAO pacienteDAO = new PacienteDAO(conexionDB);
     private static final ICitaDAO citaDAO = new CitaDAO(conexionDB);
     private static final IUsuarioDAO usuarioDAO = new UsuarioDAO(conexionDB);
+    private static final IMedicoDAO medicoDAO = new MedicoDAO(conexionDB);
     
     public static void main(String[] args) throws SQLException, PersistenciaException {
         //pruebaConexion();
@@ -46,7 +49,8 @@ public class PruebasPersistencia {
         //pruebaEditarDatosPaciente();
         //pruebaVerPerfilPaciente();
         //pruebaConsultarPacientePorEmail();
-        pruebaConsultarUsuario();
+        //pruebaConsultarUsuario();
+        pruebaPrimerMedicoDisponible();
     }
     
     /**
@@ -252,5 +256,11 @@ public class PruebasPersistencia {
         } else {
             System.out.println("No se encontró usuario.");
         }
+    }
+    
+    private static void pruebaPrimerMedicoDisponible() throws PersistenciaException {
+        String cedula = medicoDAO.obtenerPrimerMedicoDisponible();
+        
+        System.out.println(cedula);
     }
 }

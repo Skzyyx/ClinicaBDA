@@ -81,18 +81,5 @@ BEGIN
 	SELECT *
     FROM consultas
     WHERE idCita = id_cita;
-END//
+END$$
 DELIMITER ;
-
-DELIMITER $$
-CREATE PROCEDURE obtenerConsultaPorIdCita(
-IN id_cita INT
-)
-BEGIN
-	SELECT *
-    FROM consultas
-    WHERE idCita = id_cita;
-END//
-DELIMITER ;
-
-CALL obtenerConsultasPaciente("eva@gmail.com");

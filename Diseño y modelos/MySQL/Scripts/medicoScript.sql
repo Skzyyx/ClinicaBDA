@@ -182,3 +182,31 @@ BEGIN
     WHERE m.cedula = cedulaMedico;
 END$$
 DELIMITER ;
+
+-- Procedimiento almacenado primerMedicoDisponible
+-- Obtiene a un médico activo disponible en la próxima media hora de hoy
+-- Devuelve la cédula del médico seleccionado
+DELIMITER $$
+CREATE PROCEDURE primerMedicoDisponible(
+	OUT cedulaMedicoDisponible VARCHAR(8))
+BEGIN
+	SELECT m.cedula
+    INTO cedulaMedicoDisponible
+	FROM horarios AS h
+	INNER JOIN medicos AS m ON h.idMedico = m.idMedico
+	WHERE
+		h.diaSemana = DAYNAME(NOW())
+		AND TIME(DATE_ADD(NOW(), INTERVAL 30 MINUTE)) BETWEEN h.horaEntrada AND h.horaSalida
+		AND m.estado = 'ACTIVO'
+		AND NOT EXISTS (
+			SELECT 1
+			FROM citas c
+			WHERE c.idMedico = h.idMedico
+			AND c.estado = 'ACTIVA'
+			AND c.fechaHoraInicio <= DATE_ADD(NOW(), INTERVAL 30 MINUTE) 
+			AND DATE_ADD(c.fechaHoraInicio, INTERVAL 30 MINUTE) >= NOW() -- Usar el cálculo de 30 minutos
+		)
+	ORDER BY RAND()
+    LIMIT 1;
+END $$
+DELIMITER ;

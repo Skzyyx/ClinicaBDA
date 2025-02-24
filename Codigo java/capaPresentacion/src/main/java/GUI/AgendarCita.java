@@ -6,10 +6,12 @@ package GUI;
 
 import BO.CitaBO;
 import BO.MedicoBO;
+import BO.PacienteBO;
 import DTO.CitaNuevoDTO;
 import DTO.HorarioViejoDTO;
 import DTO.MedicoViejoDTO;
 import DTO.PacienteNuevoDTO;
+import DTO.PacienteViejoDTO;
 import Exception.NegocioException;
 import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
@@ -40,8 +42,11 @@ public class AgendarCita extends javax.swing.JFrame {
 
     private MedicoBO medicoBO = DependencyInjector.crearMedicoBO();
     private CitaBO citaBO = DependencyInjector.crearCitaBO();
+    private PacienteBO pacienteBO = DependencyInjector.crearPacienteBO();
     
     private PrincipalPaciente principalPaciente;
+    private AgendarCitaEmergencia citaEmergenciaFrame;
+    
     /**
      * Creates new form RegistrarCita
      */
@@ -67,6 +72,14 @@ public class AgendarCita extends javax.swing.JFrame {
 
     public void setPrincipalPaciente(PrincipalPaciente principalPaciente) {
         this.principalPaciente = principalPaciente;
+    }
+
+    public AgendarCitaEmergencia getCitaEmergenciaFrame() {
+        return citaEmergenciaFrame;
+    }
+
+    public void setCitaEmergenciaFrame(AgendarCitaEmergencia citaEmergenciaFrame) {
+        this.citaEmergenciaFrame = citaEmergenciaFrame;
     }
     
     /**
@@ -183,6 +196,11 @@ public class AgendarCita extends javax.swing.JFrame {
         jButton3.setBackground(new java.awt.Color(255, 102, 102));
         jButton3.setFont(new java.awt.Font("Segoe UI Semibold", 1, 18)); // NOI18N
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Agendar cita");
         jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 36)); // NOI18N
@@ -333,6 +351,10 @@ public class AgendarCita extends javax.swing.JFrame {
         jTable2.clearSelection();
         cargarMedicos();
     }//GEN-LAST:event_choice1ItemStateChanged
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        citaDeEmergencia();
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -578,11 +600,47 @@ public class AgendarCita extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Envía a agendar cita emergencia
+     */
+    private void citaDeEmergencia(){
+        try {
+            MedicoViejoDTO medico = medicoBO.obtenerPrimerMedicoDisponible();
+            
+            if (medico != null) {
+                PacienteNuevoDTO paciente = new PacienteNuevoDTO();
+                paciente.setEmail(SessionManager.getInstance().getUser());
+
+                CitaNuevoDTO cita = new CitaNuevoDTO();
+                cita.setPaciente(paciente);
+                cita.setMedico(medico);
+
+                String folio = citaBO.registrarCitaEmergencia(cita);
+                
+                if (folio != null) {
+                    JOptionPane.showMessageDialog(this, "Tu cita de emergencia ha sido generada.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    
+                    AgendarCitaEmergencia citaEmergencia = AgendarCitaEmergencia.getInstance();
+                    citaEmergencia.setAgendarCitaFrame(this);
+                    citaEmergencia.setVisible(true);
+                    citaEmergencia.cargarDatos(folio);
+                    this.setVisible(false);
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se ha podido generar la cita de emergencia .", "Error", JOptionPane.WARNING_MESSAGE);
+                }
+
+            }
+        } catch (NegocioException ex) {
+            Logger.getLogger(AgendarCita.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+    
     private void volver() {
          try {
-            PrincipalPaciente principalPaciente = PrincipalPaciente.getInstance();
-            principalPaciente.setAgendarCita(this);
-            principalPaciente.setVisible(true);
+            PrincipalPaciente principalPacienteF = PrincipalPaciente.getInstance();
+            principalPacienteF.setAgendarCita(this);
+            principalPacienteF.setVisible(true);
             this.setVisible(false);
         } catch (NegocioException ex) {
             Logger.getLogger(AgendarCita.class.getName()).log(Level.SEVERE, null, ex);

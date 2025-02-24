@@ -335,4 +335,19 @@ public class MedicoBO {
             throw new NegocioException("No se pudo obtener las consultas del médico.");
         }
     }
+    
+    public MedicoViejoDTO obtenerPrimerMedicoDisponible() throws NegocioException {
+        try {
+            String cedula = medicoDAO.obtenerPrimerMedicoDisponible();
+
+            if (cedula == null) {
+                throw new NegocioException("No hay médicos disponibles para la cita.");
+            } 
+            
+            return obtenerMedicoPorCedula(cedula);
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(MedicoBO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new NegocioException("No se pudo obtener las consultas del médico.");
+        }
+    }
 }

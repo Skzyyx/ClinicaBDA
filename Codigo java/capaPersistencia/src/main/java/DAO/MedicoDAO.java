@@ -17,6 +17,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -305,7 +306,6 @@ public class MedicoDAO implements IMedicoDAO {
 
     @Override
     public List<Cita> obtenerCitasPorMedico(Medico medico) throws PersistenciaException {
-    
         List<Cita> citas = new ArrayList<>();
         Paciente paciente;
         String sql = "CALL obtenerCitasPorMedico(?)";
@@ -380,6 +380,23 @@ public class MedicoDAO implements IMedicoDAO {
                 }
             }
             return consultas;
+        } catch (SQLException ex) {
+            Logger.getLogger(MedicoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PersistenciaException("Error al obtener las consultas.");
+        }
+    }
+    
+    @Override
+    public String obtenerPrimerMedicoDisponible() throws PersistenciaException {
+        String sentenciaSQL = "CALL primerMedicoDisponible(?)";
+
+        try (Connection con = conexion.crearConexion(); 
+             CallableStatement cs = con.prepareCall(sentenciaSQL)) {
+
+            cs.registerOutParameter(1, Types.VARCHAR);
+            cs.execute();
+
+            return cs.getString(1);
         } catch (SQLException ex) {
             Logger.getLogger(MedicoDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new PersistenciaException("Error al obtener las consultas.");

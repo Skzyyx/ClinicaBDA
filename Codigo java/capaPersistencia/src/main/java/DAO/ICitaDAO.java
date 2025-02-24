@@ -29,8 +29,8 @@ public interface ICitaDAO {
     
     /**
      * Registra una cita de emergencia en la base de datos.
-     * 
-     * @param cita Objeto Cita con los datos de la cita de emergencia.
+     *
+     * @param cita
      * @return true si la cita se registra exitosamente, false en caso contrario.
      * @throws PersistenciaException Si ocurre un error durante la operación.
      */
@@ -39,6 +39,8 @@ public interface ICitaDAO {
     public boolean verificarCitaExiste(Timestamp fechaHoraInicio, int idMedico) throws PersistenciaException;
     
     public boolean cancelarCita(Cita cita) throws PersistenciaException;
+    
+    public Cita obtenerCitaEmergencia(String folio) throws PersistenciaException;
     
 }
 
