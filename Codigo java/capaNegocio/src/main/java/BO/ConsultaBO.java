@@ -77,9 +77,6 @@ public class ConsultaBO {
                 })
                 .collect(Collectors.toList());
     }
-<<<<<<< Updated upstream
-    
-=======
 
     public String obtenerEstadoConsulta(String idCita) throws NegocioException {
         if (idCita == null) {
@@ -93,5 +90,4 @@ public class ConsultaBO {
         }
         return null;
     }
->>>>>>> Stashed changes
 }
