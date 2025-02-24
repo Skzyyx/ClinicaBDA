@@ -7,6 +7,8 @@ package DAO;
 import conexion.IConexion;
 import entidades.Cita;
 import entidades.Consulta;
+import entidades.Direccion;
+import entidades.Paciente;
 import excepciones.PersistenciaException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -70,13 +72,43 @@ public class ConsultaDAO implements IConsultaDAO {
             ResultSet rs = cs.executeQuery();
             
             if (rs.next()) {
+                Direccion direccion = new Direccion(
+                        rs.getInt("idDireccion"),
+                        rs.getString("calle"),
+                        rs.getString("numero"),
+                        rs.getString("colonia"),
+                        rs.getString("codigoPostal")
+                );
+                
+                Paciente paciente  = new Paciente(
+                        rs.getInt("idPaciente"),
+                        rs.getString("nombre"),
+                        rs.getString("apellidoPaterno"),
+                        rs.getString("apellidoMaterno"),
+                        rs.getDate("fechaNacimiento").toLocalDate(),
+                        rs.getString("email"),
+                        rs.getString("telefono"),
+                        null,
+                        direccion
+                );
+                
+                Cita cita = new Cita(
+                        rs.getInt("idCita"),
+                        rs.getTimestamp("fechaHoraInicio").toLocalDateTime(),
+                        rs.getString("c.estado"),
+                        rs.getString("folio"),
+                        rs.getString("tipo"),
+                        paciente,
+                        null
+                );
+                
                 return new Consulta(
                         rs.getInt("idConsulta"),
                         rs.getString("estado"), 
                         rs.getString("diagnostico"), 
                         rs.getString("tratamiento"), 
                         rs.getString("notas"), 
-                        null);
+                        cita);
             }
             return null;
         } catch (SQLException ex) {

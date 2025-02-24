@@ -12,7 +12,6 @@ import configuracion.DependencyInjector;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.logging.Level;
@@ -27,7 +26,7 @@ public class DescripcionConsulta extends javax.swing.JFrame {
 
     private static DescripcionConsulta instance; 
     
-    private static CitaViejoDTO cita;
+    private ConsultaViejoDTO consulta;
     
     private ConsultaBO consultaBO = DependencyInjector.crearConsultaBO();
     
@@ -35,7 +34,7 @@ public class DescripcionConsulta extends javax.swing.JFrame {
     
     public static DescripcionConsulta getInstance() {
         if (instance == null) {
-            instance = new DescripcionConsulta(cita);
+            instance = new DescripcionConsulta();
         }
         return instance;
     }
@@ -43,18 +42,16 @@ public class DescripcionConsulta extends javax.swing.JFrame {
     /**
      * Creates new form DescripcionConsulta
      */
-    public DescripcionConsulta(CitaViejoDTO cita) {
-        this.cita = cita;
-        llenarCampos();
+    public DescripcionConsulta() {
         initComponents();
     }
 
-    public CitaViejoDTO getCita() {
-        return cita;
+    public ConsultaViejoDTO getConsulta() {
+        return consulta;
     }
 
-    public void setCita(CitaViejoDTO cita) {
-        this.cita = cita;
+    public void setConsulta(ConsultaViejoDTO consulta) {
+        this.consulta = consulta;
     }
 
     public VerAgenda getVerAgenda() {
@@ -64,6 +61,7 @@ public class DescripcionConsulta extends javax.swing.JFrame {
     public void setVerAgenda(VerAgenda verAgenda) {
         this.verAgenda = verAgenda;
     }
+    
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -436,7 +434,7 @@ public class DescripcionConsulta extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DescripcionConsulta(cita).setVisible(true);
+                new DescripcionConsulta().setVisible(true);
             }
         });
     }
@@ -470,25 +468,19 @@ public class DescripcionConsulta extends javax.swing.JFrame {
     private javax.swing.JLabel txtTelefono;
     // End of variables declaration//GEN-END:variables
 
-    private void llenarCampos() {
-        
-        try {
-            this.txtNombreCompleto.setText(cita.getPaciente().getNombre() + " " + cita.getPaciente().getApellidoPaterno() + " " + cita.getPaciente().getApellidoMaterno());
-            this.txtFechaNacimiento.setText(cita.getPaciente().getFechaNacimiento().toString());
-            this.txtEdad.setText(String.valueOf(Period.between(cita.getPaciente().getFechaNacimiento(), LocalDate.now()).getYears()));
-            this.txtTelefono.setText(cita.getPaciente().getTelefono());
-            this.txtDireccion.setText(String.format("%s %s %s %s",
-                    cita.getPaciente().getDireccion().getCalle(),
-                    cita.getPaciente().getDireccion().getNumero(),
-                    cita.getPaciente().getDireccion().getColonia(),
-                    cita.getPaciente().getDireccion().getCodigoPostal()));
-            
-            ConsultaViejoDTO consulta = consultaBO.obtenerConsultaPorIdCita(cita.getIdCita());
-            this.diagnostico.setText(consulta.getDiagnostico());
-            this.tratamiento.setText(consulta.getTratamiento());
-            this.notas.setText(consulta.getNotas());
-        } catch (NegocioException ex) {
-            Logger.getLogger(DescripcionConsulta.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public void llenarCampos() {
+        this.txtNombreCompleto.setText(consulta.getCita().getPaciente().getNombre() + " " + consulta.getCita().getPaciente().getApellidoPaterno() + " " + consulta.getCita().getPaciente().getApellidoMaterno());
+        this.txtFechaNacimiento.setText(consulta.getCita().getPaciente().getFechaNacimiento().toString());
+        this.txtEdad.setText(String.valueOf(Period.between(consulta.getCita().getPaciente().getFechaNacimiento(), LocalDate.now()).getYears()));
+        this.txtTelefono.setText(consulta.getCita().getPaciente().getTelefono());
+        this.txtDireccion.setText(String.format("%s %s %s %s",
+                consulta.getCita().getPaciente().getDireccion().getCalle(),
+                consulta.getCita().getPaciente().getDireccion().getNumero(),
+                consulta.getCita().getPaciente().getDireccion().getColonia(),
+                consulta.getCita().getPaciente().getDireccion().getCodigoPostal()));
+
+        this.diagnostico.setText(consulta.getDiagnostico());
+        this.tratamiento.setText(consulta.getTratamiento());
+        this.notas.setText(consulta.getNotas());
     }
 }

@@ -62,13 +62,26 @@ DETERMINISTIC
 BEGIN
 	DECLARE estadoConsulta VARCHAR(50);
     
-    SELECT estado
-    INTO estadoConsulta
-    FROM consultas
-    WHERE idCita = id_cita;
+SELECT 
+    estado
+INTO estadoConsulta FROM
+    consultas
+WHERE
+    idCita = id_cita;
     
     RETURN estadoConsulta;
 END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE obtenerConsultaPorIdCita(
+IN id_cita INT
+)
+BEGIN
+	SELECT *
+    FROM consultas
+    WHERE idCita = id_cita;
+END//
 DELIMITER ;
 
 DELIMITER $$

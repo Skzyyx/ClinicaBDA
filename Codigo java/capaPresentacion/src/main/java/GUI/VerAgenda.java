@@ -10,6 +10,7 @@ import BO.MedicoBO;
 import BO.PacienteBO;
 import DTO.CitaNuevoDTO;
 import DTO.CitaViejoDTO;
+import DTO.ConsultaViejoDTO;
 import DTO.HorarioViejoDTO;
 import DTO.MedicoNuevoDTO;
 import DTO.MedicoViejoDTO;
@@ -122,9 +123,16 @@ public class VerAgenda extends javax.swing.JFrame {
                 "idCita", "EstadoConsulta", "Fecha", "Hora", "Nombre Paciente"
             }
         ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+            };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false
             };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -135,9 +143,9 @@ public class VerAgenda extends javax.swing.JFrame {
             jTable1.getColumnModel().getColumn(0).setMinWidth(10);
             jTable1.getColumnModel().getColumn(0).setPreferredWidth(10);
             jTable1.getColumnModel().getColumn(0).setMaxWidth(10);
-            jTable1.getColumnModel().getColumn(1).setMinWidth(0);
-            jTable1.getColumnModel().getColumn(1).setPreferredWidth(0);
-            jTable1.getColumnModel().getColumn(1).setMaxWidth(0);
+            jTable1.getColumnModel().getColumn(1).setMinWidth(20);
+            jTable1.getColumnModel().getColumn(1).setPreferredWidth(20);
+            jTable1.getColumnModel().getColumn(1).setMaxWidth(20);
         }
 
         jLabel2.setFont(new java.awt.Font("Segoe UI Semilight", 1, 14)); // NOI18N
@@ -268,13 +276,25 @@ public class VerAgenda extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if (jTable1.getSelectedRow() == -1) {
-            JOptionPane.showMessageDialog(this, "Debes seleccionar una cita.", "Error", JOptionPane.WARNING_MESSAGE);
-            return;
+                JOptionPane.showMessageDialog(this, "Debes seleccionar una cita.", "Error", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        
+        try {    
+            String idCita = String.valueOf(jTable1.getValueAt(jTable1.getSelectedRow(), 0));
+
+            ConsultaViejoDTO consulta = consultaBO.obtenerConsultaPorIdCita(idCita);
+
+            DescripcionConsulta descripcionConsulta = DescripcionConsulta.getInstance();
+            
+            descripcionConsulta.setConsulta(consulta);
+            descripcionConsulta.llenarCampos();
+            descripcionConsulta.setVerAgenda(this);
+            descripcionConsulta.setVisible(true);
+            this.setVisible(false);
+        } catch (NegocioException ex) {
+            Logger.getLogger(VerAgenda.class.getName()).log(Level.SEVERE, null, ex);
         }
-        DescripcionConsulta descripcionConsulta = DescripcionConsulta.getInstance();
-        descripcionConsulta.setVerAgenda(this);
-        descripcionConsulta.setVisible(true);
-        this.setVisible(false);
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -355,83 +375,45 @@ public class VerAgenda extends javax.swing.JFrame {
         }
     }
 
-    private void cancelarCita() {
-        int resultado = JOptionPane.showConfirmDialog(this, "¿Estas seguro que deseas cancelar la cita?", "Cacenlar cita", JOptionPane.YES_NO_OPTION);
-
-        if (resultado == JOptionPane.YES_OPTION) {
-            int filaSeleccionada = jTable1.getSelectedRow();
-
-            // Convertir el valor de la tabla a String
-            String valorFecha = jTable1.getValueAt(filaSeleccionada, 3).toString();
-            String valorHora = jTable1.getValueAt(filaSeleccionada, 4).toString();
-
-            // Combinar ambas cadenas en una única cadena en formato ISO
-            String fechaHoraCombinada = valorFecha + "T" + valorHora;
-
-            // Convertir a LocalDateTime usando el formateador ISO
-            LocalDateTime fechaInicio = LocalDateTime.parse(fechaHoraCombinada, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-            long duracionHoras = Duration.between(LocalDateTime.now(), fechaInicio).toHours();
-            System.out.println(duracionHoras);
-
-            if (duracionHoras < 24) {
-                JOptionPane.showMessageDialog(this, "Solo puedes cancelar citas con 24 horas de anticipación.", "Error", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            try {
-                CitaViejoDTO cita = new CitaViejoDTO();
-                cita.setIdCita((String) jTable1.getValueAt(jTable1.getSelectedRow(), 0));
-
-                boolean resultadoCita = citaBO.cancelarCita(cita);
-
-                if (resultadoCita) {
-                    JOptionPane.showMessageDialog(this, "La cita fue cancelada exitosamente");
-                }
-            } catch (NegocioException ex) {
-                Logger.getLogger(VerAgenda.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error inesperado", JOptionPane.WARNING_MESSAGE);
-            }
-        }
-    }
-
     private void cargarListeners() {
         jTable1.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
-                try {
-                    int filaSeleccionada = jTable1.getSelectedRow();
-                    
-                    if (filaSeleccionada == -1) return;
-                    
-                    // Convertir el valor de la tabla a String
-                    String valorFecha = jTable1.getValueAt(filaSeleccionada, 2).toString();
-                    String valorHora = jTable1.getValueAt(filaSeleccionada, 3).toString();
-                    
-                    // Combinar ambas cadenas en una única cadena en formato ISO
-                    String fechaHoraCombinada = valorFecha + "T" + valorHora;
-                    
-                    // Convertir a LocalDateTime usando el formateador ISO
-                    LocalDateTime fechaInicio = LocalDateTime.parse(fechaHoraCombinada, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-                    
-                    LocalDateTime ahora = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
-                    LocalDateTime fechaInicioMas30 = fechaInicio.plusMinutes(30);
-                    
-                    String idCita = jTable1.getValueAt(filaSeleccionada, 0).toString();
-                    System.out.println(idCita);
-                    String estadoConsulta = consultaBO.obtenerEstadoConsulta(idCita);
-                    System.out.println(estadoConsulta);
-                    System.out.println(ahora.isAfter(fechaInicio));
-                    System.out.println(ahora.isBefore(fechaInicioMas30));
-                    if (ahora.isAfter(fechaInicio) && ahora.isBefore(fechaInicioMas30) && estadoConsulta.equalsIgnoreCase("PENDIENTE")) {
-                        // La fechaInicio está entre ahora y ahora + 30 minutos.
-                        jButton2.setEnabled(true);
-                        jButton2.setText("Iniciar");
-                    } else if (fechaInicio.isAfter(ahora) && fechaInicio.isBefore(fechaInicioMas30) && estadoConsulta.equalsIgnoreCase("ASISTIO")) {
-                        jButton2.setEnabled(true);
-                        jButton2.setText("Ver");
-                    }
-                } catch (NegocioException ex) {
-                    Logger.getLogger(VerAgenda.class.getName()).log(Level.SEVERE, null, ex);
+
+                int filaSeleccionada = jTable1.getSelectedRow();
+
+                if (filaSeleccionada == -1) {
+                    return;
                 }
+
+                // Convertir el valor de la tabla a String
+                String valorFecha = jTable1.getValueAt(filaSeleccionada, 2).toString();
+                String valorHora = jTable1.getValueAt(filaSeleccionada, 3).toString();
+
+                // Combinar ambas cadenas en una única cadena en formato ISO
+                String fechaHoraCombinada = valorFecha + "T" + valorHora;
+
+                // Convertir a LocalDateTime usando el formateador ISO
+                LocalDateTime fechaInicio = LocalDateTime.parse(fechaHoraCombinada, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
+                LocalDateTime ahora = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
+                LocalDateTime fechaInicioMas30 = fechaInicio.plusMinutes(30);
+
+                System.out.println(jTable1.getValueAt(filaSeleccionada, 0));
+                String idCita = jTable1.getValueAt(filaSeleccionada, 0).toString();
+                String estadoConsulta = jTable1.getValueAt(filaSeleccionada, 1).toString();
+                
+                System.out.println(estadoConsulta);
+                System.out.println(ahora.isAfter(fechaInicio));
+                System.out.println(ahora.isBefore(fechaInicioMas30));
+                if (ahora.isAfter(fechaInicio) && ahora.isBefore(fechaInicioMas30) && estadoConsulta.equalsIgnoreCase("PENDIENTE")) {
+                    // La fechaInicio está entre ahora y ahora + 30 minutos.
+                    jButton2.setEnabled(true);
+                    jButton2.setText("Iniciar");
+                } else if (fechaInicio.isAfter(ahora) && fechaInicio.isBefore(fechaInicioMas30) && estadoConsulta.equalsIgnoreCase("ASISTIO")) {
+                    jButton2.setEnabled(true);
+                    jButton2.setText("Ver");
+                }
+
             }
         });
     }
