@@ -10,10 +10,14 @@ import DTO.PerfilViejoDTO;
 import Exception.NegocioException;
 import configuracion.DependencyInjector;
 import excepciones.PersistenciaException;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import sesion.SessionManager;
 
@@ -108,6 +112,7 @@ public class VerPerfilPaciente extends javax.swing.JFrame {
         btnEditarDatos.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         btnEditarDatos.setForeground(new java.awt.Color(255, 255, 255));
         btnEditarDatos.setText("Editar datos");
+        btnEditarDatos.setBorderPainted(false);
         btnEditarDatos.setPreferredSize(new java.awt.Dimension(150, 30));
         btnEditarDatos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -119,6 +124,7 @@ public class VerPerfilPaciente extends javax.swing.JFrame {
         btnVolver.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         btnVolver.setForeground(new java.awt.Color(255, 255, 255));
         btnVolver.setText("Volver");
+        btnVolver.setBorderPainted(false);
         btnVolver.setPreferredSize(new java.awt.Dimension(150, 30));
         btnVolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -242,6 +248,35 @@ public class VerPerfilPaciente extends javax.swing.JFrame {
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(77, Short.MAX_VALUE))
         );
+
+        btnEditarDatos.setContentAreaFilled(false);
+        btnEditarDatos.setOpaque(false);
+        btnEditarDatos.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
+            @Override
+            public void paint(Graphics g, JComponent c) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                // Pinta un fondo redondeado
+                g2.setColor(c.getBackground());
+                g2.fillRoundRect(0, 0, c.getWidth(), c.getHeight(), 50, 50);
+                super.paint(g2, c);
+                g2.dispose();
+            }
+        });
+        btnVolver.setContentAreaFilled(false);
+        btnVolver.setOpaque(false);
+        btnVolver.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
+            @Override
+            public void paint(Graphics g, JComponent c) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                // Pinta un fondo redondeado
+                g2.setColor(c.getBackground());
+                g2.fillRoundRect(0, 0, c.getWidth(), c.getHeight(), 50, 50);
+                super.paint(g2, c);
+                g2.dispose();
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

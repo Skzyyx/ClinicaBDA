@@ -8,9 +8,13 @@ import BO.UsuarioBO;
 import DTO.SesionNuevoDTO;
 import Exception.NegocioException;
 import configuracion.DependencyInjector;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 
 import javax.swing.JOptionPane;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -117,9 +121,10 @@ public class InicioDeSesion extends javax.swing.JFrame {
         jLabel3.setText("Contraseña");
 
         btnIniciarSesion.setBackground(new java.awt.Color(0, 0, 0));
-        btnIniciarSesion.setFont(new java.awt.Font("Segoe UI Semilight", 0, 18)); // NOI18N
+        btnIniciarSesion.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         btnIniciarSesion.setForeground(new java.awt.Color(255, 255, 255));
         btnIniciarSesion.setText("Iniciar sesión");
+        btnIniciarSesion.setBorderPainted(false);
         btnIniciarSesion.setPreferredSize(new java.awt.Dimension(150, 30));
         btnIniciarSesion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -128,9 +133,10 @@ public class InicioDeSesion extends javax.swing.JFrame {
         });
 
         btnRegistrarse.setBackground(new java.awt.Color(0, 0, 0));
-        btnRegistrarse.setFont(new java.awt.Font("Segoe UI Semilight", 0, 18)); // NOI18N
+        btnRegistrarse.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         btnRegistrarse.setForeground(new java.awt.Color(255, 255, 255));
         btnRegistrarse.setText("Registrarse");
+        btnRegistrarse.setBorderPainted(false);
         btnRegistrarse.setPreferredSize(new java.awt.Dimension(150, 30));
         btnRegistrarse.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -198,6 +204,35 @@ public class InicioDeSesion extends javax.swing.JFrame {
                     .addComponent(btnIniciarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(63, 63, 63))
         );
+
+        btnIniciarSesion.setContentAreaFilled(false);
+        btnIniciarSesion.setOpaque(false);
+        btnIniciarSesion.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
+            @Override
+            public void paint(Graphics g, JComponent c) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                // Pinta un fondo redondeado
+                g2.setColor(c.getBackground());
+                g2.fillRoundRect(0, 0, c.getWidth(), c.getHeight(), 50, 50);
+                super.paint(g2, c);
+                g2.dispose();
+            }
+        });
+        btnRegistrarse.setContentAreaFilled(false);
+        btnRegistrarse.setOpaque(false);
+        btnRegistrarse.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
+            @Override
+            public void paint(Graphics g, JComponent c) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                // Pinta un fondo redondeado
+                g2.setColor(c.getBackground());
+                g2.fillRoundRect(0, 0, c.getWidth(), c.getHeight(), 50, 50);
+                super.paint(g2, c);
+                g2.dispose();
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

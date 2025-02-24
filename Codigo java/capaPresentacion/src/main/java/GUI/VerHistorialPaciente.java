@@ -147,6 +147,7 @@ public class VerHistorialPaciente extends javax.swing.JFrame {
 
         btnVolver.setText("Volver");
         btnVolver.setBackground(new java.awt.Color(44, 45, 45));
+        btnVolver.setBorderPainted(false);
         btnVolver.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         btnVolver.setForeground(new java.awt.Color(255, 255, 255));
         btnVolver.addActionListener(new java.awt.event.ActionListener() {

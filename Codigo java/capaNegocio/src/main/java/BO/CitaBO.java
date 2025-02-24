@@ -49,7 +49,7 @@ public class CitaBO {
             return citaDAO.registrarCitaProgramada(citaMapper.toEntity(citaNuevo));
         } catch (PersistenciaException ex) {
             Logger.getLogger(CitaBO.class.getName()).log(Level.SEVERE, null, ex);
-            throw new NegocioException("No se pudo agendar la cita de emergencia.");
+            throw new NegocioException(ex.getMessage());
         }
     }
     

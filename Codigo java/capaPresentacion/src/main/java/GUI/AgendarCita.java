@@ -174,6 +174,7 @@ public class AgendarCita extends javax.swing.JFrame {
 
         jButton1.setText("Volver");
         jButton1.setBackground(new java.awt.Color(44, 45, 45));
+        jButton1.setBorderPainted(false);
         jButton1.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -184,6 +185,7 @@ public class AgendarCita extends javax.swing.JFrame {
 
         jButton2.setText("Aceptar");
         jButton2.setBackground(new java.awt.Color(44, 45, 45));
+        jButton2.setBorderPainted(false);
         jButton2.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -194,6 +196,7 @@ public class AgendarCita extends javax.swing.JFrame {
 
         jButton3.setText("Cita de emergencia");
         jButton3.setBackground(new java.awt.Color(255, 102, 102));
+        jButton3.setBorderPainted(false);
         jButton3.setFont(new java.awt.Font("Segoe UI Semibold", 1, 18)); // NOI18N
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -586,17 +589,16 @@ public class AgendarCita extends javax.swing.JFrame {
         
         try {
             boolean resultado = citaBO.registrarCitaProgramada(cita);
-            
+            System.out.println(resultado);
             if (resultado) {
                 JOptionPane.showMessageDialog(this, "Tu cita ha sido registrada.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                 // Actualizar la lista de citas en la interfaz de cancelar citas
                 CancelarCita cancelarCita = CancelarCita.getInstance();
                 cancelarCita.cargarCitas();
-            } else {
-                JOptionPane.showMessageDialog(this, "Tu cita no se ha podido registrar.", "Error", JOptionPane.WARNING_MESSAGE);
             }
         } catch (NegocioException ex) {
             Logger.getLogger(AgendarCita.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
         }
     }
     

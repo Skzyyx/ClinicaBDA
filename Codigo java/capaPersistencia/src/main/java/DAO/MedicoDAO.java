@@ -32,7 +32,7 @@ import java.util.logging.Logger;
  * @author 00000253301 Isabel Valenzuela Rocha  
  */
 public class MedicoDAO implements IMedicoDAO {
-    
+    /** Conexión a utiizar */
     private final IConexion conexion;
 
     /**
@@ -211,19 +211,20 @@ public class MedicoDAO implements IMedicoDAO {
     @Override
     public List<Horario> obtenerHorariosMedicoPorID(int id) throws PersistenciaException {
         List<Horario> horarios = new ArrayList<>();
-        
         String sentenciaSQL = "CALL consultarHorariosMedicoPorID(?)";
         
-        //Intenta la conexion
+        // Intenta la conexion
         try(Connection con =conexion.crearConexion();
                 CallableStatement cb = con.prepareCall(sentenciaSQL)) {
             
-            //se setea el valor del id a buscar
+            // Se setea el valor del id a buscar
             cb.setInt(1, id);
             
-            //Intenta la Busqueda
+            // Intenta la búsqueda
             try (ResultSet rs =cb.executeQuery()){
+                // Si encontró registro
                 while (rs.next()){
+                    // Agrega el horario a la lista
                     horarios.add(new Horario(
                         rs.getString("diaSemana"),
                         rs.getTime("horaEntrada").toLocalTime(),
@@ -233,13 +234,14 @@ public class MedicoDAO implements IMedicoDAO {
                 }
                 
                 return horarios;
+            // Si falla la búsqueda
             } catch (SQLException ex) {
                 Logger.getLogger(MedicoDAO.class.getName()).log(Level.SEVERE, null, ex);
                 throw new PersistenciaException("Error inesperado: " + ex.getMessage());
             }
         } catch (SQLException ex) {
             Logger.getLogger(MedicoDAO.class.getName()).log(Level.SEVERE, null, ex);
-            throw new PersistenciaException("Error al consultar el Horario "+ ex.getMessage());
+            throw new PersistenciaException("Error al consultar el horario:"+ ex.getMessage());
         }
     }
     
@@ -265,6 +267,7 @@ public class MedicoDAO implements IMedicoDAO {
                     cantidadMedicosActivos = rs.getInt(1);
                 }
             }
+            
         return cantidadMedicosActivos;
         // Si ocurre un error
         } catch (Exception e) {
@@ -299,11 +302,20 @@ public class MedicoDAO implements IMedicoDAO {
             }
             return false;
         // Si ocurre un error
-        } catch (Exception e) {
-            throw new PersistenciaException("Error al contar médicos activos: " + e.getMessage());
+        } catch (SQLException e) {
+            // Loguear el error detallado para ayudar en el diagnóstico de problemas
+            Logger.getLogger(MedicoDAO.class.getName()).log(Level.SEVERE, "Error al verificar las citas para el médico con cédula: " + cedula, e);
+            // Lanzar una excepción de persistencia personalizada
+            throw new PersistenciaException("Error al verificar las citas programadas para el médico con cédula: " + cedula, e);
         }
     }
-
+    
+    /**
+     * 
+     * @param medico
+     * @return
+     * @throws PersistenciaException 
+     */
     @Override
     public List<Cita> obtenerCitasPorMedico(Medico medico) throws PersistenciaException {
         List<Cita> citas = new ArrayList<>();

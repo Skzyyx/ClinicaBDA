@@ -83,3 +83,36 @@ BEGIN
     WHERE idCita = id_cita;
 END$$
 DELIMITER ;
+
+DELIMITER $$
+CREATE EVENT IF NOT EXISTS actualizarConsultasNoAsistidas
+ON SCHEDULE EVERY 1 MINUTE -- Se ejecuta cada minuto
+DO
+BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION 
+    BEGIN
+        ROLLBACK; -- Si ocurre un error, deshacer cambios
+    END;
+
+    START TRANSACTION;
+
+    -- Cambiar el estado de las citas de emergencia que no han sido atendidas en 10 minutos
+    UPDATE citas
+    SET estado = 'TERMINADA'
+    WHERE tipo = 'EMERGENCIA'
+        AND estado = 'ACTIVA'
+        AND TIMESTAMPDIFF(MINUTE, fechaHoraInicio, NOW()) > 10;
+
+    -- Cambiar el estado de las consultas relacionadas a esas citas a "NO ASISTIO"
+    UPDATE consultas
+    SET estado = 'NO ASISTIO'
+    WHERE idCita IN (
+        SELECT idCita FROM citas 
+        WHERE tipo = 'EMERGENCIA'
+            AND estado = 'TERMINADA'
+            AND TIMESTAMPDIFF(MINUTE, fechaHoraInicio, NOW()) > 10
+    );
+
+    COMMIT; -- Si todo se ejecutó correctamente, guardar cambios
+END $$
+DELIMITER ;

@@ -9,9 +9,13 @@ import DTO.MedicoViejoDTO;
 import Exception.NegocioException;
 import configuracion.DependencyInjector;
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import sesion.SessionManager;
 
@@ -118,6 +122,7 @@ public class PrincipalMedico extends javax.swing.JFrame {
         btnVerAgenda.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         btnVerAgenda.setForeground(new java.awt.Color(255, 255, 255));
         btnVerAgenda.setText("Ver mi agenda");
+        btnVerAgenda.setBorderPainted(false);
         btnVerAgenda.setPreferredSize(new java.awt.Dimension(150, 30));
         btnVerAgenda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -143,6 +148,7 @@ public class PrincipalMedico extends javax.swing.JFrame {
         btnVerPerfil.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         btnVerPerfil.setForeground(new java.awt.Color(255, 255, 255));
         btnVerPerfil.setText("Ver perfil");
+        btnVerPerfil.setBorderPainted(false);
         btnVerPerfil.setPreferredSize(new java.awt.Dimension(150, 30));
         btnVerPerfil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -150,6 +156,22 @@ public class PrincipalMedico extends javax.swing.JFrame {
             }
         });
         jPanel2.add(btnVerPerfil, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 210, 150, 58));
+        btnVerPerfil.setContentAreaFilled(false);
+        btnVerPerfil.setEnabled(false);
+        btnVerPerfil.setBorderPainted(false);
+        btnVerPerfil.setOpaque(false);
+        btnVerPerfil.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
+            @Override
+            public void paint(Graphics g, JComponent c) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                // Pinta un fondo redondeado
+                g2.setColor(c.getBackground());
+                g2.fillRoundRect(0, 0, c.getWidth(), c.getHeight(), 50, 50);
+                super.paint(g2, c);
+                g2.dispose();
+            }
+        });
 
         fondoCredencial.setIcon(new ImageIcon(getClass().getResource("/fondoCredencial.JPG")));
         jPanel2.add(fondoCredencial, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 240, 290));
@@ -158,6 +180,7 @@ public class PrincipalMedico extends javax.swing.JFrame {
         btnHistorial.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         btnHistorial.setForeground(new java.awt.Color(255, 255, 255));
         btnHistorial.setText("Consultar historial");
+        btnHistorial.setBorderPainted(false);
         btnHistorial.setPreferredSize(new java.awt.Dimension(150, 30));
         btnHistorial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -169,6 +192,7 @@ public class PrincipalMedico extends javax.swing.JFrame {
         btnCambiarEstado.setFont(new java.awt.Font("Segoe UI Semilight", 1, 16)); // NOI18N
         btnCambiarEstado.setForeground(new java.awt.Color(255, 255, 255));
         btnCambiarEstado.setText("Darse de baja/alta");
+        btnCambiarEstado.setBorderPainted(false);
         btnCambiarEstado.setPreferredSize(new java.awt.Dimension(150, 30));
         btnCambiarEstado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -180,6 +204,7 @@ public class PrincipalMedico extends javax.swing.JFrame {
         btnCerrarSesion.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         btnCerrarSesion.setForeground(new java.awt.Color(255, 255, 255));
         btnCerrarSesion.setText("Cerrar sesión");
+        btnCerrarSesion.setBorderPainted(false);
         btnCerrarSesion.setPreferredSize(new java.awt.Dimension(150, 30));
         btnCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -226,6 +251,71 @@ public class PrincipalMedico extends javax.swing.JFrame {
                         .addComponent(btnCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(90, Short.MAX_VALUE))
         );
+
+        btnVerAgenda.setContentAreaFilled(false);
+        btnVerAgenda.setEnabled(false);
+        btnVerAgenda.setBorderPainted(false);
+        btnVerAgenda.setOpaque(false);
+        btnVerAgenda.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
+            @Override
+            public void paint(Graphics g, JComponent c) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                // Pinta un fondo redondeado
+                g2.setColor(c.getBackground());
+                g2.fillRoundRect(0, 0, c.getWidth(), c.getHeight(), 50, 50);
+                super.paint(g2, c);
+                g2.dispose();
+            }
+        });
+        btnHistorial.setContentAreaFilled(false);
+        btnHistorial.setEnabled(false);
+        btnHistorial.setBorderPainted(false);
+        btnHistorial.setOpaque(false);
+        btnHistorial.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
+            @Override
+            public void paint(Graphics g, JComponent c) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                // Pinta un fondo redondeado
+                g2.setColor(c.getBackground());
+                g2.fillRoundRect(0, 0, c.getWidth(), c.getHeight(), 50, 50);
+                super.paint(g2, c);
+                g2.dispose();
+            }
+        });
+        btnCambiarEstado.setContentAreaFilled(false);
+        btnCambiarEstado.setEnabled(false);
+        btnCambiarEstado.setBorderPainted(false);
+        btnCambiarEstado.setOpaque(false);
+        btnCambiarEstado.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
+            @Override
+            public void paint(Graphics g, JComponent c) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                // Pinta un fondo redondeado
+                g2.setColor(c.getBackground());
+                g2.fillRoundRect(0, 0, c.getWidth(), c.getHeight(), 50, 50);
+                super.paint(g2, c);
+                g2.dispose();
+            }
+        });
+        btnCerrarSesion.setContentAreaFilled(false);
+        btnCerrarSesion.setEnabled(false);
+        btnCerrarSesion.setBorderPainted(false);
+        btnCerrarSesion.setOpaque(false);
+        btnCerrarSesion.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
+            @Override
+            public void paint(Graphics g, JComponent c) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                // Pinta un fondo redondeado
+                g2.setColor(c.getBackground());
+                g2.fillRoundRect(0, 0, c.getWidth(), c.getHeight(), 50, 50);
+                super.paint(g2, c);
+                g2.dispose();
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

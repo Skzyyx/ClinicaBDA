@@ -65,11 +65,12 @@ public class CitaDAO implements ICitaDAO {
             cs.setString(4, cita.getPaciente().getEmail());
             cs.setInt(5, cita.getMedico().getIdMedico());
             
-            cs.execute();
+            cs.executeUpdate();
+            
             return true;
         } catch (SQLException ex) {
             Logger.getLogger(CitaDAO.class.getName()).log(Level.SEVERE, null, ex);
-            throw new PersistenciaException("No se pudo registrar la cita programada.");
+            throw new PersistenciaException(ex.getMessage());
         }
     }
     
@@ -85,7 +86,7 @@ public class CitaDAO implements ICitaDAO {
             cs.setString(4, cita.getPaciente().getEmail());
             cs.setInt(5, cita.getMedico().getIdMedico());
             
-            cs.execute();
+            cs.executeUpdate();
             return true;
         } catch (SQLException ex) {
             Logger.getLogger(CitaDAO.class.getName()).log(Level.SEVERE, null, ex);

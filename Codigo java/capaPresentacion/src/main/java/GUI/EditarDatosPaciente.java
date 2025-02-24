@@ -12,9 +12,13 @@ import DTO.UsuarioNuevoDTO;
 import Exception.NegocioException;
 import configuracion.DependencyInjector;
 import excepciones.PersistenciaException;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import sesion.SessionManager;
 
@@ -73,7 +77,7 @@ public class EditarDatosPaciente extends javax.swing.JFrame {
         lbNombre4 = new javax.swing.JLabel();
         lbNombre5 = new javax.swing.JLabel();
         lbNombre8 = new javax.swing.JLabel();
-        btnCancelar = new javax.swing.JButton();
+        btnVolver = new javax.swing.JButton();
         lbNombre9 = new javax.swing.JLabel();
         lbNombre10 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -103,8 +107,8 @@ public class EditarDatosPaciente extends javax.swing.JFrame {
         jPanel1.setMaximumSize(new java.awt.Dimension(800, 600));
         jPanel1.setPreferredSize(new java.awt.Dimension(800, 600));
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI Semibold", 1, 36)); // NOI18N
         jLabel2.setText("Editar datos");
+        jLabel2.setFont(new java.awt.Font("Segoe UI Semibold", 1, 36)); // NOI18N
 
         jPanel2.setBackground(new java.awt.Color(247, 242, 250));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -148,17 +152,32 @@ public class EditarDatosPaciente extends javax.swing.JFrame {
         lbNombre8.setText("Apellido materno");
         jPanel2.add(lbNombre8, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 70, 100, 20));
 
-        btnCancelar.setBackground(new java.awt.Color(0, 0, 0));
-        btnCancelar.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
-        btnCancelar.setForeground(new java.awt.Color(255, 255, 255));
-        btnCancelar.setText("Volver");
-        btnCancelar.setPreferredSize(new java.awt.Dimension(150, 30));
-        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+        btnVolver.setText("Volver");
+        btnVolver.setBackground(new java.awt.Color(0, 0, 0));
+        btnVolver.setBorderPainted(false);
+        btnVolver.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
+        btnVolver.setForeground(new java.awt.Color(255, 255, 255));
+        btnVolver.setPreferredSize(new java.awt.Dimension(150, 30));
+        btnVolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelarActionPerformed(evt);
+                btnVolverActionPerformed(evt);
             }
         });
-        jPanel2.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 280, 140, 40));
+        jPanel2.add(btnVolver, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 280, 140, 40));
+        btnVolver.setContentAreaFilled(false);
+        btnVolver.setOpaque(false);
+        btnVolver.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
+            @Override
+            public void paint(Graphics g, JComponent c) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                // Pinta un fondo redondeado
+                g2.setColor(c.getBackground());
+                g2.fillRoundRect(0, 0, c.getWidth(), c.getHeight(), 50, 50);
+                super.paint(g2, c);
+                g2.dispose();
+            }
+        });
 
         lbNombre9.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
         lbNombre9.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -217,10 +236,11 @@ public class EditarDatosPaciente extends javax.swing.JFrame {
         txtFecha.setBorder(javax.swing.BorderFactory.createCompoundBorder());
         jPanel2.add(txtFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, -1, -1));
 
+        btnGuardar.setText("Guardar");
         btnGuardar.setBackground(new java.awt.Color(0, 0, 0));
+        btnGuardar.setBorderPainted(false);
         btnGuardar.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
-        btnGuardar.setText("Guardar");
         btnGuardar.setPreferredSize(new java.awt.Dimension(150, 30));
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -228,6 +248,20 @@ public class EditarDatosPaciente extends javax.swing.JFrame {
             }
         });
         jPanel2.add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 230, 140, 40));
+        btnGuardar.setContentAreaFilled(false);
+        btnGuardar.setOpaque(false);
+        btnGuardar.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
+            @Override
+            public void paint(Graphics g, JComponent c) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                // Pinta un fondo redondeado
+                g2.setColor(c.getBackground());
+                g2.fillRoundRect(0, 0, c.getWidth(), c.getHeight(), 50, 50);
+                super.paint(g2, c);
+                g2.dispose();
+            }
+        });
 
         lbFondo.setBackground(new java.awt.Color(247, 242, 250));
         lbFondo.setVerticalAlignment(javax.swing.SwingConstants.TOP);
@@ -241,19 +275,19 @@ public class EditarDatosPaciente extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(332, 332, 332)
-                        .addComponent(jLabel2))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(63, 63, 63)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 749, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 749, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(335, 335, 335)
+                        .addComponent(jLabel2)))
                 .addContainerGap(58, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(65, 65, 65)
+                .addGap(62, 62, 62)
                 .addComponent(jLabel2)
-                .addGap(32, 32, 32)
+                .addGap(35, 35, 35)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(50, Short.MAX_VALUE))
         );
@@ -274,9 +308,9 @@ public class EditarDatosPaciente extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         volver();
-    }//GEN-LAST:event_btnCancelarActionPerformed
+    }//GEN-LAST:event_btnVolverActionPerformed
 
     private void txtContraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtContraActionPerformed
         // TODO add your handling code here:
@@ -337,8 +371,8 @@ public class EditarDatosPaciente extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnVolver;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;

@@ -121,7 +121,7 @@ public class AgendarCitaEmergencia extends javax.swing.JFrame {
         jTextArea1.setEditable(false);
         jTextArea1.setBackground(java.awt.SystemColor.controlLtHighlight);
         jTextArea1.setColumns(20);
-        jTextArea1.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        jTextArea1.setFont(new java.awt.Font("Segoe UI Semilight", 0, 13)); // NOI18N
         jTextArea1.setLineWrap(true);
         jTextArea1.setRows(5);
         jTextArea1.setText("Tu cita solo es válida durante los próximos 10 minutos desde su generación, por lo que debes de presentarte antes de que transcurra ese tiempo. De otra forma, perderás la cita.\n\nDebes presentar el folio de cita para ser atentido.");
@@ -133,13 +133,14 @@ public class AgendarCitaEmergencia extends javax.swing.JFrame {
 
         jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 210, 180));
 
-        jLabel9.setFont(new java.awt.Font("Segoe UI Black", 0, 24)); // NOI18N
+        jLabel9.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel9.setText("Aviso");
         jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 30, 70, 20));
 
         jButton2.setText("Aceptar");
         jButton2.setBackground(new java.awt.Color(44, 45, 45));
+        jButton2.setBorderPainted(false);
         jButton2.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -194,7 +195,7 @@ public class AgendarCitaEmergencia extends javax.swing.JFrame {
         lbFolio.setVerifyInputWhenFocusTarget(false);
         jPanel3.add(lbFolio, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 110, 100, 30));
 
-        jLabel8.setFont(new java.awt.Font("Segoe UI Black", 0, 24)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 204, 51));
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel8.setText("Cita agendada con éxito");
