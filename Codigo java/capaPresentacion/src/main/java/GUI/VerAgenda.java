@@ -29,6 +29,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -53,6 +54,7 @@ public class VerAgenda extends javax.swing.JFrame {
     private ConsultaBO consultaBO = DependencyInjector.crearConsultaBO();
 
     private PrincipalMedico principalMedico;
+    private DescripcionConsulta descripcionConsulta;
 
     /**
      * Creates new form RegistrarCita
@@ -69,6 +71,14 @@ public class VerAgenda extends javax.swing.JFrame {
             instance = new VerAgenda();
         }
         return instance;
+    }
+
+    public DescripcionConsulta getDescripcionConsulta() {
+        return descripcionConsulta;
+    }
+
+    public void setDescripcionConsulta(DescripcionConsulta descripcionConsulta) {
+        this.descripcionConsulta = descripcionConsulta;
     }
 
     public PrincipalMedico getPrincipalMedico() {
@@ -122,9 +132,9 @@ public class VerAgenda extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setMinWidth(0);
-            jTable1.getColumnModel().getColumn(0).setPreferredWidth(0);
-            jTable1.getColumnModel().getColumn(0).setMaxWidth(0);
+            jTable1.getColumnModel().getColumn(0).setMinWidth(10);
+            jTable1.getColumnModel().getColumn(0).setPreferredWidth(10);
+            jTable1.getColumnModel().getColumn(0).setMaxWidth(10);
             jTable1.getColumnModel().getColumn(1).setMinWidth(0);
             jTable1.getColumnModel().getColumn(1).setPreferredWidth(0);
             jTable1.getColumnModel().getColumn(1).setMaxWidth(0);
@@ -261,8 +271,11 @@ public class VerAgenda extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Debes seleccionar una cita.", "Error", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        cancelarCita();
-        cargarCitas();
+        DescripcionConsulta descripcionConsulta = DescripcionConsulta.getInstance();
+        descripcionConsulta.setVerAgenda(this);
+        descripcionConsulta.setVisible(true);
+        this.setVisible(false);
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -399,16 +412,20 @@ public class VerAgenda extends javax.swing.JFrame {
                     // Convertir a LocalDateTime usando el formateador ISO
                     LocalDateTime fechaInicio = LocalDateTime.parse(fechaHoraCombinada, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
                     
-                    LocalDateTime ahora = LocalDateTime.now();
-                    LocalDateTime ahoraMas30 = ahora.plusMinutes(30);
+                    LocalDateTime ahora = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
+                    LocalDateTime fechaInicioMas30 = fechaInicio.plusMinutes(30);
                     
                     String idCita = jTable1.getValueAt(filaSeleccionada, 0).toString();
+                    System.out.println(idCita);
                     String estadoConsulta = consultaBO.obtenerEstadoConsulta(idCita);
-                    if (fechaInicio.isAfter(ahora) && fechaInicio.isBefore(ahoraMas30) && estadoConsulta.equalsIgnoreCase("PENDIENTE")) {
+                    System.out.println(estadoConsulta);
+                    System.out.println(ahora.isAfter(fechaInicio));
+                    System.out.println(ahora.isBefore(fechaInicioMas30));
+                    if (ahora.isAfter(fechaInicio) && ahora.isBefore(fechaInicioMas30) && estadoConsulta.equalsIgnoreCase("PENDIENTE")) {
                         // La fechaInicio está entre ahora y ahora + 30 minutos.
                         jButton2.setEnabled(true);
                         jButton2.setText("Iniciar");
-                    } else if (fechaInicio.isAfter(ahora) && fechaInicio.isBefore(ahoraMas30) && estadoConsulta.equalsIgnoreCase("ASISTIO")) {
+                    } else if (fechaInicio.isAfter(ahora) && fechaInicio.isBefore(fechaInicioMas30) && estadoConsulta.equalsIgnoreCase("ASISTIO")) {
                         jButton2.setEnabled(true);
                         jButton2.setText("Ver");
                     }

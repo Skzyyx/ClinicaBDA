@@ -125,4 +125,17 @@ public class ConsultaBO {
         }
         return null;
     }
+    
+    public ConsultaViejoDTO obtenerConsultaPorIdCita(String idCita) throws NegocioException {
+        if (idCita == null) {
+            throw new NegocioException("El id de la cita no puede ser nulo.");
+        }
+       
+        try {
+            return mapper.toViejoDTO(consultaDAO.obtenerConsultaPorIdCita(Integer.parseInt(idCita)));
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(ConsultaBO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new NegocioException("Error inesperado al obtener la consulta.");
+        }
+    }
 }

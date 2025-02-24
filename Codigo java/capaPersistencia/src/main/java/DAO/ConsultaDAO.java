@@ -5,7 +5,10 @@
 package DAO;
 
 import conexion.IConexion;
+import entidades.Cita;
+import entidades.Consulta;
 import excepciones.PersistenciaException;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -51,6 +54,34 @@ public class ConsultaDAO implements IConsultaDAO {
         }   catch (SQLException ex) {
             Logger.getLogger(CitaDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new PersistenciaException("Error al obtener el estado de la consulta.");
+        }
+    }
+
+    @Override
+    public Consulta obtenerConsultaPorIdCita(int idCita) throws PersistenciaException {
+        
+        String sql = "CALL obtenerConsultaPorIdCita(?)";
+        
+        try (Connection con = conexion.crearConexion();
+                CallableStatement cs = con.prepareCall(sql)) {
+            
+            cs.setInt(1, idCita);
+            
+            ResultSet rs = cs.executeQuery();
+            
+            if (rs.next()) {
+                return new Consulta(
+                        rs.getInt("idConsulta"),
+                        rs.getString("estado"), 
+                        rs.getString("diagnostico"), 
+                        rs.getString("tratamiento"), 
+                        rs.getString("notas"), 
+                        null);
+            }
+            return null;
+        } catch (SQLException ex) {
+            Logger.getLogger(ConsultaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PersistenciaException("No se pudo obtener la consulta");
         }
     }
     
