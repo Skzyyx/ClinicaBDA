@@ -16,8 +16,6 @@ import Exception.NegocioException;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import conexion.ConexionDB;
 import conexion.IConexion;
-import entidades.Direccion;
-import entidades.Usuario;
 import excepciones.PersistenciaException;
 import java.time.LocalDate;
 
@@ -32,10 +30,10 @@ public class PruebasNegocio {
     private static final UsuarioBO usuarioBO = new UsuarioBO(conexion);
             
     public static void main(String[] args) throws PersistenciaException, NegocioException {
-        //pruebaRegistrarPaciente();
+        pruebaRegistrarPaciente();
         //pruebaObtenerPerfilPaciente();
         //pruebaEditarDatosPaciente();
-        pruebaEncriptarContrasenia();
+        //pruebaEncriptarContrasenia();
         //pruebaConsultarUsuario();
         //pruebaValidarSesion();
     }
@@ -46,12 +44,12 @@ public class PruebasNegocio {
     private static void pruebaRegistrarPaciente() throws PersistenciaException {
         try {
             // Crear instancia de Usuario
-            UsuarioNuevoDTO usuario = new UsuarioNuevoDTO("eva@gmail.com", "hola", "PACIENTE");
+            UsuarioNuevoDTO usuario = new UsuarioNuevoDTO("sof@gmail.com", "sof", "PACIENTE");
 
             // Crear instancia de Dirección
-            DireccionNuevoDTO direccion = new DireccionNuevoDTO("Calle Reforma", "102", "Centro", "85000");
+            DireccionNuevoDTO direccion = new DireccionNuevoDTO("Calle 200", "102", "Orados", "85150");
 
-            PacienteNuevoDTO pacienteAGuardar = new PacienteNuevoDTO("Eva", "Luna", "Carrillo", LocalDate.of(1992, 8, 25), "eva@gmail.com", "6445781036", usuario, direccion);
+            PacienteNuevoDTO pacienteAGuardar = new PacienteNuevoDTO("Sofia", "Villegas", "Cinco", LocalDate.of(1992, 8, 25), "sof@gmail.com", "6441259873", usuario, direccion);
 
             boolean pacienteRegistrado = pacienteBO.registrarPaciente(pacienteAGuardar);
             

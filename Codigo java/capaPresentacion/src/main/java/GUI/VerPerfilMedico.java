@@ -5,12 +5,9 @@
 package GUI;
 
 import BO.MedicoBO;
-import BO.PacienteBO;
 import DTO.MedicoViejoDTO;
-import DTO.PerfilViejoDTO;
 import Exception.NegocioException;
 import configuracion.DependencyInjector;
-import excepciones.PersistenciaException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;

@@ -4,7 +4,6 @@
  */
 package DTO;
 
-import entidades.Medico;
 import java.time.LocalTime;
 
 /**

@@ -145,10 +145,10 @@ public class CancelarCita extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Cancelar Cita");
         jButton2.setBackground(new java.awt.Color(44, 45, 45));
         jButton2.setFont(new java.awt.Font("Segoe UI Semilight", 1, 18)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jButton2.setText("Cancelar cita");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -337,7 +337,7 @@ public class CancelarCita extends javax.swing.JFrame {
     }
 
     private void cancelarCita() {
-        int resultado = JOptionPane.showConfirmDialog(this, "¿Estas seguro que deseas cancelar la cita?", "Cacenlar cita", JOptionPane.YES_NO_OPTION);
+        int resultado = JOptionPane.showConfirmDialog(this, "¿Estas seguro que deseas cancelar la cita?", "Cancelar cita", JOptionPane.YES_NO_OPTION);
         
         if (resultado == JOptionPane.YES_OPTION) {
             int filaSeleccionada = jTable1.getSelectedRow();
@@ -351,11 +351,13 @@ public class CancelarCita extends javax.swing.JFrame {
 
             // Convertir a LocalDateTime usando el formateador ISO
             LocalDateTime fechaInicio = LocalDateTime.parse(fechaHoraCombinada, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
             long duracionHoras = Duration.between(LocalDateTime.now(), fechaInicio).toHours();
-            System.out.println(duracionHoras);
-            
+
             if (duracionHoras < 24) {
+
                 JOptionPane.showMessageDialog(this, "Solo puedes cancelar citas con 24 horas de anticipación.", "Error", JOptionPane.WARNING_MESSAGE);
+
                 return;
             }
             

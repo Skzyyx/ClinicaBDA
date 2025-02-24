@@ -501,6 +501,27 @@ public class PacienteBO {
     }
     
     /**
+     * Verifica si un paciente tiene consultas registradas.
+     * @param email Email del paciente.
+     * @return True si tiene consultas registradas, false en caso contrario.
+     * @throws NegocioException 
+     */
+    public boolean tieneConsultasRegistradas(String email) throws NegocioException {
+        if (email == null) {
+            throw new NegocioException("El correo electrónico no puede ser nulo.");
+        }
+        
+        try {
+            List<Consulta> consultas = pacienteDAO.obtenerConsultasPaciente(email);
+            
+            return consultas.isEmpty();
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(MedicoBO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new NegocioException("No se pudo obtener los médicos");
+        }
+    }
+    
+    /**
      * Encripta la contraseña generandole un código hash.
      * @param contrasenia Contraseña a encriptar.
      * @return Contraseña encriptada.

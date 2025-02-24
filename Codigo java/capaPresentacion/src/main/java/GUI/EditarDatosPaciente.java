@@ -275,11 +275,7 @@ public class EditarDatosPaciente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        try {
-            volver();
-        } catch (NegocioException ex) {
-            Logger.getLogger(EditarDatosPaciente.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        volver();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void txtContraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtContraActionPerformed
@@ -499,12 +495,16 @@ public class EditarDatosPaciente extends javax.swing.JFrame {
      * Envía a la pestaña de ver perfil de paciente
      * @throws NegocioException Si hubo un error al cambiar de pestaña.
      */
-    private void volver() throws NegocioException {
-        VerPerfilPaciente verPerfilPaciente = VerPerfilPaciente.getInstance();
-        verPerfilPaciente.setEditarDatosFrame(this);
-        verPerfilPaciente.setVisible(true);
-        this.setVisible(false);
-        cargarDatos(SessionManager.getInstance().getUser());
-        verPerfilPaciente.mostrarPerfil();
+    private void volver() {
+        try {
+            VerPerfilPaciente verPerfilPaciente = VerPerfilPaciente.getInstance();
+            verPerfilPaciente.setEditarDatosFrame(this);
+            verPerfilPaciente.setVisible(true);
+            this.setVisible(false);
+            cargarDatos(SessionManager.getInstance().getUser());
+            verPerfilPaciente.mostrarPerfil();
+        } catch (NegocioException ex) {
+            Logger.getLogger(EditarDatosPaciente.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

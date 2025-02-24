@@ -8,23 +8,15 @@ import BO.CitaBO;
 import BO.ConsultaBO;
 import BO.MedicoBO;
 import BO.PacienteBO;
-import DTO.CitaNuevoDTO;
 import DTO.ConsultaViejoDTO;
-import DTO.HorarioViejoDTO;
-import DTO.MedicoViejoDTO;
-import DTO.PacienteNuevoDTO;
 import Exception.NegocioException;
 import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import configuracion.DependencyInjector;
-import excepciones.PersistenciaException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.logging.Level;
@@ -338,7 +330,7 @@ public class VerHistorialPaciente extends javax.swing.JFrame {
         }
     }
 
-    private void cargarHistorial() {
+    public void cargarHistorial() {
         // Obtener el modelo de la tabla y limpiar cualquier dato previo
         DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
         modelo.setRowCount(0); // Limpiar todas las filas existentes en la tabla
@@ -372,7 +364,6 @@ public class VerHistorialPaciente extends javax.swing.JFrame {
         }
     }
     
-
     private void cargarListener() {
         DateChangeListener listenerPeriodo = new DateChangeListener() {
             @Override
@@ -415,14 +406,13 @@ public class VerHistorialPaciente extends javax.swing.JFrame {
                 } catch (NegocioException ex) {
                     Logger.getLogger(VerHistorialPaciente.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
             }
         };
 
         dpInicio.addDateChangeListener(listenerPeriodo);
         dpFin.addDateChangeListener(listenerPeriodo);
     }
-    
+
     /**
      * Envía al menú principal de paciente
      */

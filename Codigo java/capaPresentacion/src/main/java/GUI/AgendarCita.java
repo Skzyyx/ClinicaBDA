@@ -8,10 +8,8 @@ import BO.CitaBO;
 import BO.MedicoBO;
 import DTO.CitaNuevoDTO;
 import DTO.HorarioViejoDTO;
-import DTO.MedicoNuevoDTO;
 import DTO.MedicoViejoDTO;
 import DTO.PacienteNuevoDTO;
-import DTO.PacienteViejoDTO;
 import Exception.NegocioException;
 import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
@@ -24,10 +22,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalUnit;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComponent;
@@ -326,14 +321,7 @@ public class AgendarCita extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try {
-            PrincipalPaciente principalPaciente = PrincipalPaciente.getInstance();
-            principalPaciente.setAgendarCita(this);
-            principalPaciente.setVisible(true);
-            this.setVisible(false);
-        } catch (NegocioException ex) {
-            Logger.getLogger(AgendarCita.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       volver();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -506,8 +494,6 @@ public class AgendarCita extends javax.swing.JFrame {
             // Obtener el día de la semana de la fecha seleccionada
             String diaSemanaSeleccionado = fechaSeleccionada.getDayOfWeek().toString();
             diaSemanaSeleccionado = diaSemanaSeleccionado.substring(0, 1) + diaSemanaSeleccionado.substring(1).toLowerCase();
-
-            System.out.println(id);
             List<HorarioViejoDTO> horarios = medicoBO.obtenerHorariosMedico(String.valueOf(id));
 
             for (HorarioViejoDTO horario : horarios) {
@@ -528,7 +514,7 @@ public class AgendarCita extends javax.swing.JFrame {
 
                         // Crear un objeto CitaNuevoDTO para verificar si la cita está ocupada
                         LocalDateTime fechaHoraInicio = LocalDateTime.of(fechaSeleccionada, horaInicio);
-                        System.out.println(fechaHoraInicio.toString());
+
                         // Verificar si la cita está ocupada
                         if (!citaBO.verificarCitaExiste(Timestamp.valueOf(fechaHoraInicio), String.valueOf(id))) {
                             
@@ -568,7 +554,6 @@ public class AgendarCita extends javax.swing.JFrame {
 
         MedicoViejoDTO medico = new MedicoViejoDTO(idMedico);
         PacienteNuevoDTO paciente = new PacienteNuevoDTO();
-        System.out.println(SessionManager.getInstance().getUser());
         paciente.setEmail(SessionManager.getInstance().getUser());
         
         LocalDateTime fechaHoraInicio = LocalDateTime.of(fechaSeleccionada, horaInicio);
@@ -588,6 +573,17 @@ public class AgendarCita extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(this, "Tu cita no se ha podido registrar.", "Error", JOptionPane.WARNING_MESSAGE);
             }
+        } catch (NegocioException ex) {
+            Logger.getLogger(AgendarCita.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void volver() {
+         try {
+            PrincipalPaciente principalPaciente = PrincipalPaciente.getInstance();
+            principalPaciente.setAgendarCita(this);
+            principalPaciente.setVisible(true);
+            this.setVisible(false);
         } catch (NegocioException ex) {
             Logger.getLogger(AgendarCita.class.getName()).log(Level.SEVERE, null, ex);
         }

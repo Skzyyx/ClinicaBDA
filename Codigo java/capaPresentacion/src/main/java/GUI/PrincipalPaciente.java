@@ -5,9 +5,11 @@
 package GUI;
 
 import BO.PacienteBO;
+import DTO.CitaViejoDTO;
 import DTO.PacienteViejoDTO;
 import Exception.NegocioException;
 import configuracion.DependencyInjector;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -250,33 +252,15 @@ public class PrincipalPaciente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCancelarCitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarCitaActionPerformed
-        try {
-            CancelarCita cancelarCita = CancelarCita.getInstance();
-            cancelarCita.setPrincipalPaciente(this);
-            cancelarCita.setVisible(true);
-            this.setVisible(false);
-        } catch (NegocioException ex) {
-            Logger.getLogger(PrincipalPaciente.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        cancelarCita();
     }//GEN-LAST:event_btnCancelarCitaActionPerformed
 
     private void btnAgendarCitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgendarCitaActionPerformed
-        try {
-            AgendarCita agendarCita = AgendarCita.getInstance();
-            agendarCita.setPrincipalPaciente(this);
-            agendarCita.setVisible(true);
-            this.setVisible(false);
-        } catch (NegocioException ex) {
-            Logger.getLogger(PrincipalPaciente.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        agendarCita();
     }//GEN-LAST:event_btnAgendarCitaActionPerformed
 
     private void btnVerPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerPerfilActionPerformed
-        try {
-            verPerfil();
-        } catch (NegocioException ex) {
-            Logger.getLogger(PrincipalPaciente.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        verPerfil();
     }//GEN-LAST:event_btnVerPerfilActionPerformed
 
     private void btnVerHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerHistorialActionPerformed
@@ -358,14 +342,60 @@ public class PrincipalPaciente extends javax.swing.JFrame {
     }
     
     /**
+     * Envía a la pestaña de agendar cita
+     */
+    private void agendarCita() {
+        try {
+            AgendarCita agendarCitaF = AgendarCita.getInstance();
+            agendarCitaF.setPrincipalPaciente(this);
+            agendarCitaF.setVisible(true);
+            this.setVisible(false);
+        } catch (NegocioException ex) {
+            Logger.getLogger(PrincipalPaciente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * Envía a la pestaña de calcelar cita
+     */
+    private void cancelarCita()  {
+        try {
+            // Obtiene las citas activas del paciente
+            List<CitaViejoDTO> citas = pacienteBO.obtenerCitasActivasPaciente(SessionManager.getInstance().getUser());
+
+            // Si tiene citas activas
+            if (citas.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "No cuentas con citas para cancelar.", "Error", JOptionPane.ERROR_MESSAGE);
+            // Ir a ventana de editar datos
+            } else {
+                CancelarCita cancelarCitaF = CancelarCita.getInstance();
+                cancelarCitaF.setPrincipalPaciente(this);
+                cancelarCitaF.setVisible(true);
+                this.setVisible(false);
+            }
+        } catch (NegocioException ex) {
+            Logger.getLogger(PrincipalPaciente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+   
+    /**
      * Envía a la pestaña de ver historial de consultas
      */
     private void verHistorial(){
         try {
-            VerHistorialPaciente historialPaciente = VerHistorialPaciente.getInstance();
-            historialPaciente.setPrincipalPacienteFrame(this);
-            historialPaciente.setVisible(true);
-            this.setVisible(false);
+            // Verificar si tiene o no consultas registradas para mostrar
+            boolean noTieneConsultas = pacienteBO.tieneConsultasRegistradas(SessionManager.getInstance().getUser());
+            
+            // Si tiene consultas
+            if (noTieneConsultas) {
+                JOptionPane.showMessageDialog(this, "No cuentas con consultas en tu historial.");
+            } else {
+                VerHistorialPaciente historialPaciente = VerHistorialPaciente.getInstance();
+                historialPaciente.setPrincipalPacienteFrame(this);
+                historialPaciente.setVisible(true);
+                historialPaciente.cargarHistorial();
+                this.setVisible(false);
+            }
         } catch (NegocioException ex) {
             Logger.getLogger(VerHistorialPaciente.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -375,11 +405,15 @@ public class PrincipalPaciente extends javax.swing.JFrame {
      * Envía a la pestaña perfil de paciente
      * @throws NegocioException Si hubo un error
      */
-    private void verPerfil() throws NegocioException {
-        VerPerfilPaciente verPerfil = VerPerfilPaciente.getInstance();
-        verPerfil.setPrincipalPacienteFrame(this);
-        verPerfil.setVisible(true);
-        this.setVisible(false);
+    private void verPerfil() {
+        try {
+            VerPerfilPaciente verPerfil = VerPerfilPaciente.getInstance();
+            verPerfil.setPrincipalPacienteFrame(this);
+            verPerfil.setVisible(true);
+            this.setVisible(false);
+        } catch (NegocioException ex) {
+            Logger.getLogger(VerHistorialPaciente.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     /**
