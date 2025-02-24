@@ -1,17 +1,26 @@
 USE clinicabda;
+
+-- Procedimiento almacenado obtenerConsultasPaciente
+-- Obtiene las consultas asociadas a un paciente específico
 DELIMITER $$
 CREATE PROCEDURE obtenerConsultasPaciente(
 	IN emailPaciente VARCHAR(100)
 )
 BEGIN
+	-- Variable para guardar el id
 	DECLARE id INT;
     
+    -- Si el paciente no existe en el sistema
     IF NOT EXISTS(SELECT email FROM pacientes WHERE email = emailPaciente) THEN
+		-- Envía error
 		SIGNAL SQLSTATE "45000" SET MESSAGE_TEXT = "El paciente no existe";
+	-- Si sí existe
 	ELSE
+		-- Obtiene su id y lo guarda
 		SET id = (SELECT idPaciente FROM pacientes WHERE email = emailPaciente);
 	END IF;
     
+    -- Busca las consultas de un paciente mediante su id
 	SELECT 
 		idConsulta,
         estadoConsulta,
@@ -33,6 +42,8 @@ BEGIN
 END $$
 DELIMITER ;
 
+-- Procedimiento almacenado consultasCitas
+-- Obtiene la información de consultas junto con sus citas asociadas
 CREATE OR REPLACE VIEW consultasCitas AS
 SELECT
 	co.idConsulta,
@@ -55,8 +66,9 @@ LEFT JOIN citas AS c
 INNER JOIN medicos AS m
 	ON c.idMedico = m.idMedico;
 
+-- Función obtenerEstadoConsulta
 DELIMITER $$
-CREATE FUNCTION obtenerEstadoConsulta( id_cita INT)
+CREATE FUNCTION obtenerEstadoConsulta(id_cita INT)
 RETURNS VARCHAR(50)
 DETERMINISTIC
 BEGIN

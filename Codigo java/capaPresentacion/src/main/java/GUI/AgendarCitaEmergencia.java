@@ -27,6 +27,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -91,9 +92,7 @@ public class AgendarCitaEmergencia extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jLabel9 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
@@ -105,38 +104,21 @@ public class AgendarCitaEmergencia extends javax.swing.JFrame {
         lbNombre = new javax.swing.JLabel();
         lbCedula = new javax.swing.JLabel();
         lbFolio = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(211, 222, 231));
 
-        jPanel2.setBackground(new java.awt.Color(247, 242, 250));
+        jPanel2.setBackground(new java.awt.Color(211, 222, 231));
         jPanel2.setForeground(new java.awt.Color(51, 0, 255));
+        jPanel2.setPreferredSize(new java.awt.Dimension(291, 242));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-
-        jTextArea1.setEditable(false);
-        jTextArea1.setBackground(java.awt.SystemColor.controlLtHighlight);
-        jTextArea1.setColumns(20);
-        jTextArea1.setFont(new java.awt.Font("Segoe UI Semilight", 0, 13)); // NOI18N
-        jTextArea1.setLineWrap(true);
-        jTextArea1.setRows(5);
-        jTextArea1.setText("Tu cita solo es válida durante los próximos 10 minutos desde su generación, por lo que debes de presentarte antes de que transcurra ese tiempo. De otra forma, perderás la cita.\n\nDebes presentar el folio de cita para ser atentido.");
-        jTextArea1.setWrapStyleWord(true);
-        jTextArea1.setDisabledTextColor(new java.awt.Color(0, 0, 0));
-        jTextArea1.setEnabled(false);
-        jTextArea1.setOpaque(false);
-        jScrollPane1.setViewportView(jTextArea1);
-
-        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 210, 180));
-
-        jLabel9.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
-        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel9.setText("Aviso");
-        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 30, 70, 20));
+        jLabel3.setIcon(new ImageIcon(getClass().getResource("/infoEmergencia.JPG")));
+        jLabel3.setPreferredSize(new java.awt.Dimension(291, 212));
+        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         jButton2.setText("Aceptar");
         jButton2.setBackground(new java.awt.Color(44, 45, 45));
@@ -149,96 +131,97 @@ public class AgendarCitaEmergencia extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Agendar cita emergencia");
+        jLabel1.setText("Cita de emergencia");
         jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 36)); // NOI18N
 
-        jPanel3.setBackground(new java.awt.Color(247, 242, 250));
+        jPanel3.setBackground(new java.awt.Color(211, 222, 231));
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lbNombre8.setFont(new java.awt.Font("Segoe UI Semilight", 1, 12)); // NOI18N
-        lbNombre8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbNombre8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lbNombre8.setText("Folio");
-        jPanel3.add(lbNombre8, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 90, 40, 20));
+        jPanel3.add(lbNombre8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, 40, 20));
 
         lbNombre9.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
         lbNombre9.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lbNombre9.setText("Nombre del médico");
-        jPanel3.add(lbNombre9, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, 110, 20));
+        lbNombre9.setText("Nombre del médico asignado");
+        jPanel3.add(lbNombre9, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, 160, 20));
 
         lbNombre10.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
         lbNombre10.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lbNombre10.setText("Cédula profesional");
-        jPanel3.add(lbNombre10, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 190, 110, 20));
+        jPanel3.add(lbNombre10, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 230, 110, 20));
 
         lbNombre11.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
         lbNombre11.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lbNombre11.setText("Fecha y hora asignada");
-        jPanel3.add(lbNombre11, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 90, 120, 20));
+        lbNombre11.setText("Fecha y hora de inicio");
+        jPanel3.add(lbNombre11, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, 120, 20));
 
         lbFechaHora.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
         lbFechaHora.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lbFechaHora.setVerifyInputWhenFocusTarget(false);
-        jPanel3.add(lbFechaHora, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, 180, 30));
+        jPanel3.add(lbFechaHora, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, 180, 30));
 
         lbNombre.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
         lbNombre.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lbNombre.setVerifyInputWhenFocusTarget(false);
-        jPanel3.add(lbNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 160, 200, 30));
+        jPanel3.add(lbNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 190, 220, 30));
 
         lbCedula.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
         lbCedula.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lbCedula.setVerifyInputWhenFocusTarget(false);
-        jPanel3.add(lbCedula, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, 200, 30));
+        jPanel3.add(lbCedula, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 240, 200, 30));
 
         lbFolio.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
         lbFolio.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lbFolio.setVerifyInputWhenFocusTarget(false);
-        jPanel3.add(lbFolio, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 110, 100, 30));
+        jPanel3.add(lbFolio, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 90, 100, 30));
 
-        jLabel8.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(0, 204, 51));
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel8.setText("Cita agendada con éxito");
-        jPanel3.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 30, 290, 40));
+        jLabel9.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel9.setText("Resumen de la cita");
+        jPanel3.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 40, 170, 20));
+
+        jLabel2.setIcon(new ImageIcon(getClass().getResource("/fondoEmergencia.JPG")));
+        jLabel2.setPreferredSize(new java.awt.Dimension(300, 300));
+        jPanel3.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 300));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(219, 219, 219)
-                .addComponent(jLabel1)
-                .addContainerGap(222, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(101, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(361, 361, 361))
+                        .addComponent(jLabel1)
+                        .addGap(254, 254, 254))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(107, 107, 107))))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(102, 102, 102)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(382, Short.MAX_VALUE)))
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(51, 51, 51)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(107, 107, 107))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(192, 192, 192))))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(31, Short.MAX_VALUE)
+                .addContainerGap(53, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(29, 29, 29)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                    .addContainerGap(108, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(130, 130, 130)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(42, 42, 42)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(68, 68, 68))
         );
 
         jButton2.setContentAreaFilled(false);
@@ -315,13 +298,12 @@ public class AgendarCitaEmergencia extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel lbCedula;
     private javax.swing.JLabel lbFechaHora;
     private javax.swing.JLabel lbFolio;

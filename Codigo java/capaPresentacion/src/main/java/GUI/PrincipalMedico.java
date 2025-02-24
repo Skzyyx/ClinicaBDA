@@ -157,7 +157,6 @@ public class PrincipalMedico extends javax.swing.JFrame {
         });
         jPanel2.add(btnVerPerfil, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 210, 150, 58));
         btnVerPerfil.setContentAreaFilled(false);
-        btnVerPerfil.setEnabled(false);
         btnVerPerfil.setBorderPainted(false);
         btnVerPerfil.setOpaque(false);
         btnVerPerfil.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
@@ -253,7 +252,6 @@ public class PrincipalMedico extends javax.swing.JFrame {
         );
 
         btnVerAgenda.setContentAreaFilled(false);
-        btnVerAgenda.setEnabled(false);
         btnVerAgenda.setBorderPainted(false);
         btnVerAgenda.setOpaque(false);
         btnVerAgenda.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
@@ -269,7 +267,6 @@ public class PrincipalMedico extends javax.swing.JFrame {
             }
         });
         btnHistorial.setContentAreaFilled(false);
-        btnHistorial.setEnabled(false);
         btnHistorial.setBorderPainted(false);
         btnHistorial.setOpaque(false);
         btnHistorial.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
@@ -285,7 +282,6 @@ public class PrincipalMedico extends javax.swing.JFrame {
             }
         });
         btnCambiarEstado.setContentAreaFilled(false);
-        btnCambiarEstado.setEnabled(false);
         btnCambiarEstado.setBorderPainted(false);
         btnCambiarEstado.setOpaque(false);
         btnCambiarEstado.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
@@ -301,7 +297,6 @@ public class PrincipalMedico extends javax.swing.JFrame {
             }
         });
         btnCerrarSesion.setContentAreaFilled(false);
-        btnCerrarSesion.setEnabled(false);
         btnCerrarSesion.setBorderPainted(false);
         btnCerrarSesion.setOpaque(false);
         btnCerrarSesion.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
