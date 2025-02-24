@@ -6,15 +6,19 @@ package BO;
 
 import DAO.IMedicoDAO;
 import DAO.MedicoDAO;
+import DTO.CitaViejoDTO;
 import DTO.HorarioViejoDTO;
 import DTO.MedicoViejoDTO;
 import Exception.NegocioException;
+import Mapper.CitaMapper;
 import Mapper.HorarioMapper;
 import Mapper.MedicoMapper;
 import conexion.IConexion;
+import entidades.Cita;
 import entidades.Horario;
 import entidades.Medico;
 import excepciones.PersistenciaException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,6 +39,7 @@ public class MedicoBO {
     
     private final MedicoMapper medicoMapper = new MedicoMapper();
     private final HorarioMapper horarioMapper = new HorarioMapper();
+    private final CitaMapper citaMapper = new CitaMapper();
     
     /**
      * Constructor de la clase.
@@ -289,4 +294,22 @@ public class MedicoBO {
             throw new NegocioException("No se pudo cambiar el estado del médico.");
         }
     }
+    
+    public List<CitaViejoDTO> obtenerCitasPorMedico(MedicoViejoDTO medicoViejo) throws NegocioException {
+        List<CitaViejoDTO> citasViejo = new ArrayList<>();
+        try {
+            if (medicoViejo.getCedula() == null) {
+                throw new NegocioException("La cedula no puede ser nula");
+            }
+            
+            List<Cita> citas =  medicoDAO.obtenerCitasPorMedico(medicoMapper.toEntity(medicoViejo));
+            
+             citasViejo = citaMapper.toViejoDTOList(citas);
+            
+            return citasViejo;
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(MedicoBO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return citasViejo;
+    } 
 }

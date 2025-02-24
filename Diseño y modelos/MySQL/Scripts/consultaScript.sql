@@ -55,5 +55,20 @@ LEFT JOIN citas AS c
 INNER JOIN medicos AS m
 	ON c.idMedico = m.idMedico;
 
+DELIMITER $$
+CREATE FUNCTION obtenerEstadoConsulta( id_cita INT)
+RETURNS TEXT
+DETERMINISTIC
+BEGIN
+	DECLARE estadoConsulta TEXT;
+    
+    SELECT estado
+    INTO estadoCita
+    FROM consultas
+    WHERE idCita = id_cita;
+    
+    RETURN estadoConsulta;
+END$$
+DELIMITER ;
 
 CALL obtenerConsultasPaciente("eva@gmail.com");

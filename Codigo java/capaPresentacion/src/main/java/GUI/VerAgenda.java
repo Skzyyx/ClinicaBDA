@@ -5,6 +5,7 @@
 package GUI;
 
 import BO.CitaBO;
+import BO.ConsultaBO;
 import BO.MedicoBO;
 import BO.PacienteBO;
 import DTO.CitaNuevoDTO;
@@ -49,6 +50,7 @@ public class VerAgenda extends javax.swing.JFrame {
     private MedicoBO medicoBO = DependencyInjector.crearMedicoBO();
     private CitaBO citaBO = DependencyInjector.crearCitaBO();
     private PacienteBO pacienteBO = DependencyInjector.crearPacienteBO();
+    private ConsultaBO consultaBO = DependencyInjector.crearConsultaBO();
 
     private PrincipalMedico principalMedico;
 
@@ -58,6 +60,7 @@ public class VerAgenda extends javax.swing.JFrame {
     public VerAgenda() {
         initComponents();
         setLocationRelativeTo(null);
+        cargarListeners();
         cargarCitas();
     }
 
@@ -106,19 +109,12 @@ public class VerAgenda extends javax.swing.JFrame {
 
             },
             new String [] {
-                "idCita", "Medico", "Especialidad", "Fecha", "Hora"
+                "idCita", "EstadoConsulta", "Fecha", "Hora", "Nombre Paciente"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class
-            };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false
             };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -129,8 +125,9 @@ public class VerAgenda extends javax.swing.JFrame {
             jTable1.getColumnModel().getColumn(0).setMinWidth(0);
             jTable1.getColumnModel().getColumn(0).setPreferredWidth(0);
             jTable1.getColumnModel().getColumn(0).setMaxWidth(0);
-            jTable1.getColumnModel().getColumn(2).setMinWidth(10);
-            jTable1.getColumnModel().getColumn(2).setPreferredWidth(10);
+            jTable1.getColumnModel().getColumn(1).setMinWidth(0);
+            jTable1.getColumnModel().getColumn(1).setPreferredWidth(0);
+            jTable1.getColumnModel().getColumn(1).setMaxWidth(0);
         }
 
         jLabel2.setFont(new java.awt.Font("Segoe UI Semilight", 1, 14)); // NOI18N
@@ -325,16 +322,19 @@ public class VerAgenda extends javax.swing.JFrame {
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
         modelo.setRowCount(0);
         try {
-            List<CitaViejoDTO> citas = pacienteBO.obtenerCitasActivasPaciente(SessionManager.getInstance().getUser());
+            MedicoViejoDTO medico = new MedicoViejoDTO();
+            medico.setIdMedico("0");
+            medico.setCedula(SessionManager.getInstance().getUser());
+            List<CitaViejoDTO> citas = medicoBO.obtenerCitasPorMedico(medico);
 
             for (CitaViejoDTO cita : citas) {
 
                 modelo.addRow(new Object[]{
                     cita.getIdCita(),
-                    cita.getMedico().getNombre() + " " + cita.getMedico().getApellidoPaterno(),
-                    cita.getMedico().getEspecialidad(),
+                    consultaBO.obtenerEstadoConsulta(cita.getIdCita()),
                     cita.getFechaHoraInicio().toLocalDate(),
-                    cita.getFechaHoraInicio().toLocalTime()
+                    cita.getFechaHoraInicio().toLocalTime(),
+                    cita.getPaciente().getNombre() + " " + cita.getPaciente().getApellidoPaterno()
                 });
             }
         } catch (NegocioException ex) {
@@ -379,5 +379,43 @@ public class VerAgenda extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error inesperado", JOptionPane.WARNING_MESSAGE);
             }
         }
+    }
+
+    private void cargarListeners() {
+        jTable1.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                try {
+                    int filaSeleccionada = jTable1.getSelectedRow();
+                    
+                    if (filaSeleccionada == -1) return;
+                    
+                    // Convertir el valor de la tabla a String
+                    String valorFecha = jTable1.getValueAt(filaSeleccionada, 2).toString();
+                    String valorHora = jTable1.getValueAt(filaSeleccionada, 3).toString();
+                    
+                    // Combinar ambas cadenas en una única cadena en formato ISO
+                    String fechaHoraCombinada = valorFecha + "T" + valorHora;
+                    
+                    // Convertir a LocalDateTime usando el formateador ISO
+                    LocalDateTime fechaInicio = LocalDateTime.parse(fechaHoraCombinada, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                    
+                    LocalDateTime ahora = LocalDateTime.now();
+                    LocalDateTime ahoraMas30 = ahora.plusMinutes(30);
+                    
+                    String idCita = jTable1.getValueAt(filaSeleccionada, 0).toString();
+                    String estadoConsulta = consultaBO.obtenerEstadoConsulta(idCita);
+                    if (fechaInicio.isAfter(ahora) && fechaInicio.isBefore(ahoraMas30) && estadoConsulta.equalsIgnoreCase("PENDIENTE")) {
+                        // La fechaInicio está entre ahora y ahora + 30 minutos.
+                        jButton2.setEnabled(true);
+                        jButton2.setText("Iniciar");
+                    } else if (fechaInicio.isAfter(ahora) && fechaInicio.isBefore(ahoraMas30) && estadoConsulta.equalsIgnoreCase("ASISTIO")) {
+                        jButton2.setEnabled(true);
+                        jButton2.setText("Ver");
+                    }
+                } catch (NegocioException ex) {
+                    Logger.getLogger(VerAgenda.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
     }
 }

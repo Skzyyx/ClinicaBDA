@@ -141,3 +141,19 @@ SELECT
     estado,
     idUsuario
 FROM medicos;
+
+-- Procedimiento para obtener todas las citas activas de un medico
+DELIMITER $$
+CREATE PROCEDURE obtenerCitasPorMedico(
+	IN cedulaMedico VARCHAR(8)
+)
+BEGIN
+	SELECT *
+    FROM consultas AS co
+    INNER JOIN citas AS c ON co.idCita = c.idCita
+    INNER JOIN medicos AS m ON c.idMedico = m.idMedico 
+    INNER JOIN pacientes AS p ON p.idPaciente = c.idPaciente
+    WHERE m.cedula = cedulaMedico
+    AND c.estado = "ACTIVA";
+END$$
+DELIMITER ;

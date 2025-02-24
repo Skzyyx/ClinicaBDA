@@ -265,20 +265,6 @@ BEGIN
 END $$
 DELIMITER ;
 
-DELIMITER $$
-
--- Función calcularEdad
--- Calcula la edad a partir de una fecha de nacimiento
-DELIMITER $$
-CREATE FUNCTION calcularEdad(fechaNacimiento DATE)
-RETURNS INT 
-DETERMINISTIC
-BEGIN
-    RETURN TIMESTAMPDIFF(YEAR, fechaNacimiento, curdate());
-END $$
-
-DELIMITER ;
-
 -- Procedimiento almacenado editarDatosPaciente
 -- Actualiza los datos del paciente y su dirección, menos contraseña
 -- Solo es posible editar: 

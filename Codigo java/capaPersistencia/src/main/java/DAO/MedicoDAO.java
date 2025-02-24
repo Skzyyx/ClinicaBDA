@@ -5,8 +5,10 @@
 package DAO;
 
 import conexion.IConexion;
+import entidades.Cita;
 import entidades.Horario;
 import entidades.Medico;
+import entidades.Paciente;
 import entidades.Usuario;
 import excepciones.PersistenciaException;
 import java.sql.CallableStatement;
@@ -14,6 +16,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -297,6 +301,50 @@ public class MedicoDAO implements IMedicoDAO {
         // Si ocurre un error
         } catch (Exception e) {
             throw new PersistenciaException("Error al contar médicos activos: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<Cita> obtenerCitasPorMedico(Medico medico) throws PersistenciaException {
+    
+        List<Cita> citas = new ArrayList<>();
+        Paciente paciente;
+        String sql = "CALL obtenerCitasPorMedico(?)";
+        
+        try (Connection con = conexion.crearConexion();
+                CallableStatement cs = con.prepareCall(sql)) {
+            
+            cs.setString(1, medico.getCedula());
+            
+            try (ResultSet rs = cs.executeQuery()) {
+                
+                while (rs.next()) {
+                    
+                    paciente = new Paciente(
+                            rs.getInt("idPaciente"),
+                            rs.getString("nombre"), 
+                            rs.getString("apellidoPaterno"),
+                            rs.getString("apellidoMaterno"),
+                            rs.getDate("fechaNacimiento").toLocalDate(), 
+                            rs.getString("email"), 
+                            rs.getString("telefono"),
+                            null,
+                            null);
+                    
+                    citas.add(new Cita(
+                            rs.getInt("idCita"), 
+                            rs.getTimestamp("fechaHoraInicio").toLocalDateTime(),
+                            rs.getString("estado"),
+                            rs.getString("folio"),
+                            rs.getString("tipo"),
+                            paciente, 
+                            medico));
+                }
+            }
+            return citas;
+        } catch (SQLException ex) {
+            Logger.getLogger(MedicoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PersistenciaException("Error al obtener las citas.");
         }
     }
 }

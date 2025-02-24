@@ -4,10 +4,13 @@
  */
 package DAO;
 
+import excepciones.PersistenciaException;
+
 /**
  *
  * @author Isabel
  */
 public interface IConsultaDAO {
     
+    public String obtenerEstadoConsulta(int idCita) throws PersistenciaException;
 }
