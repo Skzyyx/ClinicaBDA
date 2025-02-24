@@ -27,6 +27,7 @@ public class PrincipalMedico extends javax.swing.JFrame {
     private InicioDeSesion iniciarSesionFrame;
     private VerPerfilMedico perfilMedicoFrame;
     private VerAgenda verAgenda;
+    private VerHistorialMedico historialMedicoFrame;
     
     /**
      * Creates new form InicioDeSesion
@@ -69,6 +70,14 @@ public class PrincipalMedico extends javax.swing.JFrame {
 
     public void setVerAgenda(VerAgenda verAgenda) {
         this.verAgenda = verAgenda;
+    }
+
+    public VerHistorialMedico getHistorialMedicoFrame() {
+        return historialMedicoFrame;
+    }
+
+    public void setHistorialMedicoFrame(VerHistorialMedico historialMedicoFrame) {
+        this.historialMedicoFrame = historialMedicoFrame;
     }
     
     /**
@@ -252,7 +261,11 @@ public class PrincipalMedico extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVerPerfilActionPerformed
 
     private void btnHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHistorialActionPerformed
-        // TODO add your handling code here:
+        try {
+            verHistorial();
+        } catch (NegocioException ex) {
+            Logger.getLogger(PrincipalMedico.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnHistorialActionPerformed
 
     private void btnCambiarEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiarEstadoActionPerformed
@@ -444,6 +457,15 @@ public class PrincipalMedico extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Se ha cancelado el alta.");
         }
+    }
+    
+    private void verHistorial() throws NegocioException {
+        VerHistorialMedico verHistorialMedico = VerHistorialMedico.getInstance();
+        verHistorialMedico.setPrincipalMedicoFrame(this);
+        verHistorialMedico.setVisible(true);
+        verHistorialMedico.cargarNombres();
+        verHistorialMedico.cargarHistorial();
+        this.setVisible(false);
     }
     
     /**

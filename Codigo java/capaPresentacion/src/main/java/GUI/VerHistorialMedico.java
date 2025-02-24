@@ -40,19 +40,20 @@ public class VerHistorialMedico extends javax.swing.JFrame {
     // Formateador de fecha
     DateTimeFormatter formatoFecha;
     
-    private PrincipalPaciente principalPacienteFrame;
+    private PrincipalMedico principalMedicoFrame;
+    
     /**
      * Creates new form RegistrarCita
      */
     public VerHistorialMedico() {
         initComponents();
         setLocationRelativeTo(null);
-        setTitle("Paciente - Historial de consultas");
+        setTitle("Médico - Historial de consultas");
         chNombre.addItem("Ninguno");
         formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        /*cargarListener();
-        cargarEspecialidades();
-        cargarHistorial();*/
+        cargarListener();
+        cargarNombres();
+        cargarHistorial();
     }
 
     public static VerHistorialMedico getInstance() throws NegocioException {
@@ -62,14 +63,14 @@ public class VerHistorialMedico extends javax.swing.JFrame {
         return instance;
     }
 
-    public PrincipalPaciente getPrincipalPacienteFrame() {
-        return principalPacienteFrame;
+    public PrincipalMedico getPrincipalMedicoFrame() {
+        return principalMedicoFrame;
     }
 
-    public void setPrincipalPacienteFrame(PrincipalPaciente principalPacienteFrame) {
-        this.principalPacienteFrame = principalPacienteFrame;
+    public void setPrincipalMedicoFrame(PrincipalMedico principalMedicoFrame) {
+        this.principalMedicoFrame = principalMedicoFrame;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -86,7 +87,7 @@ public class VerHistorialMedico extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         btnVolver = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        dpInicio = new com.github.lgooddatepicker.components.DatePicker();
+        dpFecha = new com.github.lgooddatepicker.components.DatePicker();
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -143,7 +144,7 @@ public class VerHistorialMedico extends javax.swing.JFrame {
         jLabel1.setText("Historial de consultas");
         jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 36)); // NOI18N
 
-        dpInicio.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        dpFecha.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         jLabel5.setText("Fecha");
         jLabel5.setFont(new java.awt.Font("Segoe UI Semilight", 1, 14)); // NOI18N
@@ -171,7 +172,7 @@ public class VerHistorialMedico extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(dpInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(dpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(54, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -182,7 +183,7 @@ public class VerHistorialMedico extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(dpInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(dpFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel5))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(4, 4, 4)
@@ -227,7 +228,7 @@ public class VerHistorialMedico extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        //volver();
+        volver();
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void chNombreItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_chNombreItemStateChanged
@@ -281,7 +282,7 @@ public class VerHistorialMedico extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnVolver;
     private java.awt.Choice chNombre;
-    private com.github.lgooddatepicker.components.DatePicker dpInicio;
+    private com.github.lgooddatepicker.components.DatePicker dpFecha;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -290,7 +291,7 @@ public class VerHistorialMedico extends javax.swing.JFrame {
     private javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables
 
-    private void cargarNombres() {
+    public void cargarNombres() {
         try {
             // Obtener la lista de activistas desde la capa de negocio (BO)
             List<ConsultaViejoDTO> consultas = medicoBO.obtenerConsultasPorMedico(SessionManager.getInstance().getUser());
@@ -303,6 +304,7 @@ public class VerHistorialMedico extends javax.swing.JFrame {
         } catch (NegocioException ex) {
             Logger.getLogger(VerHistorialMedico.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, "Error al cargar nombres de pacientes: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            volver();
         }
     }
 
@@ -335,25 +337,25 @@ public class VerHistorialMedico extends javax.swing.JFrame {
         } catch (NegocioException ex) {
             // Manejo de errores en caso de que falle la obtención de datos
             JOptionPane.showMessageDialog(this, "Error al cargar consulta: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            volver();
         }
     }
     
-    /*private void cargarListener() {
-        DateChangeListener listenerPeriodo = new DateChangeListener() {
+    private void cargarListener() {
+        DateChangeListener listenerFecha = new DateChangeListener() {
             @Override
             public void dateChanged(DateChangeEvent dce) {
-                // Obtener la fecha seleccionada
-                LocalDate fechaInicio = dpInicio.getDate();
-                LocalDate fechaFin = dpFin.getDate();
-                if (fechaInicio == null || fechaFin == null) {
+                // Verificar si el DatePicker está correctamente inicializado
+                if (dpFecha == null) {
+                    Logger.getLogger(VerHistorialMedico.class.getName()).log(Level.SEVERE, "dpFecha no está inicializado");
                     return;
                 }
-                // Si la fecha seleccionada es anterior a la fecha actual
-                if (fechaInicio.isAfter(fechaFin) || fechaFin.isBefore(fechaInicio)) {
-                    dpInicio.closePopup();
 
-                    JOptionPane.showMessageDialog(VerHistorialMedico.this, "Por favor, selecciona un orden correcto de fechas.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                    return;
+                // Obtener la fecha seleccionada
+                LocalDate fechaSeleccionada = dpFecha.getDate();
+
+                if (fechaSeleccionada == null) {
+                    return; // No hacer nada si la fecha es nula
                 }
 
                 // Obtener el modelo de la tabla y limpiar cualquier dato previo
@@ -361,8 +363,19 @@ public class VerHistorialMedico extends javax.swing.JFrame {
                 modelo.setRowCount(0); // Limpiar todas las filas existentes en la tabla
 
                 try {
-                    List<ConsultaViejoDTO> consultas = pacienteBO.obtenerConsultasPaciente(SessionManager.getInstance().getUser());
-                    List<ConsultaViejoDTO> consultasFiltradas = consultaBO.filtrarConsultasPeriodo(consultas, fechaInicio, fechaFin);
+                    // Verificar si medicoBO está inicializado
+                    if (medicoBO == null) {
+                        throw new IllegalStateException("medicoBO no ha sido inicializado.");
+                    }
+
+                    List<ConsultaViejoDTO> consultas = medicoBO.obtenerConsultasPorMedico(SessionManager.getInstance().getUser());
+
+                    // Verificar si consultaBO está inicializado
+                    if (consultaBO == null) {
+                        throw new IllegalStateException("consultaBO no ha sido inicializado.");
+                    }
+
+                    List<ConsultaViejoDTO> consultasFiltradas = consultaBO.filtrarConsultasFecha(consultas, fechaSeleccionada);
 
                     // Agregar las consultas filtradas a la tabla
                     for (ConsultaViejoDTO consulta : consultasFiltradas) {
@@ -370,35 +383,36 @@ public class VerHistorialMedico extends javax.swing.JFrame {
                             consulta.getCita().getFechaHoraInicio().format(formatoFecha),
                             consulta.getCita().getTipo(),
                             consulta.getCita().getFolio(),
+                            consulta.getCita().getPaciente().getNombre() + " "
+                            + consulta.getCita().getPaciente().getApellidoPaterno() + " "
+                            + consulta.getCita().getPaciente().getApellidoMaterno(),
                             consulta.getEstado(),
-                            consulta.getCita().getMedico().getCedula(),
-                            consulta.getCita().getMedico().getEspecialidad(),
                             consulta.getDiagnostico(),
-                            consulta.getTratamiento(),
-                            consulta.getNotas(),});
+                            consulta.getTratamiento()
+                        });
                     }
                 } catch (NegocioException ex) {
-                    Logger.getLogger(VerHistorialMedico.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(VerHistorialMedico.class.getName()).log(Level.SEVERE, "Error al filtrar consultas", ex);
+                } catch (IllegalStateException e) {
+                    Logger.getLogger(VerHistorialMedico.class.getName()).log(Level.SEVERE, e.getMessage(), e);
                 }
             }
         };
 
-        dpInicio.addDateChangeListener(listenerPeriodo);
-        dpFin.addDateChangeListener(listenerPeriodo);
-    }*/
-    
+        dpFecha.addDateChangeListener(listenerFecha);
+    }
     
     /**
-     * Envía al menú principal de paciente
+     * Envía al menú principal de medico
      */
-    /*private void volver() {
+    private void volver() {
         try {
-            PrincipalPaciente principalPaciente = PrincipalPaciente.getInstance();
-            principalPaciente.setHistorialPacienteFrame(this);
-            principalPaciente.setVisible(true);
+            PrincipalMedico principalMedico = PrincipalMedico.getInstance();
+            principalMedico.setHistorialMedicoFrame(this);
+            principalMedico.setVisible(true);
             this.setVisible(false);
         } catch (NegocioException ex) {
             Logger.getLogger(VerHistorialMedico.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }*/
+    }
 }

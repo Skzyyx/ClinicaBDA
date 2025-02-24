@@ -167,14 +167,14 @@ CREATE PROCEDURE obtenerConsultasPorMedico(
 BEGIN 
 	SELECT 
 		co.estado,
-        co.diagnostico,
-        co.tratamiento,
+        IFNULL("N/A",co.diagnostico),
+        IFNULL("N/A",co.tratamiento),
         c.fechaHoraInicio,
-        c.folio,
+        IFNULL("N/A", c.folio),
         c.tipo,
         p.nombre,
         p.apellidoPaterno,
-        IFNULL(" ", p.apellidoMaterno)
+        IFNULL(" ",p.apellidoMaterno)
     FROM consultas AS co
     INNER JOIN citas AS c ON co.idCita = c.idCita
     INNER JOIN medicos AS m ON c.idMedico = m.idMedico 

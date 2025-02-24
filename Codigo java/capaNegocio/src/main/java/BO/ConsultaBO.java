@@ -97,6 +97,21 @@ public class ConsultaBO {
                 })
                 .collect(Collectors.toList());
     }
+    
+    public List<ConsultaViejoDTO> filtrarConsultasFecha(List<ConsultaViejoDTO> consultas, LocalDate fecha) throws NegocioException {
+        if (consultas == null) {
+            throw new NegocioException("La lista de consultas no puede ser nula.");
+        }
+
+        if (fecha == null) {
+            throw new NegocioException("Se requieren una fechas válida.");
+        }
+        
+        // Filtrar las consultas que coincidan con la fecha dada
+        return consultas.stream()
+                .filter(consulta -> consulta.getCita().getFechaHoraInicio().toLocalDate().equals(fecha))
+                .collect(Collectors.toList());
+    }
 
     public String obtenerEstadoConsulta(String idCita) throws NegocioException {
         if (idCita == null) {
