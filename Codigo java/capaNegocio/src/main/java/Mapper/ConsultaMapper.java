@@ -34,6 +34,21 @@ public class ConsultaMapper {
         );
     }
     
+    public Consulta toEntity(ConsultaViejoDTO consultaViejo){
+        if (consultaViejo == null) return null;
+        
+        Cita cita = mapperCita.toEntity(consultaViejo.getCita());
+        
+        return new Consulta(
+                Integer.parseInt(consultaViejo.getIdConsulta()),
+                consultaViejo.getEstado(),
+                consultaViejo.getDiagnostico(),
+                consultaViejo.getTratamiento(),
+                consultaViejo.getNotas(),
+                cita
+        );
+    }
+    
     public ConsultaNuevoDTO toNuevoDTO (Consulta consulta) {
         if (consulta == null) return null;
         
@@ -54,6 +69,7 @@ public class ConsultaMapper {
         CitaViejoDTO citaViejo = mapperCita.toViejoDTO(consulta.getCita());
         
         return new ConsultaViejoDTO(
+                String.valueOf(consulta.getIdConsulta()),
                 consulta.getEstado(),
                 consulta.getDiagnostico(),
                 consulta.getTratamiento(),

@@ -17,6 +17,7 @@ import java.time.Period;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -24,14 +25,14 @@ import javax.swing.JComponent;
  */
 public class DescripcionConsulta extends javax.swing.JFrame {
 
-    private static DescripcionConsulta instance; 
-    
+    private static DescripcionConsulta instance;
+
     private ConsultaViejoDTO consulta;
-    
+
     private ConsultaBO consultaBO = DependencyInjector.crearConsultaBO();
-    
+
     private VerAgenda verAgenda;
-    
+
     public static DescripcionConsulta getInstance() {
         if (instance == null) {
             instance = new DescripcionConsulta();
@@ -61,8 +62,7 @@ public class DescripcionConsulta extends javax.swing.JFrame {
     public void setVerAgenda(VerAgenda verAgenda) {
         this.verAgenda = verAgenda;
     }
-    
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -382,14 +382,20 @@ public class DescripcionConsulta extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        VerAgenda verAgenda = VerAgenda.getInstance();
-        verAgenda.setDescripcionConsulta(this);
-        verAgenda.setVisible(true);
-        this.setVisible(false);
+        int resultado = JOptionPane.showConfirmDialog(this, "Los datos no guardados se perderán. ¿Deseas volver a tu agenda?", "Confirmación", JOptionPane.YES_NO_OPTION);
+
+        if (resultado == JOptionPane.YES_OPTION) {
+            VerAgenda verAgenda = VerAgenda.getInstance();
+            verAgenda.cargarCitas();
+            verAgenda.setDescripcionConsulta(this);
+            verAgenda.setVisible(true);
+            this.setVisible(false);
+        }
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        guardarDatosConsulta();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void notasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_notasActionPerformed
@@ -482,5 +488,21 @@ public class DescripcionConsulta extends javax.swing.JFrame {
         this.diagnostico.setText(consulta.getDiagnostico());
         this.tratamiento.setText(consulta.getTratamiento());
         this.notas.setText(consulta.getNotas());
+    }
+
+    private void guardarDatosConsulta() {
+
+        int resultado = JOptionPane.showConfirmDialog(this, "¿Estas seguro que deseas guardar los datos?", "Mensaje de confirmación", JOptionPane.YES_NO_OPTION);
+
+        if (resultado == JOptionPane.YES_OPTION) {
+
+            try {
+                consultaBO.editarDatosConsulta(this.consulta);
+                JOptionPane.showMessageDialog(this, "Datos de la consulta actualizados.");
+            } catch (NegocioException ex) {
+                Logger.getLogger(DescripcionConsulta.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
     }
 }

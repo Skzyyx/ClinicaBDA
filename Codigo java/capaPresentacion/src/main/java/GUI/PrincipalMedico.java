@@ -332,6 +332,7 @@ public class PrincipalMedico extends javax.swing.JFrame {
 
     private void btnVerAgendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerAgendaActionPerformed
         VerAgenda verAgenda = VerAgenda.getInstance();
+        verAgenda.cargarCitas();
         verAgenda.setPrincipalMedico(this);
         verAgenda.setVisible(true);
         this.setVisible(false);

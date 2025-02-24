@@ -103,8 +103,8 @@ public class ConsultaDAO implements IConsultaDAO {
                 );
                 
                 return new Consulta(
-                        rs.getInt("idConsulta"),
-                        rs.getString("estado"), 
+                        rs.getInt("co.idConsulta"),
+                        rs.getString("co.estado"), 
                         rs.getString("diagnostico"), 
                         rs.getString("tratamiento"), 
                         rs.getString("notas"), 
@@ -114,6 +114,26 @@ public class ConsultaDAO implements IConsultaDAO {
         } catch (SQLException ex) {
             Logger.getLogger(ConsultaDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new PersistenciaException("No se pudo obtener la consulta");
+        }
+    }
+
+    @Override
+    public boolean editarDatosConsulta(Consulta consulta) throws PersistenciaException {
+        
+        String sql = "CALL editarDatosConsulta(?, ?, ?, ?)";
+        
+        try (Connection con = conexion.crearConexion();
+                CallableStatement cs = con.prepareCall(sql)) {
+        
+            cs.setInt(1, consulta.getIdConsulta());
+            cs.setString(2, consulta.getDiagnostico());
+            cs.setString(3, consulta.getTratamiento());
+            cs.setString(4, consulta.getNotas());
+            
+            return cs.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(ConsultaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PersistenciaException("Error al actualizar los datos de la consulta");
         }
     }
     
