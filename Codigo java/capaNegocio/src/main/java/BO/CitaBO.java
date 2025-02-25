@@ -28,10 +28,23 @@ public class CitaBO {
     
     private CitaMapper citaMapper = new CitaMapper();
 
+    /**
+     * Constructor de la clase CitaBO.
+     * Inicializa el DAO de citas con la conexión proporcionada.
+     * 
+     * @param conexion Objeto de conexión a la base de datos.
+     */
     public CitaBO(IConexion conexion) {
         this.citaDAO = new CitaDAO(conexion);
     }
     
+    /**
+     * Registra una cita programada en el sistema.
+     * 
+     * @param citaNuevo Objeto DTO con los datos de la cita programada.
+     * @return true si la cita fue registrada exitosamente, false en caso contrario.
+     * @throws NegocioException Si algún dato requerido es nulo o si ocurre un error en la persistencia.
+     */
     public boolean registrarCitaProgramada(CitaNuevoDTO citaNuevo) throws NegocioException {
         if (citaNuevo.getFechaHoraInicio() == null) {
             throw new NegocioException("La fecha no puede ser nula.");
@@ -53,6 +66,13 @@ public class CitaBO {
         }
     }
     
+    /**
+     * Registra una cita de emergencia en el sistema y genera un folio único.
+     * 
+     * @param citaNuevo Objeto DTO con los datos de la cita de emergencia.
+     * @return El folio generado si la cita fue registrada exitosamente, null en caso contrario.
+     * @throws NegocioException Si la cita es nula o si ocurre un error en la persistencia.
+     */
     public String registrarCitaEmergencia(CitaNuevoDTO citaNuevo) throws NegocioException {
         if (citaNuevo == null) {
             throw new NegocioException("La cita no puede ser nula.");
@@ -73,6 +93,15 @@ public class CitaBO {
         }
     }
     
+    /**
+     * Verifica si una cita ya existe en el sistema para un médico en una fecha y hora específicas.
+     * 
+     * @param fechaHoraInicio Fecha y hora de inicio de la cita.
+     * @param idMedico ID del médico.
+     * @return true si la cita existe, false en caso contrario.
+     * @throws NegocioException Si los parámetros son nulos.
+     * @throws PersistenciaException Si ocurre un error en la consulta de la base de datos.
+     */
     public boolean verificarCitaExiste(Timestamp fechaHoraInicio, String idMedico) throws NegocioException, PersistenciaException {
         if (fechaHoraInicio == null || idMedico == null) {
             throw new NegocioException("La cita no puede ser nula");
@@ -81,6 +110,13 @@ public class CitaBO {
             return citaDAO.verificarCitaExiste(fechaHoraInicio, Integer.parseInt(idMedico));
     }
     
+    /**
+     * Cancela una cita previamente registrada en el sistema.
+     * 
+     * @param citaViejo Objeto DTO con los datos de la cita a cancelar.
+     * @return true si la cita fue cancelada exitosamente, false en caso contrario.
+     * @throws NegocioException Si la cita o su ID son nulos, o si ocurre un error en la persistencia.
+     */
     public boolean cancelarCita(CitaViejoDTO citaViejo) throws NegocioException {
         if (citaViejo == null) {
             throw new NegocioException("La cita no puede ser nula.");
@@ -97,6 +133,13 @@ public class CitaBO {
         }
     }
     
+    /**
+     * Obtiene los detalles de una cita de emergencia utilizando su folio.
+     * 
+     * @param folio Folio único de la cita de emergencia.
+     * @return Objeto DTO con los detalles de la cita si se encuentra, de lo contrario lanza una excepción.
+     * @throws NegocioException Si el folio es nulo o si la cita no se encuentra.
+     */
     public CitaViejoDTO obtenerCitaEmergencia(String folio) throws NegocioException {
         if (folio == null) {
             throw new NegocioException("El folio no puede ser nulo.");

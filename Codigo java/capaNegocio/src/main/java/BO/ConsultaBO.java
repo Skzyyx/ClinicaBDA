@@ -57,6 +57,12 @@ public class ConsultaBO {
         return List.copyOf(especialidadesSet);
     }
     
+    /**
+     * Obtiene los nombres completos de los pacientes de una lista de consultas.
+     * @param consultas Lista de consultas.
+     * @return Lista con nombres únicos de pacientes.
+     * @throws NegocioException Si la lista de consultas es nula.
+     */
     public List<String> nombresPacientesConsultas(List<ConsultaViejoDTO> consultas) throws NegocioException {
         if (consultas == null) {
             throw new NegocioException("La lista de consultas no puede ser nula.");
@@ -86,6 +92,14 @@ public class ConsultaBO {
         return nombresLista;
     }
   
+    /**
+     * Filtra las consultas dentro de un período de fechas específico.
+     * @param consultas Lista de consultas.
+     * @param fechaInicio Fecha de inicio.
+     * @param fechaFin Fecha de fin.
+     * @return Lista de consultas dentro del período.
+     * @throws NegocioException Si la lista o las fechas son nulas o si la fechaInicio es posterior a fechaFin.
+     */
     public List<ConsultaViejoDTO> filtrarConsultasPeriodo(List<ConsultaViejoDTO> consultas, LocalDate fechaInicio, LocalDate fechaFin) throws NegocioException {
         if (consultas == null) {
             throw new NegocioException("La lista de consultas no puede ser nula.");
@@ -108,6 +122,13 @@ public class ConsultaBO {
                 .collect(Collectors.toList());
     }
     
+    /**
+     * Filtra las consultas por una fecha específica.
+     * @param consultas Lista de consultas.
+     * @param fecha Fecha de consulta.
+     * @return Lista de consultas en la fecha indicada.
+     * @throws NegocioException Si la lista o la fecha son nulas.
+     */
     public List<ConsultaViejoDTO> filtrarConsultasFecha(List<ConsultaViejoDTO> consultas, LocalDate fecha) throws NegocioException {
         if (consultas == null) {
             throw new NegocioException("La lista de consultas no puede ser nula.");
@@ -123,6 +144,12 @@ public class ConsultaBO {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Obtiene el estado de una consulta dado su ID de cita.
+     * @param idCita ID de la cita.
+     * @return Estado de la consulta.
+     * @throws NegocioException Si el ID es nulo o si ocurre un error de persistencia.
+     */
     public String obtenerEstadoConsulta(String idCita) throws NegocioException {
         if (idCita == null) {
             throw new NegocioException("El id no puede ser nulo");
@@ -136,6 +163,12 @@ public class ConsultaBO {
         return null;
     }
     
+    /**
+     * Obtiene una consulta por el ID de la cita.
+     * @param idCita ID de la cita.
+     * @return Consulta correspondiente al ID de la cita.
+     * @throws NegocioException Si el ID es nulo o si ocurre un error de persistencia.
+     */
     public ConsultaViejoDTO obtenerConsultaPorIdCita(String idCita) throws NegocioException {
         if (idCita == null) {
             throw new NegocioException("El id de la cita no puede ser nulo.");
@@ -149,6 +182,12 @@ public class ConsultaBO {
         }
     }
     
+    /**
+     * Edita los datos de una consulta.
+     * @param consultaViejo Objeto con los datos de la consulta.
+     * @return True si la edición fue exitosa.
+     * @throws NegocioException Si el ID de la consulta es nulo o si ocurre un error de persistencia.
+     */
     public boolean editarDatosConsulta(ConsultaViejoDTO consultaViejo) throws NegocioException {
         if (consultaViejo.getIdConsulta().trim() == null) {
             throw new NegocioException("El id de la consulta no puede ser nulo.");

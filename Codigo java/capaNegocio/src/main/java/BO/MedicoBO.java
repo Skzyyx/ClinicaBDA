@@ -299,6 +299,12 @@ public class MedicoBO {
         }
     }
     
+    /**
+     * Obtiene una lista de citas asociadas a un médico específico.
+     * @param medicoViejo Objeto MedicoViejoDTO con la información del médico.
+     * @return Lista de CitaViejoDTO asociadas al médico.
+     * @throws NegocioException Si el médico es nulo o hay un error en la consulta.
+     */
     public List<CitaViejoDTO> obtenerCitasPorMedico(MedicoViejoDTO medicoViejo) throws NegocioException {
         List<CitaViejoDTO> citasViejo = new ArrayList<>();
         try {
@@ -321,6 +327,12 @@ public class MedicoBO {
         }
     }
     
+    /**
+     * Obtiene una lista de consultas realizadas por un médico.
+     * @param cedula Cédula profesional del médico.
+     * @return Lista de ConsultaViejoDTO asociadas al médico.
+     * @throws NegocioException Si la cédula es nula o hay un error en la consulta.
+     */
     public List<ConsultaViejoDTO> obtenerConsultasPorMedico(String cedula) throws NegocioException {
         if (cedula == null) {
             throw new NegocioException("La cédula profesional no puede ser nula.");
@@ -336,6 +348,11 @@ public class MedicoBO {
         }
     }
     
+    /**
+     * Obtiene el primer médico disponible para una cita.
+     * @return Objeto MedicoViejoDTO del primer médico disponible.
+     * @throws NegocioException Si no hay médicos disponibles o hay un error en la consulta.
+     */
     public MedicoViejoDTO obtenerPrimerMedicoDisponible() throws NegocioException {
         try {
             String cedula = medicoDAO.obtenerPrimerMedicoDisponible();

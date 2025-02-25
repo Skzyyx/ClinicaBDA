@@ -8,15 +8,15 @@ import entidades.Direccion;
 import java.time.LocalDate;
 
 /**
- * Clase PerfilViejoDTO.
- * Representa un DTO utilizado para recopilar de perfil de paciente.
- * Se utilizará para pasar la información de perfil a Presentación. 
- * 
- * @author 00000207653 Jesus Octavio Amarillas Amaya 
- * @author 00000252574 Jose Luis Islas Molina 
- * @author 00000253301 Isabel Valenzuela Rocha 
+ * Clase PerfilViejoDTO. Representa un DTO utilizado para recopilar de perfil de
+ * paciente. Se utilizará para pasar la información de perfil a Presentación.
+ *
+ * @author 00000207653 Jesus Octavio Amarillas Amaya
+ * @author 00000252574 Jose Luis Islas Molina
+ * @author 00000253301 Isabel Valenzuela Rocha
  */
 public class PerfilViejoDTO {
+
     /* Nombre del paciente. */
     private String nombre;
     /* Apellido paterno del paciente. */
@@ -33,15 +33,17 @@ public class PerfilViejoDTO {
     private String telefono;
     /* Dirección del paciente. */
     private Direccion direccion;
-    
+
     /**
      * Constructor vacío.
      */
     public PerfilViejoDTO() {
     }
-    
+
     /**
-     * Constructor con parámetros para inicializar todos los campos de la clase PerfilNuevoDTO.
+     * Constructor con parámetros para inicializar todos los campos de la clase
+     * PerfilNuevoDTO.
+     *
      * @param nombre Nombre del paciente
      * @param apellidoPaterno Apellido paterno del paciente
      * @param apellidoMaterno Apellido materno del paciente
@@ -61,73 +63,155 @@ public class PerfilViejoDTO {
         this.direccion = direccion;
     }
 
+    /**
+     * Obtiene el nombre del paciente.
+     *
+     * @return Nombre del paciente.
+     */
     public String getNombre() {
         return nombre;
     }
 
+    /**
+     * Establece el nombre del paciente.
+     *
+     * @param nombre Nombre del paciente.
+     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
+    /**
+     * Obtiene el apellido paterno del paciente.
+     *
+     * @return Apellido paterno del paciente.
+     */
     public String getApellidoPaterno() {
         return apellidoPaterno;
     }
 
+    /**
+     * Establece el apellido paterno del paciente.
+     *
+     * @param apellidoPaterno Apellido paterno del paciente.
+     */
     public void setApellidoPaterno(String apellidoPaterno) {
         this.apellidoPaterno = apellidoPaterno;
     }
 
+    /**
+     * Obtiene el apellido materno del paciente.
+     *
+     * @return Apellido materno del paciente.
+     */
     public String getApellidoMaterno() {
         return apellidoMaterno;
     }
 
+    /**
+     * Establece el apellido materno del paciente.
+     *
+     * @param apellidoMaterno Apellido materno del paciente.
+     */
     public void setApellidoMaterno(String apellidoMaterno) {
         this.apellidoMaterno = apellidoMaterno;
     }
 
+    /**
+     * Obtiene la fecha de nacimiento del paciente.
+     *
+     * @return Fecha de nacimiento del paciente.
+     */
     public LocalDate getFechaNacimiento() {
         return fechaNacimiento;
     }
 
+    /**
+     * Establece la fecha de nacimiento del paciente.
+     *
+     * @param fechaNacimiento Fecha de nacimiento del paciente.
+     */
     public void setFechaNacimiento(LocalDate fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 
+    /**
+     * Obtiene la edad del paciente.
+     *
+     * @return Edad del paciente.
+     */
     public int getEdad() {
         return edad;
     }
 
+    /**
+     * Establece la edad del paciente.
+     *
+     * @param edad Edad del paciente.
+     */
     public void setEdad(int edad) {
         this.edad = edad;
     }
 
+    /**
+     * Obtiene el correo electrónico del paciente.
+     *
+     * @return Correo electrónico del paciente.
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Establece el correo electrónico del paciente.
+     *
+     * @param email Correo electrónico del paciente.
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     * Obtiene el número de teléfono del paciente.
+     *
+     * @return Número de teléfono del paciente.
+     */
     public String getTelefono() {
         return telefono;
     }
 
+    /**
+     * Establece el número de teléfono del paciente.
+     *
+     * @param telefono Número de teléfono del paciente.
+     */
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
 
+    /**
+     * Obtiene la dirección del paciente.
+     *
+     * @return Dirección del paciente.
+     */
     public Direccion getDireccion() {
         return direccion;
     }
 
+    /**
+     * Establece la dirección del paciente.
+     *
+     * @param direccion Dirección del paciente.
+     */
     public void setDireccion(Direccion direccion) {
         this.direccion = direccion;
     }
-    
+
     /**
-     * Método toString().
-     * @return String con detalles de los atributos de la clase.
+     * Método toString(). Devuelve una representación en cadena de texto del
+     * objeto PerfilViejoDTO.
+     *
+     * @return String con los detalles de los atributos de la clase.
      */
     @Override
     public String toString() {

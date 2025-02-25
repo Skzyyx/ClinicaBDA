@@ -20,15 +20,27 @@ import java.util.List;
  * @author Isabel
  */
 public class CitaMapper {
+
+    // Instancia de los mappers para Paciente y Medico
     PacienteMapper mapperPaciente = new PacienteMapper();
     MedicoMapper mapperMedico = new MedicoMapper();
-    
+
+    /**
+     * Convierte un CitaNuevoDTO a una entidad Cita.
+     *
+     * @param citaNueva DTO de tipo CitaNuevoDTO que contiene los datos de una
+     * nueva cita.
+     * @return Una entidad Cita que representa la cita nueva.
+     */
     public Cita toEntity(CitaNuevoDTO citaNueva) {
-        if (citaNueva == null) return null;
-        
+        if (citaNueva == null) {
+            return null;
+        }
+
+        // Mapeo de Paciente y Medico
         Paciente paciente = mapperPaciente.toEntity(citaNueva.getPaciente());
         Medico medico = mapperMedico.toEntity(citaNueva.getMedico());
-        
+
         return new Cita(
                 citaNueva.getFechaHoraInicio(),
                 citaNueva.getEstado(),
@@ -38,15 +50,25 @@ public class CitaMapper {
                 medico
         );
     }
-    
+
+    /**
+     * Convierte un CitaViejoDTO a una entidad Cita.
+     *
+     * @param citaViejo DTO de tipo CitaViejoDTO que contiene los datos de una
+     * cita ya existente.
+     * @return Una entidad Cita que representa la cita vieja.
+     */
     public Cita toEntity(CitaViejoDTO citaViejo) {
-        if (citaViejo == null) return null;
-        
+        if (citaViejo == null) {
+            return null;
+        }
+
+        // Mapeo de Paciente y Medico
         Paciente paciente = mapperPaciente.toEntity(citaViejo.getPaciente());
         Medico medico = mapperMedico.toEntity(citaViejo.getMedico());
-        
+
         return new Cita(
-                Integer.parseInt(citaViejo.getIdCita()),
+                Integer.parseInt(citaViejo.getIdCita()), // Conversión de String a Integer para el ID
                 citaViejo.getFechaHoraInicio(),
                 citaViejo.getEstado(),
                 citaViejo.getFolio(),
@@ -55,15 +77,24 @@ public class CitaMapper {
                 medico
         );
     }
-    
-    public CitaViejoDTO toViejoDTO (Cita cita) {
-        if (cita == null) return null;
-        
+
+    /**
+     * Convierte una entidad Cita a un CitaViejoDTO.
+     *
+     * @param cita Entidad Cita que representa una cita.
+     * @return Un DTO CitaViejoDTO que contiene los datos de la cita.
+     */
+    public CitaViejoDTO toViejoDTO(Cita cita) {
+        if (cita == null) {
+            return null;
+        }
+
+        // Mapeo de Paciente y Medico
         PacienteViejoDTO pacienteViejo = mapperPaciente.toViejoDTO(cita.getPaciente());
         MedicoViejoDTO medicoViejo = mapperMedico.toViejoDTO(cita.getMedico());
-        
+
         return new CitaViejoDTO(
-                String.valueOf(cita.getIdCita()),
+                String.valueOf(cita.getIdCita()), // Conversión de Integer a String para el ID
                 cita.getFechaHoraInicio(),
                 cita.getEstado(),
                 cita.getFolio(),
@@ -72,13 +103,22 @@ public class CitaMapper {
                 medicoViejo
         );
     }
-    
-    public CitaNuevoDTO toNuevoDTO (Cita cita) {
-        if (cita == null) return null;
-        
+
+    /**
+     * Convierte una entidad Cita a un CitaNuevoDTO.
+     *
+     * @param cita Entidad Cita que representa una cita.
+     * @return Un DTO CitaNuevoDTO que contiene los datos de la nueva cita.
+     */
+    public CitaNuevoDTO toNuevoDTO(Cita cita) {
+        if (cita == null) {
+            return null;
+        }
+
+        // Mapeo de Paciente y Medico
         PacienteNuevoDTO pacienteNuevo = mapperPaciente.toNuevoDTO(cita.getPaciente());
         MedicoViejoDTO medicoNuevo = mapperMedico.toViejoDTO(cita.getMedico());
-        
+
         return new CitaNuevoDTO(
                 cita.getFechaHoraInicio(),
                 cita.getEstado(),
@@ -88,14 +128,22 @@ public class CitaMapper {
                 medicoNuevo
         );
     }
-    
-    public List<CitaViejoDTO> toViejoDTOList (List<Cita> citas) {
+
+    /**
+     * Convierte una lista de entidades Cita a una lista de CitaViejoDTO.
+     *
+     * @param citas Lista de entidades Cita que representan citas.
+     * @return Una lista de DTOs CitaViejoDTO que contienen los datos de las
+     * citas.
+     */
+    public List<CitaViejoDTO> toViejoDTOList(List<Cita> citas) {
         List<CitaViejoDTO> citasViejoDTO = new ArrayList<>();
-        
+
+        // Convertir cada Cita a CitaViejoDTO
         for (Cita cita : citas) {
             citasViejoDTO.add(toViejoDTO(cita));
         }
-        
+
         return citasViejoDTO;
     }
 }
