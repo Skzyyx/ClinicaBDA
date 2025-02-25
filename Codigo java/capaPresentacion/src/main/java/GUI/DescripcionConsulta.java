@@ -386,11 +386,7 @@ public class DescripcionConsulta extends javax.swing.JFrame {
         int resultado = JOptionPane.showConfirmDialog(this, "Los datos no guardados se perderán. ¿Deseas volver a tu agenda?", "Confirmación", JOptionPane.YES_NO_OPTION);
 
         if (resultado == JOptionPane.YES_OPTION) {
-            VerAgenda verAgenda = VerAgenda.getInstance();
-            verAgenda.cargarCitas();
-            verAgenda.setDescripcionConsulta(this);
-            verAgenda.setVisible(true);
-            this.setVisible(false);
+            volver();
         }
 
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -492,7 +488,6 @@ public class DescripcionConsulta extends javax.swing.JFrame {
     }
 
     private void guardarDatosConsulta() {
-
         int resultado = JOptionPane.showConfirmDialog(this, "¿Estas seguro que deseas guardar los datos?", "Mensaje de confirmación", JOptionPane.YES_NO_OPTION);
 
         if (resultado == JOptionPane.YES_OPTION) {
@@ -502,12 +497,25 @@ public class DescripcionConsulta extends javax.swing.JFrame {
                 consultaViejo.setDiagnostico(diagnostico.getText());
                 consultaViejo.setTratamiento(tratamiento.getText());
                 consultaViejo.setNotas(notas.getText());
-                consultaBO.editarDatosConsulta(this.consulta);
-                JOptionPane.showMessageDialog(this, "Datos de la consulta actualizados.");
+
+                boolean terminada = consultaBO.editarDatosConsulta(this.consulta);
+                if (terminada) {
+                    JOptionPane.showMessageDialog(this, "Datos de la consulta actualizados. Se ha terminado la cita.");
+                    volver();
+                }
             } catch (NegocioException ex) {
                 Logger.getLogger(DescripcionConsulta.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error inesperado", JOptionPane.WARNING_MESSAGE);
             }
         }
 
+    }
+    
+    private void volver() {
+        VerAgenda verAgendaF = VerAgenda.getInstance();
+        verAgendaF.cargarCitas();
+        verAgendaF.setDescripcionConsulta(this);
+        verAgendaF.setVisible(true);
+        this.setVisible(false);
     }
 }

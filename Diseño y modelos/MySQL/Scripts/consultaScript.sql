@@ -137,6 +137,39 @@ CREATE PROCEDURE editarDatosConsulta(
     IN notas_consulta TEXT
 )
 BEGIN
-	UPDATE consultas SET diagnostico = diagnostico_consulta, tratamiento = tratamiento_consulta, notas = notas_consulta WHERE idConsulta = id_consulta; 
+	DECLARE id_cita INT;
+    
+    -- Manejador de errores.
+    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION 
+    BEGIN
+        -- Deshace la transacción en caso de error
+        ROLLBACK;
+        -- Lanza error
+        SIGNAL SQLSTATE "45000" SET MESSAGE_TEXT = "Error al terminar cita";
+    END;
+    
+    -- Usar transacción para registrar todo
+	START TRANSACTION;
+	
+    -- Edita los datos de la consulta (descripciones y estado)
+	UPDATE consultas 
+    SET 
+		diagnostico = diagnostico_consulta, 
+        tratamiento = tratamiento_consulta, 
+        notas = notas_consulta,
+        estado = 'ASISTIO'
+	WHERE idConsulta = id_consulta;
+    
+    -- Obtiene el id de la cita asociado a la consulta
+    SELECT idCita
+    INTO id_cita
+    FROM consultas
+    WHERE idConsulta = id_consulta;
+    
+    -- Edita el estado de la cita
+    UPDATE citas
+    SET estado = 'TERMINADA'
+    WHERE idCita = id_cita;
+    COMMIT;
 END$$
 DELIMITER ;

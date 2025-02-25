@@ -270,7 +270,8 @@ public class VerAgenda extends javax.swing.JFrame {
         
         try {    
             String idCita = String.valueOf(jTable1.getValueAt(jTable1.getSelectedRow(), 0));
-
+            
+            boolean citaIniciada;
             ConsultaViejoDTO consulta = consultaBO.obtenerConsultaPorIdCita(idCita);
 
             DescripcionConsulta descripcionConsulta = DescripcionConsulta.getInstance();
