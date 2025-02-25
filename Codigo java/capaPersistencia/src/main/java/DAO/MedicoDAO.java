@@ -311,10 +311,11 @@ public class MedicoDAO implements IMedicoDAO {
     }
     
     /**
-     * 
-     * @param medico
-     * @return
-     * @throws PersistenciaException 
+     * Obtiene la lista de citas asociadas a un médico específico.
+     *
+     * @param medico Objeto Medico para el cual se desean obtener las citas.
+     * @return Lista de objetos Cita correspondientes al médico.
+     * @throws PersistenciaException Si ocurre un error durante la consulta.
      */
     @Override
     public List<Cita> obtenerCitasPorMedico(Medico medico) throws PersistenciaException {
@@ -359,6 +360,13 @@ public class MedicoDAO implements IMedicoDAO {
         }
     }
     
+    /**
+     * Obtiene la lista de consultas realizadas por un médico específico, identificado por su cédula.
+     *
+     * @param cedula Cédula profesional del médico cuyas consultas se desean obtener.
+     * @return Lista de objetos Consulta asociados al médico.
+     * @throws PersistenciaException Si ocurre un error durante la consulta.
+     */
     @Override
     public List<Consulta> obtenerConsultasPorMedico(String cedula) throws PersistenciaException {
         String sentenciaSQL = "CALL obtenerConsultasPorMedico(?)";
@@ -398,6 +406,15 @@ public class MedicoDAO implements IMedicoDAO {
         }
     }
     
+    /**
+     * Obtiene el identificador del primer médico disponible.
+     *
+     * Este método invoca un procedimiento almacenado que devuelve, mediante parámetro de salida,
+     * la cédula o identificador del primer médico disponible.
+     *
+     * @return Cadena con la cédula o identificador del primer médico disponible, o null si no se encuentra ninguno.
+     * @throws PersistenciaException Si ocurre un error durante la consulta.
+     */
     @Override
     public String obtenerPrimerMedicoDisponible() throws PersistenciaException {
         String sentenciaSQL = "CALL primerMedicoDisponible(?)";

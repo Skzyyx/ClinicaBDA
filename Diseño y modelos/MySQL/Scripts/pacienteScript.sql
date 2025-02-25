@@ -373,7 +373,7 @@ BEGIN
 		ON c.idMedico = m.idMedico
 	INNER JOIN pacientes AS p
 		ON c.idPaciente = p.idPaciente
-    WHERE '123123123123@gmail.com' = p.email
+    WHERE emailPaciente = p.email
     AND c.estado = 'ACTIVA';
 END $$
 
