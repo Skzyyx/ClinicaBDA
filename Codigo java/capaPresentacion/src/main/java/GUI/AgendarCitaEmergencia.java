@@ -6,48 +6,36 @@ package GUI;
 
 import BO.CitaBO;
 import BO.MedicoBO;
-import DTO.CitaNuevoDTO;
 import DTO.CitaViejoDTO;
-import DTO.HorarioViejoDTO;
-import DTO.MedicoViejoDTO;
-import DTO.PacienteNuevoDTO;
 import Exception.NegocioException;
-import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
-import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import configuracion.DependencyInjector;
-import excepciones.PersistenciaException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import sesion.SessionManager;
 
 /**
+ * Frame AgendarCitaEmergencia. Representa la presentación para agendar una cita
+ * de emergencia.
  *
- * @author skyro
+ * @author 00000207653 Jesus Octavio Amarillas Amaya
+ * @author 00000252574 Jose Luis Islas Molina
+ * @author 00000253301 Isabel Valenzuela Rocha
  */
 public class AgendarCitaEmergencia extends javax.swing.JFrame {
-    
-    private static AgendarCitaEmergencia instance;
 
+    private static AgendarCitaEmergencia instance;
     private MedicoBO medicoBO = DependencyInjector.crearMedicoBO();
     private CitaBO citaBO = DependencyInjector.crearCitaBO();
-    
     private PrincipalPaciente principalPaciente;
     private AgendarCita agendarCitaFrame;
     private DateTimeFormatter formatoFecha;
-    
+
     /**
      * Creates new form RegistrarCita
      */
@@ -58,6 +46,13 @@ public class AgendarCitaEmergencia extends javax.swing.JFrame {
         formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
     }
 
+    /**
+     * Obtiene la instancia estática de la clase. Se utiliza para poder cambiar
+     * entre ventanas con una única instancia.
+     *
+     * @return Intancia estática de la clase.
+     * @throws NegocioException Si hubo un error al recuperar la instancia.
+     */
     public static AgendarCitaEmergencia getInstance() throws NegocioException {
         if (instance == null) {
             instance = new AgendarCitaEmergencia();
@@ -65,22 +60,44 @@ public class AgendarCitaEmergencia extends javax.swing.JFrame {
         return instance;
     }
 
+    /**
+     * Obtiene la ventana de principal paciente.
+     *
+     * @return Ventana de principal paciente.
+     */
     public PrincipalPaciente getPrincipalPaciente() {
         return principalPaciente;
     }
 
+    /**
+     * Asigna el valor de la ventana de principal paciente al valor de su
+     * parámetro.
+     *
+     * @param principalPaciente Valor a asignar para la ventana de principal
+     * paciente.
+     */
     public void setPrincipalPaciente(PrincipalPaciente principalPaciente) {
         this.principalPaciente = principalPaciente;
     }
 
+    /**
+     * Obtiene la ventana de agendar cita.
+     *
+     * @return Ventana de agendar cita
+     */
     public AgendarCita getAgendarCitaFrame() {
         return agendarCitaFrame;
     }
 
+    /**
+     * Asigna el valor de la ventana de agendar cita al valor de su parámetro.
+     *
+     * @param agendarCitaFrame Valor a asignar para la ventana de agendar cita.
+     */
     public void setAgendarCitaFrame(AgendarCita agendarCitaFrame) {
         this.agendarCitaFrame = agendarCitaFrame;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -314,11 +331,17 @@ public class AgendarCitaEmergencia extends javax.swing.JFrame {
     private javax.swing.JLabel lbNombre9;
     // End of variables declaration//GEN-END:variables
 
-
+    /**
+     * Carga los datos de la cita de emergencia generada.
+     *
+     * @param folio Folio de la cita de emergencia.
+     */
     public void cargarDatos(String folio) {
+        // Intenta obtener el registro
         try {
             CitaViejoDTO cita = citaBO.obtenerCitaEmergencia(folio);
-            
+
+            // Si encontró registro, carga los datos
             if (cita != null) {
                 lbFechaHora.setText(cita.getFechaHoraInicio().format(formatoFecha));
                 lbNombre.setText(cita.getMedico().getNombre() + " " + cita.getMedico().getApellidoPaterno() + " " + cita.getMedico().getApellidoMaterno());
@@ -329,9 +352,12 @@ public class AgendarCitaEmergencia extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error al cargar datos de cita de emergencia: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
+    /**
+     * Envía a la ventana de menú principal de paciente
+     */
     private void volver() {
-         try {
+        try {
             PrincipalPaciente principalPacienteF = PrincipalPaciente.getInstance();
             principalPacienteF.setCitaEmergenciaFrame(this);
             principalPacienteF.setVisible(true);

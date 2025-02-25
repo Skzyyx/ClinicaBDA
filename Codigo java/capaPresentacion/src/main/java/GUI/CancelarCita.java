@@ -7,30 +7,16 @@ package GUI;
 import BO.CitaBO;
 import BO.MedicoBO;
 import BO.PacienteBO;
-import DTO.CitaNuevoDTO;
 import DTO.CitaViejoDTO;
-import DTO.HorarioViejoDTO;
-import DTO.MedicoNuevoDTO;
-import DTO.MedicoViejoDTO;
-import DTO.PacienteNuevoDTO;
-import DTO.PacienteViejoDTO;
 import Exception.NegocioException;
-import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
-import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import configuracion.DependencyInjector;
-import excepciones.PersistenciaException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.sql.Timestamp;
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalUnit;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComponent;
@@ -39,18 +25,20 @@ import javax.swing.table.DefaultTableModel;
 import sesion.SessionManager;
 
 /**
+ * Frame CancelarCita. Representa la presentación para cancelar una cita.
  *
- * @author skyro
+ * @author 00000207653 Jesus Octavio Amarillas Amaya
+ * @author 00000252574 Jose Luis Islas Molina
+ * @author 00000253301 Isabel Valenzuela Rocha
  */
 public class CancelarCita extends javax.swing.JFrame {
-    
-    private static CancelarCita instance;
 
+    private static CancelarCita instance;
     private MedicoBO medicoBO = DependencyInjector.crearMedicoBO();
     private CitaBO citaBO = DependencyInjector.crearCitaBO();
     private PacienteBO pacienteBO = DependencyInjector.crearPacienteBO();
-    
     private PrincipalPaciente principalPaciente;
+
     /**
      * Creates new form RegistrarCita
      */
@@ -60,6 +48,13 @@ public class CancelarCita extends javax.swing.JFrame {
         cargarCitas();
     }
 
+    /**
+     * Obtiene la instancia estática de la clase. Se utiliza para poder cambiar
+     * entre ventanas con una única instancia.
+     *
+     * @return Intancia estática de la clase.
+     * @throws NegocioException Si hubo un error al recuperar la instancia.
+     */
     public static CancelarCita getInstance() throws NegocioException {
         if (instance == null) {
             instance = new CancelarCita();
@@ -67,14 +62,26 @@ public class CancelarCita extends javax.swing.JFrame {
         return instance;
     }
 
+    /**
+     * Obtiene la ventana de principal paciente.
+     *
+     * @return Ventana de principal paciente.
+     */
     public PrincipalPaciente getPrincipalPaciente() {
         return principalPaciente;
     }
 
+    /**
+     * Asigna el valor de la ventana de principal paciente al valor de su
+     * parámetro.
+     *
+     * @param principalPaciente Valor a asignar para la ventana de principal
+     * paciente.
+     */
     public void setPrincipalPaciente(PrincipalPaciente principalPaciente) {
         this.principalPaciente = principalPaciente;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -249,14 +256,7 @@ public class CancelarCita extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try {
-            PrincipalPaciente principalPaciente = PrincipalPaciente.getInstance();
-            principalPaciente.setCancelarCita(this);
-            principalPaciente.setVisible(true);
-            this.setVisible(false);
-        } catch (NegocioException ex) {
-            Logger.getLogger(CancelarCita.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        volver();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -317,59 +317,71 @@ public class CancelarCita extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Carga las citas programadas activas.
+     */
     public void cargarCitas() {
+        // Obtiene el modelo
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
         modelo.setRowCount(0);
         try {
+            //Obtiene las citas activas del paciente
             List<CitaViejoDTO> citas = pacienteBO.obtenerCitasActivasPaciente(SessionManager.getInstance().getUser());
 
+            // Agrega cada cita a la tabla
             for (CitaViejoDTO cita : citas) {
-                    if (!cita.getTipo().equalsIgnoreCase("EMERGENCIA")) {
-                        modelo.addRow(new Object[]{
-                            cita.getIdCita(),
-                            cita.getMedico().getNombre() + " " + cita.getMedico().getApellidoPaterno(),
-                            cita.getMedico().getEspecialidad(),
-                            cita.getFechaHoraInicio().toLocalDate(),
-                            cita.getFechaHoraInicio().toLocalTime()
-                        });
-                    }
+                if (!cita.getTipo().equalsIgnoreCase("EMERGENCIA")) {
+                    modelo.addRow(new Object[]{
+                        cita.getIdCita(),
+                        cita.getMedico().getNombre() + " " + cita.getMedico().getApellidoPaterno(),
+                        cita.getMedico().getEspecialidad(),
+                        cita.getFechaHoraInicio().toLocalDate(),
+                        cita.getFechaHoraInicio().toLocalTime()
+                    });
                 }
-            } catch (NegocioException ex) {
+            }
+        } catch (NegocioException ex) {
             Logger.getLogger(CancelarCita.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    /**
+     * Cancela una cita elegida.
+     */
     private void cancelarCita() {
         int resultado = JOptionPane.showConfirmDialog(this, "¿Estas seguro que deseas cancelar la cita?", "Cancelar cita", JOptionPane.YES_NO_OPTION);
-        
+
+        // Si confirmó la acción
         if (resultado == JOptionPane.YES_OPTION) {
             int filaSeleccionada = jTable1.getSelectedRow();
-            
+
             // Convertir el valor de la tabla a String
             String valorFecha = jTable1.getValueAt(filaSeleccionada, 3).toString();
             String valorHora = jTable1.getValueAt(filaSeleccionada, 4).toString();
-            
+
             // Combinar ambas cadenas en una única cadena en formato ISO
             String fechaHoraCombinada = valorFecha + "T" + valorHora;
 
             // Convertir a LocalDateTime usando el formateador ISO
             LocalDateTime fechaInicio = LocalDateTime.parse(fechaHoraCombinada, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
+            // Obtener las horas que faltan para que inicie la cita
             long duracionHoras = Duration.between(LocalDateTime.now(), fechaInicio).toHours();
 
+            // Si son menos de 24 horas
             if (duracionHoras < 24) {
-
                 JOptionPane.showMessageDialog(this, "Solo puedes cancelar citas con 24 horas de anticipación.", "Error", JOptionPane.WARNING_MESSAGE);
-
                 return;
             }
-            
+
+            // Intenta cancelar la cita
             try {
                 CitaViejoDTO cita = new CitaViejoDTO();
                 cita.setIdCita((String) jTable1.getValueAt(jTable1.getSelectedRow(), 0));
 
                 boolean resultadoCita = citaBO.cancelarCita(cita);
-                
+
+                // Si se canceló la cita
                 if (resultadoCita) {
                     JOptionPane.showMessageDialog(this, "La cita fue cancelada exitosamente");
                 }
@@ -377,6 +389,20 @@ public class CancelarCita extends javax.swing.JFrame {
                 Logger.getLogger(CancelarCita.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error inesperado", JOptionPane.WARNING_MESSAGE);
             }
+        }
+    }
+
+    /**
+     * Envía a la pestaña de principal paciente.
+     */
+    private void volver() {
+        try {
+            PrincipalPaciente principalPaciente = PrincipalPaciente.getInstance();
+            principalPaciente.setCancelarCita(this);
+            principalPaciente.setVisible(true);
+            this.setVisible(false);
+        } catch (NegocioException ex) {
+            Logger.getLogger(CancelarCita.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

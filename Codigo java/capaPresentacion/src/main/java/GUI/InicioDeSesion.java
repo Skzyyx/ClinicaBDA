@@ -15,26 +15,28 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
-
 import javax.swing.JOptionPane;
 import javax.swing.UnsupportedLookAndFeelException;
 import sesion.SessionManager;
 
 
 /**
+ * Frame InicioDeSesion. 
+ * Representa la presentación para que un usuario inicie
+ * sesión en el programa.
  *
- * @author j_ama
+ * @author 00000207653 Jesus Octavio Amarillas Amaya
+ * @author 00000252574 Jose Luis Islas Molina
+ * @author 00000253301 Isabel Valenzuela Rocha
  */
 public class InicioDeSesion extends javax.swing.JFrame {
-    
+
     private UsuarioBO usuarioBO = DependencyInjector.crearUsuarioBO();
-    
     private static InicioDeSesion instance;
-    
     private RegistrarPacienteForm registroPascienteFrame;
     private PrincipalPaciente principalPacienteFrame;
     private PrincipalMedico principalMedicoForm;
-    
+
     /**
      * Creates new form InicioDeSesion
      */
@@ -44,7 +46,13 @@ public class InicioDeSesion extends javax.swing.JFrame {
         setResizable(false);
         setTitle("Inicio de sesión");
     }
-    
+
+    /**
+     * Obtiene la instancia estática de la clase. Se utiliza para poder cambiar
+     * entre ventanas con una única instancia.
+     *
+     * @return Intancia estática de la clase.
+     */
     public static InicioDeSesion getInstance() {
         if (instance == null) {
             instance = new InicioDeSesion();
@@ -52,26 +60,62 @@ public class InicioDeSesion extends javax.swing.JFrame {
         return instance;
     }
 
+    /**
+     * Obtiene la ventana de registrar paciente.
+     *
+     * @return Ventana de registrar paciente.
+     */
     public RegistrarPacienteForm getRegistroPascienteFrame() {
         return registroPascienteFrame;
     }
 
+    /**
+     * Asigna el valor de la ventana de registrar paciente al valor de su
+     * parámetro.
+     *
+     * @param registroPascienteFrame Valor a asignar a la ventana de registrar
+     * paciente.
+     */
     public void setRegistroPascienteFrame(RegistrarPacienteForm registroPascienteFrame) {
         this.registroPascienteFrame = registroPascienteFrame;
     }
-    
+
+    /**
+     * Obtiene la ventana de principal paciente.
+     *
+     * @return Ventana de principal paciente.
+     */
     public PrincipalPaciente getPrincipalPacienteFrame() {
         return principalPacienteFrame;
     }
 
+    /**
+     * Asigna el valor de la ventana de principal paciente al valor de su
+     * parámetro.
+     *
+     * @param principalPacienteFrame Valor a asignar a la ventana de principal
+     * paciente.
+     */
     public void setPrincipalPacienteFrame(PrincipalPaciente principalPacienteFrame) {
         this.principalPacienteFrame = principalPacienteFrame;
     }
 
+    /**
+     * Obtiene la ventana de principal medico.
+     *
+     * @return Ventana de principal medico.
+     */
     public PrincipalMedico getPrincipalMedicoForm() {
         return principalMedicoForm;
     }
 
+    /**
+     * Asigna el valor de la ventana de principal medico al valor de su
+     * parámetro.
+     *
+     * @param principalMedicoForm Valor a asignar a la ventana de principal
+     * medico.
+     */
     public void setPrincipalMedicoForm(PrincipalMedico principalMedicoForm) {
         this.principalMedicoForm = principalMedicoForm;
     }
@@ -320,6 +364,7 @@ public class InicioDeSesion extends javax.swing.JFrame {
     
     /**
      * Inicia la sesión si las credenciales son válidas.
+     *
      * @throws NegocioException Si hubo un error al iniciar sesión.
      */
     private void iniciarSesion() throws NegocioException {
@@ -327,23 +372,23 @@ public class InicioDeSesion extends javax.swing.JFrame {
         String usuario = txtUsuario.getText();
         // Obtener la contraseña ingresada (arreglo de caracteres)
         char[] caracteres = txtContra.getPassword();
-        
+
         // Validar campos vacíos
         if (caracteres.length == 0 || usuario.isBlank()) {
             JOptionPane.showMessageDialog(null, "Por favor ingrese todos los campos.");
             return;
         }
-        
+
         // Convertir el arreglo en un String
         String contrasenia = new String(caracteres);
-        
+
         try {
             // Crear DTO de sesión para mandar al usuarioBO
             SesionNuevoDTO sesion = new SesionNuevoDTO(usuario, contrasenia);
-            
+
             // Intentar autenticar las credenciales
             boolean autenticado = usuarioBO.autenticarSesion(sesion);
-            
+
             // Si las credenciales son válidas
             if (autenticado) {
                 // Dependiendo el rol, dirige a ventanas diferentes
@@ -355,17 +400,18 @@ public class InicioDeSesion extends javax.swing.JFrame {
                         principalMedico();
                     }
                     // Si el rol no es válido
-                    default -> JOptionPane.showMessageDialog(this, "Su rol registrado no es válido.", "Error", JOptionPane.ERROR_MESSAGE);
+                    default ->
+                        JOptionPane.showMessageDialog(this, "Su rol registrado no es válido.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
-            // Si no fueron válidas, muestra una notificación    
+                // Si no fueron válidas, muestra una notificación    
             } else {
                 JOptionPane.showMessageDialog(this, "Las credenciales son incorrectas.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } catch (NegocioException ex) {
             JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
-        }  
-    }  
-    
+        }
+    }
+
     /**
      * Envía a la pestaña registrar paciente
      */
@@ -375,10 +421,11 @@ public class InicioDeSesion extends javax.swing.JFrame {
         registro.setVisible(true);
         this.setVisible(false);
     }
-    
+
     /**
      * Envía a la pestana menú principal de paciente
-     * @throws NegocioException Si hubo un error
+     *
+     * @throws NegocioException Si hubo un error al cambiar de pestaña.
      */
     private void principalPaciente() throws NegocioException {
         PrincipalPaciente principalPaciente = PrincipalPaciente.getInstance();
@@ -386,10 +433,11 @@ public class InicioDeSesion extends javax.swing.JFrame {
         principalPaciente.setVisible(true);
         this.setVisible(false);
     }
-    
+
     /**
      * Envía a la pestana menú principal de médico
-     * @throws NegocioException Si hubo un error
+     *
+     * @throws NegocioException Si hubo un error al cambiar de pestaña.
      */
     private void principalMedico() throws NegocioException {
         PrincipalMedico principalMedico = PrincipalMedico.getInstance();

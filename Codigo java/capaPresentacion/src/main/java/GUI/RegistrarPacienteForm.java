@@ -10,8 +10,6 @@ import DTO.PacienteNuevoDTO;
 import DTO.UsuarioNuevoDTO;
 import Exception.NegocioException;
 import configuracion.DependencyInjector;
-import entidades.Direccion;
-import entidades.Usuario;
 import excepciones.PersistenciaException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -144,7 +142,7 @@ public class RegistrarPacienteForm extends javax.swing.JFrame {
         jLabel11.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
         jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 170, 100, -1));
 
-        jLabel9.setText("Nombre completo");
+        jLabel9.setText("Nombre");
         jLabel9.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
         jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 70, 110, -1));
 

@@ -19,7 +19,6 @@ import java.awt.RenderingHints;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComponent;
@@ -299,7 +298,6 @@ public class VerHistorialMedico extends javax.swing.JFrame {
             // Filtra los nombres
             List<String> nombres = consultaBO.nombresPacientesConsultas(consultas);
             
-            System.out.println(nombres.size());
             for (String nombre : nombres) {
                 
                 chNombre.addItem(nombre);

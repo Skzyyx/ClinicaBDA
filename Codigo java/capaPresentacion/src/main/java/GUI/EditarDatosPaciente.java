@@ -11,7 +11,6 @@ import DTO.PacienteViejoDTO;
 import DTO.UsuarioNuevoDTO;
 import Exception.NegocioException;
 import configuracion.DependencyInjector;
-import excepciones.PersistenciaException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -23,14 +22,19 @@ import javax.swing.JOptionPane;
 import sesion.SessionManager;
 
 /**
+ * Frame EditarDatosPaciente. Representa la presentación para editar los datos
+ * de un paciente.
  *
- * @author j_ama
+ * @author 00000207653 Jesus Octavio Amarillas Amaya
+ * @author 00000252574 Jose Luis Islas Molina
+ * @author 00000253301 Isabel Valenzuela Rocha
  */
 public class EditarDatosPaciente extends javax.swing.JFrame {
+
     private PacienteBO pacienteBO = DependencyInjector.crearPacienteBO();
     private static EditarDatosPaciente instance;
     private VerPerfilPaciente verPerfilPacienteFrame;
-    
+
     /**
      * Creates new form InicioDeSesion
      */
@@ -41,18 +45,38 @@ public class EditarDatosPaciente extends javax.swing.JFrame {
         setTitle("Paciente - Editar datos");
         cargarDatos(SessionManager.getInstance().getUser());
     }
-    
+
+    /**
+     * Obtiene la instancia estática de la clase. Se utiliza para poder cambiar
+     * entre ventanas con una única instancia.
+     *
+     * @return Intancia estática de la clase.
+     * @throws Exception.NegocioException Si hubo un error al obtener la
+     * instancia.
+     */
     public static EditarDatosPaciente getInstance() throws NegocioException {
-         if (instance == null) {
+        if (instance == null) {
             instance = new EditarDatosPaciente();
         }
         return instance;
     }
 
+    /**
+     * Obtiene la ventana de ver perfil de paciente.
+     *
+     * @return Ventana de ver perfil de paciente.
+     */
     public VerPerfilPaciente getVerPerfilPacienteFrame() {
         return verPerfilPacienteFrame;
     }
 
+    /**
+     * Asigna el valor de la ventana de ver perfil paciente al valor de su
+     * parámetro.
+     *
+     * @param verPerfilPacienteFrame Valor a asgnar a la ventana de ver perfil
+     * paciente.
+     */
     public void setVerPerfilPacienteFrame(VerPerfilPaciente verPerfilPacienteFrame) {
         this.verPerfilPacienteFrame = verPerfilPacienteFrame;
     }
@@ -319,7 +343,7 @@ public class EditarDatosPaciente extends javax.swing.JFrame {
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         try {
             guardar();
-        } catch (NegocioException | PersistenciaException ex) {
+        } catch (NegocioException ex) {
             Logger.getLogger(EditarDatosPaciente.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
@@ -405,7 +429,12 @@ public class EditarDatosPaciente extends javax.swing.JFrame {
     private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
 
-    private void guardar() throws NegocioException, PersistenciaException {
+    /**
+     * Guarda los datos editados.
+     *
+     * @throws NegocioException Si hubo un error al guardar los datos.
+     */
+    private void guardar() throws NegocioException {
         // Obtener los valores de los campos de texto
         String user = SessionManager.getInstance().getUser();
         String rol = SessionManager.getInstance().getRol();
@@ -420,15 +449,15 @@ public class EditarDatosPaciente extends javax.swing.JFrame {
         String codigoPostal = txtCodigo.getText().trim();
         String contrasenia = new String(txtContra.getPassword());
         String confirmarContrasenia = new String(txtConfirmarContra.getPassword());
-        
+
         // Validar datos
         boolean validados = validarCampos(nombre, apellidoPaterno, apellidoMaterno, fechaNacimiento, telefono, calle, numero, colonia, codigoPostal, contrasenia, confirmarContrasenia);
-        
+
         // Si los datos son validos
         if (validados) {
             // Confirmación para editar
             int confirmacion = JOptionPane.showConfirmDialog(this, "¿Estás seguro que deseas modificar tus datos?", "Mensaje de confirmación", JOptionPane.YES_NO_OPTION);
-            
+
             // Si se confirmó la acción
             if (confirmacion == JOptionPane.YES_OPTION) {
                 try {
@@ -436,21 +465,21 @@ public class EditarDatosPaciente extends javax.swing.JFrame {
                     UsuarioNuevoDTO usuario = new UsuarioNuevoDTO(user, contrasenia, rol);
                     DireccionNuevoDTO direccion = new DireccionNuevoDTO(calle, numero, colonia, codigoPostal);
                     PacienteNuevoDTO paciente = new PacienteNuevoDTO(nombre, apellidoPaterno, apellidoMaterno, fechaNacimiento, user, telefono, usuario, direccion);
-                    
+
                     boolean editado;
                     // Si no se va a editar la contraseña
                     if (contrasenia.length() == 0 && confirmarContrasenia.length() == 0) {
                         editado = pacienteBO.editarDatosSinContraPaciente(user, paciente);
-                    //Si sí se va a editar la contraseña
+                        //Si sí se va a editar la contraseña
                     } else {
                         editado = pacienteBO.editarDatosPaciente(user, paciente);
                     }
-                    
+
                     // Si se editaron los registros
                     if (editado) {
                         JOptionPane.showMessageDialog(this, "Datos editados con éxito.");
                         volver();
-                    // Si no se editaron los registros
+                        // Si no se editaron los registros
                     } else {
                         JOptionPane.showMessageDialog(this, "No se ha podido registrar los datos.", "Error", JOptionPane.ERROR_MESSAGE);
                     }
@@ -458,7 +487,7 @@ public class EditarDatosPaciente extends javax.swing.JFrame {
                     Logger.getLogger(RegistrarPacienteForm.class.getName()).log(Level.SEVERE, "Error al editar datos.", ex);
                     JOptionPane.showMessageDialog(this, ex.getMessage());
                 }
-            // Si no confirmó la acción
+                // Si no confirmó la acción
             } else {
                 JOptionPane.showMessageDialog(this, "Se han cancelado los cambios.");
                 volver();
@@ -466,44 +495,66 @@ public class EditarDatosPaciente extends javax.swing.JFrame {
         }
         cargarDatos(user);
     }
-    
-    private boolean validarCampos(String nombre, String apellidoPaterno, String apellidoMaterno, LocalDate fechaNacimiento, String telefono, String calle, String numero, String colonia, String codigoPostal, String contrasenia, String confirmarContrasenia) throws NegocioException, PersistenciaException {
+
+    /**
+     * Valida los campos del formulario.
+     *
+     * @param nombre Nombre del paciente.
+     * @param apellidoPaterno Apellido paterno del paciente.
+     * @param apellidoMaterno Apellido materno del paciente.
+     * @param fechaNacimiento Fecha de nacimiento del paciente.
+     * @param telefono Telefono del paciente.
+     * @param calle Calle de la dirección del paciente.
+     * @param numero Número de casa de la dirección del paciente.
+     * @param colonia Colonia de la dirección del paciente.
+     * @param codigoPostal Código postal de la dirección del paciente.
+     * @param contrasenia Contraseña ingresada.
+     * @param confirmarContrasenia Contraseña ingresada confirmada.
+     * @return True si los datos son válidos.
+     * @throws NegocioException Si alguno de los datos no es válido.
+     */
+    private boolean validarCampos(String nombre, String apellidoPaterno, String apellidoMaterno, LocalDate fechaNacimiento, String telefono, String calle, String numero, String colonia, String codigoPostal, String contrasenia, String confirmarContrasenia) throws NegocioException {
         // Si las contraseñas no coinciden
         if (contrasenia.length() != 0 && confirmarContrasenia.length() != 0 && !contrasenia.equals(confirmarContrasenia)) {
             JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden.");
             return false;
         }
-        
+
         // Si sí quiere cambiar la contraseña pero solo puso uno
         if ((contrasenia.length() != 0 && confirmarContrasenia.length() == 0) || (contrasenia.length() == 0 && confirmarContrasenia.length() != 0)) {
             JOptionPane.showMessageDialog(null, "Complete la contraseña.");
             return false;
         }
-        
+
         // Si mandó datos requeridos vacíos
-        if (nombre.isBlank() || apellidoPaterno.isBlank() ||
-                fechaNacimiento == null || telefono.isBlank() || calle.isBlank() ||
-                numero.isBlank() || colonia.isBlank() || codigoPostal.isBlank()) {
+        if (nombre.isBlank() || apellidoPaterno.isBlank()
+                || fechaNacimiento == null || telefono.isBlank() || calle.isBlank()
+                || numero.isBlank() || colonia.isBlank() || codigoPostal.isBlank()) {
             JOptionPane.showMessageDialog(null, "Por favor ingrese todos los campos obligatorios.");
             return false;
         }
-        
+
         // Si puso números en el nombre o apellidos
         String regex = "^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]+$";
         if (!nombre.matches(regex) || !apellidoPaterno.matches(regex) || (!apellidoMaterno.isBlank() && !apellidoMaterno.matches(regex))) {
             JOptionPane.showMessageDialog(null, "El nombre y apellidos solo deben de contener letras.");
             return false;
         }
-        
+
         //Si sí fue válido todo
         return true;
     }
-    
+
+    /**
+     * Carga los datos actuales del paciente.
+     *
+     * @param user Email del paciente.
+     */
     private void cargarDatos(String user) {
         try {
             // Obtiene los datos del paciente
             PacienteViejoDTO pacienteViejo = pacienteBO.obtenerPacientePorEmail(user);
-            
+
             // Si encontró registro
             if (pacienteViejo != null) {
                 txtNombre.setText(pacienteViejo.getNombre());
@@ -515,18 +566,19 @@ public class EditarDatosPaciente extends javax.swing.JFrame {
                 txtColonia.setText(pacienteViejo.getDireccion().getColonia());
                 txtCodigo.setText(pacienteViejo.getDireccion().getCodigoPostal());
                 txtFecha.setDate(null);
-            // Si no encontró registro
+                // Si no encontró registro
             } else {
                 JOptionPane.showMessageDialog(this, "Error al consultar datos.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } catch (NegocioException ex) {
             JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
         }
-   
+
     }
-    
+
     /**
      * Envía a la pestaña de ver perfil de paciente
+     *
      * @throws NegocioException Si hubo un error al cambiar de pestaña.
      */
     private void volver() {

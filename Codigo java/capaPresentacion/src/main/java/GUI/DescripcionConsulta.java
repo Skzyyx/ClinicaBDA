@@ -5,7 +5,6 @@
 package GUI;
 
 import BO.ConsultaBO;
-import DTO.CitaViejoDTO;
 import DTO.ConsultaViejoDTO;
 import Exception.NegocioException;
 import configuracion.DependencyInjector;
@@ -20,19 +19,35 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
 /**
+ * Frame DescripcionConsulta. Representa la presentación para agregar
+ * descripción a una consulta en curso.
  *
- * @author skyro
+ * @author 00000207653 Jesus Octavio Amarillas Amaya
+ * @author 00000252574 Jose Luis Islas Molina
+ * @author 00000253301 Isabel Valenzuela Rocha
  */
 public class DescripcionConsulta extends javax.swing.JFrame {
 
     private static DescripcionConsulta instance;
-
     private ConsultaViejoDTO consulta;
-
     private ConsultaBO consultaBO = DependencyInjector.crearConsultaBO();
-
     private VerAgenda verAgenda;
 
+    /**
+     * Creates new form DescripcionConsulta
+     */
+    public DescripcionConsulta() {
+        setLocationRelativeTo(null);
+        setTitle("Médico - Descripción de consulta");
+        initComponents();
+    }
+
+    /**
+     * Obtiene la instancia estática de la clase. Se utiliza para poder cambiar
+     * entre ventanas con una única instancia.
+     *
+     * @return Intancia estática de la clase.
+     */
     public static DescripcionConsulta getInstance() {
         if (instance == null) {
             instance = new DescripcionConsulta();
@@ -41,25 +56,37 @@ public class DescripcionConsulta extends javax.swing.JFrame {
     }
 
     /**
-     * Creates new form DescripcionConsulta
+     * Obtiene la consulta en curso.
+     *
+     * @return Consulta.
      */
-    public DescripcionConsulta() {
-        setLocationRelativeTo(null);
-        initComponents();
-    }
-
     public ConsultaViejoDTO getConsulta() {
         return consulta;
     }
 
+    /**
+     * Asigna el valor de consulta al valor de su parámetro.
+     *
+     * @param consulta Valor de consulta a asignar.
+     */
     public void setConsulta(ConsultaViejoDTO consulta) {
         this.consulta = consulta;
     }
 
+    /**
+     * Obtiene la ventana de ver agenda.
+     *
+     * @return Ventana de ver agenda.
+     */
     public VerAgenda getVerAgenda() {
         return verAgenda;
     }
 
+    /**
+     * Asigna el valor de la ventana de ver agenda al valor de su parámetro.
+     *
+     * @param verAgenda Valor a asignar para la ventana de ver agenda.
+     */
     public void setVerAgenda(VerAgenda verAgenda) {
         this.verAgenda = verAgenda;
     }
@@ -381,11 +408,9 @@ public class DescripcionConsulta extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         int resultado = JOptionPane.showConfirmDialog(this, "Los datos no guardados se perderán. ¿Deseas volver a tu agenda?", "Confirmación", JOptionPane.YES_NO_OPTION);
-
         if (resultado == JOptionPane.YES_OPTION) {
             volver();
         }
-
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -468,6 +493,9 @@ public class DescripcionConsulta extends javax.swing.JFrame {
     private javax.swing.JLabel txtTelefono;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Llena los campos de información del paciente.
+     */
     public void llenarCampos() {
         this.txtNombreCompleto.setText(consulta.getCita().getPaciente().getNombre() + " " + consulta.getCita().getPaciente().getApellidoPaterno() + " " + consulta.getCita().getPaciente().getApellidoMaterno());
         this.txtFechaNacimiento.setText(consulta.getCita().getPaciente().getFechaNacimiento().toString());
@@ -484,17 +512,20 @@ public class DescripcionConsulta extends javax.swing.JFrame {
         this.notas.setText(consulta.getNotas());
     }
 
+    /**
+     * Guarda los datos de descripción de la consulta.
+     */
     private void guardarDatosConsulta() {
         int resultado = JOptionPane.showConfirmDialog(this, "¿Estas seguro que deseas terminar la cita?", "Mensaje de confirmación", JOptionPane.YES_NO_OPTION);
 
         if (resultado == JOptionPane.YES_OPTION) {
-
             try {
                 ConsultaViejoDTO consultaViejo = this.consulta;
                 consultaViejo.setDiagnostico(diagnostico.getText());
                 consultaViejo.setTratamiento(tratamiento.getText());
                 consultaViejo.setNotas(notas.getText());
 
+                // Intenta terminar la consulta
                 boolean terminada = consultaBO.editarDatosConsulta(this.consulta);
                 if (terminada) {
                     JOptionPane.showMessageDialog(this, "Datos de la consulta actualizados. Se ha terminado la cita.");
@@ -505,9 +536,11 @@ public class DescripcionConsulta extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Error inesperado", JOptionPane.WARNING_MESSAGE);
             }
         }
-
     }
-    
+
+    /**
+     * Envía a la pestaña de ver agenda.
+     */
     private void volver() {
         VerAgenda verAgendaF = VerAgenda.getInstance();
         verAgendaF.cargarCitas();

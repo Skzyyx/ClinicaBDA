@@ -4,20 +4,22 @@
  */
 package GUI;
 
-import java.awt.Font;
-import javax.swing.UIManager;
-
 /**
+ * Clase main Inicio. Clase principal del proyecto.
  *
- * @author Isabel
+ * @author 00000207653 Jesus Octavio Amarillas Amaya
+ * @author 00000252574 Jose Luis Islas Molina
+ * @author 00000253301 Isabel Valenzuela Rocha
  */
 public class Inicio {
 
     /**
-     * @param args the command line arguments
+     * Método main de la clase.
+     *
+     * @param args String.
      */
     public static void main(String[] args) {
-        
+        // El programa inicia desde el inicio de sesión de usuario.
         InicioDeSesion pantallaInicio = new InicioDeSesion();
         pantallaInicio.setVisible(true);
     }

@@ -20,19 +20,22 @@ import javax.swing.JOptionPane;
 import sesion.SessionManager;
 
 /**
+ * Frame PrincipalMedico. 
+ * Representa la presentación para el menú principal del médico.
  *
- * @author j_ama
+ * @author 00000207653 Jesus Octavio Amarillas Amaya
+ * @author 00000252574 Jose Luis Islas Molina
+ * @author 00000253301 Isabel Valenzuela Rocha
  */
 public class PrincipalMedico extends javax.swing.JFrame {
+
     private MedicoBO medicoBO = DependencyInjector.crearMedicoBO();
-    
     private static PrincipalMedico instance;
-    
     private InicioDeSesion iniciarSesionFrame;
     private VerPerfilMedico perfilMedicoFrame;
     private VerAgenda verAgenda;
     private VerHistorialMedico historialMedicoFrame;
-    
+
     /**
      * Creates new form InicioDeSesion
      */
@@ -44,46 +47,96 @@ public class PrincipalMedico extends javax.swing.JFrame {
         mostrarDatosMedico();
         cambiarBotonEstado();
     }
-    
+
+    /**
+     * Obtiene la instancia estática de la clase. Se utiliza para poder cambiar
+     * entre ventanas con una única instancia.
+     *
+     * @return Intancia estática de la clase.
+     */
     public static PrincipalMedico getInstance() throws NegocioException {
-         if (instance == null) {
+        if (instance == null) {
             instance = new PrincipalMedico();
         }
         return instance;
     }
 
+    /**
+     * Obtiene la ventana de iniciar sesion.
+     *
+     * @return Ventana de iniciar sesion.
+     */
     public InicioDeSesion getIniciarSesionFrame() {
         return iniciarSesionFrame;
     }
 
+    /**
+     * Asigna el valor de la ventana de iniciar sesion al valor de su parámetro.
+     *
+     * @param iniciarSesionFrame Valor a asignar a la ventana de iniciar sesion.
+     */
     public void setIniciarSesionFrame(InicioDeSesion iniciarSesionFrame) {
         this.iniciarSesionFrame = iniciarSesionFrame;
     }
 
+    /**
+     * Obtiene la ventana de ver perfil de medico.
+     *
+     * @return Ventana de ver perfil de medico.
+     */
     public VerPerfilMedico getPerfilMedicoFrame() {
         return perfilMedicoFrame;
     }
 
+    /**
+     * Asigna el valor de la ventana de ver perfil de medico al valor de su
+     * parámetro.
+     *
+     * @param perfilMedicoFrame Valor a asignar a la ventana de ver perfil de
+     * medico.
+     */
     public void setPerfilMedicoFrame(VerPerfilMedico perfilMedicoFrame) {
         this.perfilMedicoFrame = perfilMedicoFrame;
     }
 
+    /**
+     * Obtiene la ventana de ver agenda.
+     *
+     * @return Ventana de ver agenda.
+     */
     public VerAgenda getVerAgenda() {
         return verAgenda;
     }
 
+    /**
+     * Asigna el valor de la ventana de ver agenda al valor de su parámetro.
+     *
+     * @param verAgenda Valor a asignar a la ventana de ver agenda.
+     */
     public void setVerAgenda(VerAgenda verAgenda) {
         this.verAgenda = verAgenda;
     }
 
+    /**
+     * Obtiene la ventana de historial de medico.
+     *
+     * @return Ventana de historial de medico.
+     */
     public VerHistorialMedico getHistorialMedicoFrame() {
         return historialMedicoFrame;
     }
 
+    /**
+     * Asigna el valor de la ventana de ver historial de medico al valor de su
+     * parámetro.
+     *
+     * @param historialMedicoFrame Valor a asignar a la ventana de historial de
+     * medico.
+     */
     public void setHistorialMedicoFrame(VerHistorialMedico historialMedicoFrame) {
         this.historialMedicoFrame = historialMedicoFrame;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -423,14 +476,15 @@ public class PrincipalMedico extends javax.swing.JFrame {
     private javax.swing.JLabel lbEstado;
     private javax.swing.JLabel lbNombre;
     // End of variables declaration//GEN-END:variables
-    
+
     /**
      * Muestra los datos del médico en la credencial
-     * @throws NegocioException 
+     *
+     * @throws NegocioException
      */
     private void mostrarDatosMedico() throws NegocioException {
         MedicoViejoDTO medico = medicoBO.obtenerMedicoPorCedula(SessionManager.getInstance().getUser());
-        
+
         if (medico != null) {
             lbNombre.setText(medico.getNombre());
             lbEstado.setText(medico.getEstado());
@@ -439,11 +493,20 @@ public class PrincipalMedico extends javax.swing.JFrame {
             cerrarSesion();
         }
     }
-    
+
+    /**
+     * Cambia el aspecto del botón de darse de baja/alta según el estado actual
+     * del médico.
+     *
+     * @throws NegocioException Si hubo un error en el proceso.
+     */
     private void cambiarBotonEstado() throws NegocioException {
+        // Obtiene el médico
         MedicoViejoDTO medico = medicoBO.obtenerMedicoPorCedula(SessionManager.getInstance().getUser());
-        
+
+        // Si no es nulo y si tiene estado
         if (medico != null && medico.getEstado() != null) {
+            // Según el estado del médico, muestra el botón diferente
             switch (medico.getEstado().toUpperCase()) {
                 case "ACTIVO" -> {
                     btnCambiarEstado.setBackground(Color.red);
@@ -458,21 +521,26 @@ public class PrincipalMedico extends javax.swing.JFrame {
                 default ->
                     JOptionPane.showMessageDialog(this, "Tu estado no es válido. Intentalo de nuevo.", "Error", JOptionPane.ERROR_MESSAGE);
             }
+            // Muestra los datos del médico en la ficha
             mostrarDatosMedico();
         } else {
             JOptionPane.showMessageDialog(this, "Ocurrió un error interno. Se ha cerrado la sesión", "Error", JOptionPane.ERROR_MESSAGE);
             cerrarSesion();
         }
     }
-    
+
     /**
      * Inicia el proceso para cambiar el estado de un médico.
+     *
      * @throws NegocioException Si hubo un error en el proceso.
      */
     private void cambiarEstado() throws NegocioException {
+        // Obtiene el médico
         MedicoViejoDTO medico = medicoBO.obtenerMedicoPorCedula(SessionManager.getInstance().getUser());
-        
+
+        // Si no es nulo y si tiene estado
         if (medico != null && medico.getEstado() != null) {
+            // Según el estado del médico, hace procesos diferentes
             switch (medico.getEstado().toUpperCase()) {
                 case "ACTIVO" -> {
                     darseDeBaja();
@@ -489,22 +557,30 @@ public class PrincipalMedico extends javax.swing.JFrame {
             cerrarSesion();
         }
     }
-    
+
     /**
      * Inicia el proceso para dar de baja temporal a un médico.
+     *
      * @throws NegocioException Si hubo un error en el proceso.
      */
     private void darseDeBaja() throws NegocioException {
+        // Obtiene la cédula del médico
         String cedula = SessionManager.getInstance().getUser();
         try {
+            // Valida si el médico puede darse de baja
             boolean bajaValida = medicoBO.validarBaja(cedula);
-            
+
+            // Si sí puede darse de baja
             if (bajaValida) {
+                // Pide confirmación
                 int confirmacion = JOptionPane.showConfirmDialog(this, "¿Estás seguro que deseas darte de baja temporalmente?", "Mensaje de confirmación", JOptionPane.YES_NO_OPTION);
 
+                // Si confirmó la acción
                 if (confirmacion == JOptionPane.YES_OPTION) {
+                    // Intenta dar de baja al médico
                     try {
                         boolean baja = medicoBO.darseDeBaja(cedula);
+                        // Si se realizó la baja
                         if (baja) {
                             JOptionPane.showMessageDialog(this, "Tu baja temporal ha sido confirmada.");
                         } else {
@@ -521,17 +597,22 @@ public class PrincipalMedico extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     /**
      * Inicia el proceso para dar de alta a un médico.
+     *
      * @throws NegocioException Si hubo un error en el proceso.
      */
     private void darseDeAlta() throws NegocioException {
+        // Pide confirmación
         int confirmacion = JOptionPane.showConfirmDialog(this, "¿Estás seguro que deseas darte de alta?", "Mensaje de confirmación", JOptionPane.YES_NO_OPTION);
 
+        // Si confirmó la acción
         if (confirmacion == JOptionPane.YES_OPTION) {
+            // Intenta dar de alta al médico
             try {
                 boolean alta = medicoBO.darseDeAlta(SessionManager.getInstance().getUser());
+                // Si se realizó el alta
                 if (alta) {
                     JOptionPane.showMessageDialog(this, "Tu alta ha sido confirmada.");
                 } else {
@@ -544,7 +625,12 @@ public class PrincipalMedico extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Se ha cancelado el alta.");
         }
     }
-    
+
+    /**
+     * Envía a la ventana de ver historial de médico.
+     *
+     * @throws NegocioException Si hubo un error al cambiar de pestaña.
+     */
     private void verHistorial() throws NegocioException {
         VerHistorialMedico verHistorialMedico = VerHistorialMedico.getInstance();
         verHistorialMedico.setPrincipalMedicoFrame(this);
@@ -553,9 +639,10 @@ public class PrincipalMedico extends javax.swing.JFrame {
         verHistorialMedico.cargarHistorial();
         this.setVisible(false);
     }
-    
+
     /**
      * Envía a la pestaña de ver perfil de médico
+     *
      * @throws NegocioException Si hubo un error al cambiar de pestaña.
      */
     private void verPerfilMedico() throws NegocioException {
@@ -564,7 +651,7 @@ public class PrincipalMedico extends javax.swing.JFrame {
         verPerfilMedico.setVisible(true);
         this.setVisible(false);
     }
-    
+
     /**
      * Cierra la sesión del usuario y la aplicación.
      */

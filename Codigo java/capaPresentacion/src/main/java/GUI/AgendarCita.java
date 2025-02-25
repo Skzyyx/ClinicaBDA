@@ -11,7 +11,6 @@ import DTO.CitaNuevoDTO;
 import DTO.HorarioViejoDTO;
 import DTO.MedicoViejoDTO;
 import DTO.PacienteNuevoDTO;
-import DTO.PacienteViejoDTO;
 import Exception.NegocioException;
 import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
@@ -33,32 +32,41 @@ import javax.swing.table.DefaultTableModel;
 import sesion.SessionManager;
 
 /**
+ * Frame AgendarCita. Representa la presentación para agendar una cita.
  *
- * @author skyro
+ * @author 00000207653 Jesus Octavio Amarillas Amaya
+ * @author 00000252574 Jose Luis Islas Molina
+ * @author 00000253301 Isabel Valenzuela Rocha
  */
 public class AgendarCita extends javax.swing.JFrame {
-    
-    private static AgendarCita instance;
 
+    private static AgendarCita instance;
     private MedicoBO medicoBO = DependencyInjector.crearMedicoBO();
     private CitaBO citaBO = DependencyInjector.crearCitaBO();
     private PacienteBO pacienteBO = DependencyInjector.crearPacienteBO();
-    
     private PrincipalPaciente principalPaciente;
     private AgendarCitaEmergencia citaEmergenciaFrame;
-    
+
     /**
      * Creates new form RegistrarCita
      */
     public AgendarCita() {
         initComponents();
         setLocationRelativeTo(null);
+        setTitle("Paciente - Agendar cita");
         choice1.addItem("Ninguno");
         cargarListener();
         cargarMedicos();
         cargarEspecialidades();
     }
 
+    /**
+     * Obtiene la instancia estática de la clase. Se utiliza para poder cambiar
+     * entre ventanas con una única instancia.
+     *
+     * @return Intancia estática de la clase.
+     * @throws NegocioException Si hubo un error al recuperar la instancia.
+     */
     public static AgendarCita getInstance() throws NegocioException {
         if (instance == null) {
             instance = new AgendarCita();
@@ -66,22 +74,46 @@ public class AgendarCita extends javax.swing.JFrame {
         return instance;
     }
 
+    /**
+     * Obtiene la ventana de principal paciente.
+     *
+     * @return Ventana de principal paciente.
+     */
     public PrincipalPaciente getPrincipalPaciente() {
         return principalPaciente;
     }
 
+    /**
+     * Asigna el valor de la ventana de principal paciente al valor de su
+     * parámetro.
+     *
+     * @param principalPaciente Valor a asignar para la ventana de principal
+     * paciente.
+     */
     public void setPrincipalPaciente(PrincipalPaciente principalPaciente) {
         this.principalPaciente = principalPaciente;
     }
 
+    /**
+     * Obtiene la ventana de cita de emergencia.
+     *
+     * @return Ventana de cita de emergencia.
+     */
     public AgendarCitaEmergencia getCitaEmergenciaFrame() {
         return citaEmergenciaFrame;
     }
 
+    /**
+     * Asigna el valor de la ventana de cita de emergencia al valor de su
+     * parámetro.
+     *
+     * @param citaEmergenciaFrame Valor a asignar para la ventana de cita de
+     * emergencia.
+     */
     public void setCitaEmergenciaFrame(AgendarCitaEmergencia citaEmergenciaFrame) {
         this.citaEmergenciaFrame = citaEmergenciaFrame;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -342,7 +374,7 @@ public class AgendarCita extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       volver();
+        volver();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -413,10 +445,15 @@ public class AgendarCita extends javax.swing.JFrame {
     private javax.swing.JTable jTable2;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Carga las especialidades en el choice.
+     */
     private void cargarEspecialidades() {
         try {
+            // Obtiene las especialidades
             List<String> especialidades = medicoBO.obtenerEspecialidades();
-            
+
+            // Las agrega al choice
             for (String especialidad : especialidades) {
                 choice1.addItem(especialidad);
             }
@@ -426,13 +463,20 @@ public class AgendarCita extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Carga los médicos en la tabla.
+     */
     private void cargarMedicos() {
+        // Obtiene el módelo y borra registros previos
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
         modelo.setRowCount(0);
         try {
+            // Obtiene los médicos activos
             List<MedicoViejoDTO> medicos = medicoBO.obtenerMedicos();
-            String filtro = choice1.getSelectedItem(); // Obtiene la especialidad seleccionada
+            // Obtiene la especialidad seleccionada
+            String filtro = choice1.getSelectedItem();
 
+            // Agrega los médicos a la tabla
             for (MedicoViejoDTO medico : medicos) {
                 // Si el filtro es "Ninguno" (mostrar todos) o la especialidad coincide, agregar al modelo
                 if ("Ninguno".equals(filtro) || medico.getEspecialidad().equals(filtro)) {
@@ -448,12 +492,17 @@ public class AgendarCita extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Carga los listeners a los elementos.
+     */
     private void cargarListener() {
+        // Listener para cuando seleccione la fecha
         datePicker1.addDateChangeListener(new DateChangeListener() {
             @Override
             public void dateChanged(DateChangeEvent dce) {
                 int filaSeleccionada = jTable1.getSelectedRow();
 
+                // Si seleccionó un médico
                 if (filaSeleccionada != -1) {
                     // Obtener la fecha seleccionada
                     LocalDate fechaSeleccionada = datePicker1.getDate();
@@ -468,30 +517,35 @@ public class AgendarCita extends javax.swing.JFrame {
                         // Convertir el valor de la tabla a Integer
                         String idMedicoStr = jTable1.getValueAt(filaSeleccionada, 2).toString();
                         try {
+                            // Genera el horario de citas del médico
                             int idMedico = Integer.parseInt(idMedicoStr);
                             generarHorariosCitas(idMedico);
                         } catch (NumberFormatException ex) {
                             JOptionPane.showMessageDialog(AgendarCita.this, "Error: El ID del médico no es válido.", "Error", JOptionPane.ERROR_MESSAGE);
                         } catch (PersistenciaException ex) {
                             Logger.getLogger(AgendarCita.class.getName()).log(Level.SEVERE, null, ex);
+                            JOptionPane.showMessageDialog(AgendarCita.this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                         }
                     }
+                    // Si no seleccionó un médico
                 } else {
                     // Ocultar el panel del calendario si está abierto
                     datePicker1.closePopup();
-
                     // Mostrar el mensaje de advertencia
                     JOptionPane.showMessageDialog(AgendarCita.this, "Por favor, selecciona un médico.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 }
             }
         });
-        
+
+        // Cada que el usuario seleccione una fila
         jTable1.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 int filaSeleccionada = jTable1.getSelectedRow();
-                
-                if (filaSeleccionada == -1) return;
-                
+
+                if (filaSeleccionada == -1) {
+                    return;
+                }
+
                 // Aquí se maneja la selección de la fila
                 String idMedicoStr = jTable1.getValueAt(filaSeleccionada, 2).toString();
 
@@ -504,8 +558,15 @@ public class AgendarCita extends javax.swing.JFrame {
             }
         });
     }
-                
 
+    /**
+     * Genera el horario de las citas a partir del horario del médico
+     * seleccionado.
+     *
+     * @param id Identificador del médico seleccionado.
+     * @throws PersistenciaException Si hubo un error al generar los horarios de
+     * citas.
+     */
     private void generarHorariosCitas(int id) throws PersistenciaException {
         DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
         modelo.setRowCount(0);
@@ -522,7 +583,6 @@ public class AgendarCita extends javax.swing.JFrame {
             List<HorarioViejoDTO> horarios = medicoBO.obtenerHorariosMedico(String.valueOf(id));
 
             for (HorarioViejoDTO horario : horarios) {
-
                 // Verificar si el horario corresponde al día seleccionado
                 if (horario.getDiaSemana().equalsIgnoreCase(diaSemanaSeleccionado)) {
                     LocalTime horaInicio = horario.getHoraEntrada();
@@ -542,14 +602,14 @@ public class AgendarCita extends javax.swing.JFrame {
 
                         // Verificar si la cita está ocupada
                         if (!citaBO.verificarCitaExiste(Timestamp.valueOf(fechaHoraInicio), String.valueOf(id))) {
-                            
+
                             if (fechaHoraInicio.isAfter(LocalDateTime.now())) {
                                 // Si la cita no está ocupada, agregarla a la tabla
-                            modelo.addRow(new Object[]{
-                                fechaSeleccionada,
-                                horaInicio,
-                                horaCitaFin
-                            });
+                                modelo.addRow(new Object[]{
+                                    fechaSeleccionada,
+                                    horaInicio,
+                                    horaCitaFin
+                                });
                             }
                         }
 
@@ -563,7 +623,11 @@ public class AgendarCita extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Registra una nueva cita.
+     */
     private void registrarCita() {
+        // Validaciones de selección
         if (jTable1.getSelectedRow() == -1) {
             JOptionPane.showMessageDialog(this, "Debes seleccionar un doctor.", "Error", JOptionPane.WARNING_MESSAGE);
         } else if (jTable2.getSelectedRow() == -1) {
@@ -571,25 +635,28 @@ public class AgendarCita extends javax.swing.JFrame {
         } else if (datePicker1.getDate() == null) {
             JOptionPane.showMessageDialog(this, "Debes seleccionar una fecha.", "Error", JOptionPane.WARNING_MESSAGE);
         }
-        
+
+        // Obtiene la fecha elegida
         LocalDate fechaSeleccionada = datePicker1.getDate();
+        // Obtiene la hora de cita elegida
         LocalTime horaInicio = (LocalTime) jTable2.getValueAt(jTable2.getSelectedRow(), 1);
-        
+        // Obtiene el id del médicp
         String idMedico = String.valueOf(jTable1.getValueAt(jTable1.getSelectedRow(), 2));
 
+        // Crea los objetos
         MedicoViejoDTO medico = new MedicoViejoDTO(idMedico);
         PacienteNuevoDTO paciente = new PacienteNuevoDTO();
         paciente.setEmail(SessionManager.getInstance().getUser());
-        
         LocalDateTime fechaHoraInicio = LocalDateTime.of(fechaSeleccionada, horaInicio);
         CitaNuevoDTO cita = new CitaNuevoDTO();
         cita.setFechaHoraInicio(fechaHoraInicio);
         cita.setMedico(medico);
         cita.setPaciente(paciente);
-        
+
+        // Intenta programar la cita
         try {
             boolean resultado = citaBO.registrarCitaProgramada(cita);
-            System.out.println(resultado);
+            // Si se programa la cita
             if (resultado) {
                 JOptionPane.showMessageDialog(this, "Tu cita ha sido registrada.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                 // Actualizar la lista de citas en la interfaz de cancelar citas
@@ -601,32 +668,38 @@ public class AgendarCita extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
         }
     }
-    
+
     /**
-     * Envía a agendar cita emergencia
+     * Registra una cita de emergencia. Envía a la ventana de agendar cita
+     * emergencia.
      */
-    private void citaDeEmergencia(){
+    private void citaDeEmergencia() {
         try {
+            // Obtiene el primer médico disponible para la cita
             MedicoViejoDTO medico = medicoBO.obtenerPrimerMedicoDisponible();
-            
+
+            // Si hay médico disponible
             if (medico != null) {
+                // Crea los objetos
                 PacienteNuevoDTO paciente = new PacienteNuevoDTO();
                 paciente.setEmail(SessionManager.getInstance().getUser());
-
                 CitaNuevoDTO cita = new CitaNuevoDTO();
                 cita.setPaciente(paciente);
                 cita.setMedico(medico);
 
+                // Genera la cita de emergencia
                 String folio = citaBO.registrarCitaEmergencia(cita);
-                
+                // Si se generó la cita
                 if (folio != null) {
                     JOptionPane.showMessageDialog(this, "Tu cita de emergencia ha sido generada.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                    
+
+                    // Envía a la ventana de cita de emergencia
                     AgendarCitaEmergencia citaEmergencia = AgendarCitaEmergencia.getInstance();
                     citaEmergencia.setAgendarCitaFrame(this);
                     citaEmergencia.setVisible(true);
                     citaEmergencia.cargarDatos(folio);
                     this.setVisible(false);
+                    // Si no se generó la cita
                 } else {
                     JOptionPane.showMessageDialog(this, "No se ha podido generar la cita de emergencia .", "Error", JOptionPane.WARNING_MESSAGE);
                 }
@@ -637,9 +710,12 @@ public class AgendarCita extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
         }
     }
-    
+
+    /**
+     * Envía a la ventana de menú principal de paciente
+     */
     private void volver() {
-         try {
+        try {
             PrincipalPaciente principalPacienteF = PrincipalPaciente.getInstance();
             principalPacienteF.setAgendarCita(this);
             principalPacienteF.setVisible(true);

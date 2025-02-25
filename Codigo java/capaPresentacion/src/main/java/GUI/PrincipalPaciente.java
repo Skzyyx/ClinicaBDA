@@ -21,21 +21,24 @@ import javax.swing.JOptionPane;
 import sesion.SessionManager;
 
 /**
+ * Frame PrincipalPaciente. Representa la presentación para el menú principal
+ * del paciente.
  *
- * @author j_ama
+ * @author 00000207653 Jesus Octavio Amarillas Amaya
+ * @author 00000252574 Jose Luis Islas Molina
+ * @author 00000253301 Isabel Valenzuela Rocha
  */
 public class PrincipalPaciente extends javax.swing.JFrame {
+
     private PacienteBO pacienteBO = DependencyInjector.crearPacienteBO();
-    
     private static PrincipalPaciente instance;
-    
     private VerPerfilPaciente verPerfilPacienteFrame;
     private InicioDeSesion iniciarSesionFrame;
     private AgendarCita agendarCita;
     private CancelarCita cancelarCita;
     private VerHistorialPaciente historialPacienteFrame;
     private AgendarCitaEmergencia citaEmergenciaFrame;
-    
+
     /**
      * Creates new form InicioDeSesion
      */
@@ -46,7 +49,13 @@ public class PrincipalPaciente extends javax.swing.JFrame {
         setTitle("Paciente - Menú principal");
         mostrarNombrePaciente();
     }
-    
+
+    /**
+     * Obtiene la instancia estática de la clase. Se utiliza para poder cambiar
+     * entre ventanas con una única instancia.
+     *
+     * @return Intancia estática de la clase.
+     */
     public static PrincipalPaciente getInstance() throws NegocioException {
         if (instance == null) {
             instance = new PrincipalPaciente();
@@ -54,55 +63,119 @@ public class PrincipalPaciente extends javax.swing.JFrame {
         return instance;
     }
 
+    /**
+     * Obtiene la ventana de ver perfil de paciente.
+     *
+     * @return Ventana de ver perfil de paciente.
+     */
     public VerPerfilPaciente getVerPerfilPacienteFrame() {
         return verPerfilPacienteFrame;
     }
 
+    /**
+     * Asigna el valor de la ventana de ver perfil de paciente al valor de su
+     * parámetro.
+     *
+     * @param verPerfilPacienteFrame Valor a asignar a la ventana de ver perfil
+     * de paciente.
+     */
     public void setVerPerfilPacienteFrame(VerPerfilPaciente verPerfilPacienteFrame) {
         this.verPerfilPacienteFrame = verPerfilPacienteFrame;
     }
-    
+
+    /**
+     * Obtiene la ventana de agendar cita.
+     *
+     * @return Ventana de agendar cita.
+     */
     public AgendarCita getAgendarCita() {
         return agendarCita;
     }
 
+    /**
+     * Asigna el valor de la ventana de agendar cita al valor de su parámetro.
+     *
+     * @param agendarCita Valor a asignar a la ventana de agendar cita.
+     */
     public void setAgendarCita(AgendarCita agendarCita) {
         this.agendarCita = agendarCita;
     }
 
+    /**
+     * Obtiene la ventana de iniciar sesión.
+     *
+     * @return Ventana de iniciar sesión.
+     */
     public InicioDeSesion getIniciarSesionFrame() {
         return iniciarSesionFrame;
     }
 
+    /**
+     * Asigna el valor de la ventana de iniciar sesion al valor de su parámetro.
+     *
+     * @param iniciarSesionFrame Valor a asignar a la ventana de iniciar sesion.
+     */
     public void setIniciarSesionFrame(InicioDeSesion iniciarSesionFrame) {
         this.iniciarSesionFrame = iniciarSesionFrame;
     }
 
+    /**
+     * Obtiene la ventana de ver historial de paciente.
+     *
+     * @return Ventana de ver historial de paciente.
+     */
     public VerHistorialPaciente getHistorialPacienteFrame() {
         return historialPacienteFrame;
     }
 
+    /**
+     * Asigna el valor de la ventana de ver historial de paciente al valor de su
+     * parámetro.
+     *
+     * @param historialPacienteFrame Valor a asignar a la ventana de ver
+     * historial de paciente.
+     */
     public void setHistorialPacienteFrame(VerHistorialPaciente historialPacienteFrame) {
         this.historialPacienteFrame = historialPacienteFrame;
     }
 
+    /**
+     * Obtiene la ventana de cancelar cita.
+     *
+     * @return Ventana de cancelar cita.
+     */
     public CancelarCita getCancelarCita() {
         return cancelarCita;
     }
 
+    /**
+     * Asigna el valor de la ventana de cancelar cita al valor de su parámetro.
+     *
+     * @param cancelarCita Valor a asignar a la ventana de cancelar cita.
+     */
     public void setCancelarCita(CancelarCita cancelarCita) {
         this.cancelarCita = cancelarCita;
     }
 
+    /**
+     * Obtiene la ventana de cita de emergencia.
+     *
+     * @return Ventana de cita de emergencia.
+     */
     public AgendarCitaEmergencia getCitaEmergenciaFrame() {
         return citaEmergenciaFrame;
     }
 
+    /**
+     * Asigna el valor de la ventana de cita de emergencia al valor de su
+     * parámetro.
+     *
+     * @param citaEmergenciaFrame Valor a asignar a la ventana de cita de
+     * emergencia.
+     */
     public void setCitaEmergenciaFrame(AgendarCitaEmergencia citaEmergenciaFrame) {
         this.citaEmergenciaFrame = citaEmergenciaFrame;
     }
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -414,14 +487,15 @@ public class PrincipalPaciente extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lbNombre;
     // End of variables declaration//GEN-END:variables
-    
+
     /**
      * Muestra el nombre en la credencial de paciente.
+     *
      * @throws NegocioException Si hubo un error al intentar mostrar el nombre.
      */
     private void mostrarNombrePaciente() throws NegocioException {
         PacienteViejoDTO paciente = pacienteBO.obtenerPacientePorEmail(SessionManager.getInstance().getUser());
-        
+
         if (paciente != null) {
             lbNombre.setText(paciente.getNombre() + " " + paciente.getApellidoPaterno());
         } else {
@@ -429,7 +503,7 @@ public class PrincipalPaciente extends javax.swing.JFrame {
             cerrarSesion();
         }
     }
-    
+
     /**
      * Envía a la pestaña de agendar cita
      */
@@ -443,11 +517,11 @@ public class PrincipalPaciente extends javax.swing.JFrame {
             Logger.getLogger(PrincipalPaciente.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     /**
      * Envía a la pestaña de calcelar cita
      */
-    private void cancelarCita()  {
+    private void cancelarCita() {
         try {
             // Obtiene las citas activas del paciente
             List<CitaViejoDTO> citas = pacienteBO.obtenerCitasActivasPaciente(SessionManager.getInstance().getUser());
@@ -455,7 +529,7 @@ public class PrincipalPaciente extends javax.swing.JFrame {
             // Si tiene citas activas
             if (citas.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "No cuentas con citas para cancelar.", "Error", JOptionPane.ERROR_MESSAGE);
-            // Ir a ventana de editar datos
+                // Ir a ventana de editar datos
             } else {
                 CancelarCita cancelarCitaF = CancelarCita.getInstance();
                 cancelarCitaF.setPrincipalPaciente(this);
@@ -466,15 +540,15 @@ public class PrincipalPaciente extends javax.swing.JFrame {
             Logger.getLogger(PrincipalPaciente.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-   
+
     /**
      * Envía a la pestaña de ver historial de consultas
      */
-    private void verHistorial(){
+    private void verHistorial() {
         try {
             // Verificar si tiene o no consultas registradas para mostrar
             boolean noTieneConsultas = pacienteBO.tieneConsultasRegistradas(SessionManager.getInstance().getUser());
-            
+
             // Si tiene consultas
             if (noTieneConsultas) {
                 JOptionPane.showMessageDialog(this, "No cuentas con consultas en tu historial.");
@@ -489,10 +563,11 @@ public class PrincipalPaciente extends javax.swing.JFrame {
             Logger.getLogger(VerHistorialPaciente.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     /**
      * Envía a la pestaña perfil de paciente
-     * @throws NegocioException Si hubo un error
+     *
+     * @throws NegocioException Si hubo un error al cambiar de pestaña.
      */
     private void verPerfil() {
         try {
@@ -504,7 +579,7 @@ public class PrincipalPaciente extends javax.swing.JFrame {
             Logger.getLogger(VerHistorialPaciente.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     /**
      * Cierra la sesión del usuario y la aplicación.
      */
