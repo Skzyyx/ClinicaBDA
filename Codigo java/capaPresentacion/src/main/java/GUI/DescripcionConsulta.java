@@ -44,6 +44,7 @@ public class DescripcionConsulta extends javax.swing.JFrame {
      * Creates new form DescripcionConsulta
      */
     public DescripcionConsulta() {
+        setLocationRelativeTo(null);
         initComponents();
     }
 
@@ -497,6 +498,10 @@ public class DescripcionConsulta extends javax.swing.JFrame {
         if (resultado == JOptionPane.YES_OPTION) {
 
             try {
+                ConsultaViejoDTO consultaViejo = this.consulta;
+                consultaViejo.setDiagnostico(diagnostico.getText());
+                consultaViejo.setTratamiento(tratamiento.getText());
+                consultaViejo.setNotas(notas.getText());
                 consultaBO.editarDatosConsulta(this.consulta);
                 JOptionPane.showMessageDialog(this, "Datos de la consulta actualizados.");
             } catch (NegocioException ex) {

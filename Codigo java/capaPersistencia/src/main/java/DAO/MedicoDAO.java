@@ -332,22 +332,22 @@ public class MedicoDAO implements IMedicoDAO {
                 while (rs.next()) {
                     
                     paciente = new Paciente(
-                            rs.getInt("idPaciente"),
-                            rs.getString("nombre"), 
-                            rs.getString("apellidoPaterno"),
-                            rs.getString("apellidoMaterno"),
-                            rs.getDate("fechaNacimiento").toLocalDate(), 
-                            rs.getString("email"), 
-                            rs.getString("telefono"),
+                            rs.getInt("p.idPaciente"),
+                            rs.getString("p.nombre"), 
+                            rs.getString("p.apellidoPaterno"),
+                            rs.getString("p.apellidoMaterno"),
+                            rs.getDate("p.fechaNacimiento").toLocalDate(), 
+                            rs.getString("p.email"), 
+                            rs.getString("p.telefono"),
                             null,
                             null);
                     
                     citas.add(new Cita(
-                            rs.getInt("idCita"), 
-                            rs.getTimestamp("fechaHoraInicio").toLocalDateTime(),
-                            rs.getString("estado"),
-                            rs.getString("folio"),
-                            rs.getString("tipo"),
+                            rs.getInt("c.idCita"), 
+                            rs.getTimestamp("c.fechaHoraInicio").toLocalDateTime(),
+                            rs.getString("c.estado"),
+                            rs.getString("c.folio"),
+                            rs.getString("c.tipo"),
                             paciente, 
                             medico));
                 }
