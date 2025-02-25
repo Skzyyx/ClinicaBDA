@@ -8,32 +8,18 @@ import BO.CitaBO;
 import BO.ConsultaBO;
 import BO.MedicoBO;
 import BO.PacienteBO;
-import DTO.CitaNuevoDTO;
 import DTO.CitaViejoDTO;
 import DTO.ConsultaViejoDTO;
-import DTO.HorarioViejoDTO;
-import DTO.MedicoNuevoDTO;
 import DTO.MedicoViejoDTO;
-import DTO.PacienteNuevoDTO;
-import DTO.PacienteViejoDTO;
 import Exception.NegocioException;
-import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
-import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import configuracion.DependencyInjector;
-import excepciones.PersistenciaException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.sql.Timestamp;
-import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComponent;
@@ -400,13 +386,9 @@ public class VerAgenda extends javax.swing.JFrame {
                 LocalDateTime ahora = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
                 LocalDateTime fechaInicioMas30 = fechaInicio.plusMinutes(30);
 
-                System.out.println(jTable1.getValueAt(filaSeleccionada, 0));
                 String idCita = jTable1.getValueAt(filaSeleccionada, 0).toString();
                 String estadoConsulta = jTable1.getValueAt(filaSeleccionada, 1).toString();
-                
-                System.out.println(estadoConsulta);
-                System.out.println(ahora.isAfter(fechaInicio));
-                System.out.println(ahora.isBefore(fechaInicioMas30));
+
                 if (ahora.isAfter(fechaInicio) && ahora.isBefore(fechaInicioMas30) && estadoConsulta.equalsIgnoreCase("PENDIENTE")) {
                     // La fechaInicio está entre ahora y ahora + 30 minutos.
                     jButton2.setEnabled(true);
