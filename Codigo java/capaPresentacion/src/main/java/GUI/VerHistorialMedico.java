@@ -324,7 +324,10 @@ public class VerHistorialMedico extends javax.swing.JFrame {
             
             // Recorrer la lista de activistas y agregarlos como filas en la tabla
             for (ConsultaViejoDTO consulta : consultas) {
-                String apellidoMaterno = Objects.requireNonNullElse(consulta.getCita().getPaciente().getApellidoMaterno(), "");
+                String apellidoMaterno = consulta.getCita().getPaciente().getApellidoMaterno();
+                if (apellidoMaterno == null) {
+                    apellidoMaterno = "";
+                }
                 
                 String nombreCompleto = consulta.getCita().getPaciente().getNombre() + " " + consulta.getCita().getPaciente().getApellidoPaterno() + " " + apellidoMaterno;
                 // Si el filtro es "Ninguno" (mostrar todos) o la especialidad coincide, agregar al modelo
