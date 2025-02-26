@@ -12,27 +12,41 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Clase ConexionDB.
- * Crear y maneja la conexión con la base de datos
- * 
- * @author 00000207653 Jesus Octavio Amarillas Amaya 
- * @author 00000252574 Jose Luis Islas Molina 
- * @author 00000253301 Isabel Valenzuela Rocha 
+ * Clase ConexionDB. Crear y maneja la conexión con la base de datos
+ *
+ * @author 00000207653 Jesus Octavio Amarillas Amaya
+ * @author 00000252574 Jose Luis Islas Molina
+ * @author 00000253301 Isabel Valenzuela Rocha
  */
 public class ConexionDB implements IConexion {
-    
-    /** URL de conexión a la base de datos MySQL. */
-    final String URL = "jdbc:mysql://localhost:3306/clinicabda";
-    
-    /** Usuario para la autenticación en la base de datos. */
-    final String USER = "root";
-    
-    /** Contraseña para la autenticación en la base de datos. */
-    final String PASS = "itson";
-    
+
     /**
-     * Método crearConexion().
-     * Crea la conexión con la base de datos.
+     * URL de conexión a la base de datos MySQL.
+     */
+    final String URL = "jdbc:mysql://localhost:3306/clinicabda";
+
+    /**
+     * Usuario para la autenticación en la base de datos.
+     */
+    final String USER = "root";
+
+    /**
+     * Contraseña para la autenticación en la base de datos.
+     */
+    final String PASS = "itson";
+
+    /**
+     * Constructor por defecto de la clase ConexionDB. Este constructor se usa
+     * para inicializar una instancia de la clase sin requerir parámetros
+     * adicionales.
+     */
+    public ConexionDB() {
+        // Este constructor está implícitamente vacío
+    }
+
+    /**
+     * Método crearConexion(). Crea la conexión con la base de datos.
+     *
      * @return objeto Connection con la conexion creada.
      * @throws PersistenciaException si no se creó la conexión.
      */
@@ -41,12 +55,12 @@ public class ConexionDB implements IConexion {
         try {
             //Crea la conexión con la base de datos
             Connection conexion = DriverManager.getConnection(URL, USER, PASS);
-            
+
             return conexion;
         } catch (SQLException ex) {
             Logger.getLogger(ConexionDB.class.getName()).log(Level.SEVERE, null, ex);
             //Si ocurrió un error en el proceso
             throw new PersistenciaException("Error al conectarse a la base de datos.");
         }
-    } 
+    }
 }

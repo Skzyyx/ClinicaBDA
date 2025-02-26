@@ -31,7 +31,7 @@ public interface ICitaDAO {
     /**
      * Registra una cita de emergencia en la base de datos.
      *
-     * @param cita
+     * @param cita instancia de la cita.
      * @return true si la cita se registra exitosamente, false en caso
      * contrario.
      * @throws PersistenciaException Si ocurre un error durante la operación.

@@ -19,6 +19,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * Clase que implementa la interfaz IConsultaDAO para gestionar las consultas
+ * médicas en la base de datos. Proporciona métodos para obtener el estado de
+ * una consulta, recuperar información detallada de una consulta a partir del
+ * identificador de la cita y actualizar los datos de una consulta existente.
+ *
+ * Esta clase interactúa con la base de datos mediante procedimientos
+ * almacenados y consultas preparadas para garantizar eficiencia y seguridad en
+ * la manipulación de datos.
  *
  * @author 00000207653 Jesus Octavio Amarillas Amaya
  * @author 00000252574 Jose Luis Islas Molina

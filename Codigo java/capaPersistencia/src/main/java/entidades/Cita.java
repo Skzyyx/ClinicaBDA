@@ -79,6 +79,17 @@ public class Cita {
         this.medico = medico;
     }
 
+    /**
+     * Constructor de la clase.
+     * Establece todos los atributos de la clase excepto el paciente.
+     * 
+     * @param idCita id de la cita
+     * @param fechaHoraInicio Fecha y hora de la cita
+     * @param estado Estado de la cita
+     * @param folio Folio de la cita
+     * @param tipo Tipo de la cita
+     * @param medico Médico que atenderá la cita
+     */
     public Cita(int idCita, LocalDateTime fechaHoraInicio, String estado, String folio, String tipo, Medico medico) {
         this.idCita = idCita;
         this.fechaHoraInicio = fechaHoraInicio;

@@ -32,6 +32,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * Clase para realizar pruebas de persistencia en la base de datos.
+ * Contiene métodos de prueba para la gestión de pacientes, citas y usuarios.
+ * 
  * @author 00000207653 Jesus Octavio Amarillas Amaya 
  * @author 00000252574 Jose Luis Islas Molina 
  * @author 00000253301 Isabel Valenzuela Rocha 

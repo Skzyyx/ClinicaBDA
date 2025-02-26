@@ -90,6 +90,17 @@ public class Paciente {
         this.direccion = direccion;
     }
 
+    /**
+     * Contructor de la clase.
+     * Establece los atributos de la clase al valor de sus parámetros, excepto idPaciente.
+     * @param idPaciente id del paciente
+     * @param nombre nombre del paciente
+     * @param apellidoPaterno apellido paterno del paciente
+     * @param apellidoMaterno apellido materno del paciente
+     * @param fechaNacimiento fecha de nacimiento del paciente
+     * @param email correo electrónico del paciente
+     * @param telefono teléfono del paciente
+     */
     public Paciente(int idPaciente, String nombre, String apellidoPaterno, String apellidoMaterno, LocalDate fechaNacimiento, String email, String telefono) {
         this.idPaciente = idPaciente;
         this.nombre = nombre;

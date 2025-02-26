@@ -19,9 +19,9 @@ public interface IUsuarioDAO {
     
     /**
      * Consulta al Usuario en la Base de Datos
-     * @param usuario
-     * @return
-     * @throws PersistenciaException 
+     * @param usuario usuario del perfil
+     * @return el usuario consultado
+     * @throws PersistenciaException si ocurre un error en el camino
      */
     public Usuario consultarUsuario (String usuario) throws PersistenciaException;
     
