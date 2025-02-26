@@ -435,6 +435,7 @@ public class PacienteDAO implements IPacienteDAO {
                             paciente,
                             medico
                     );
+                    System.out.println(cita);
 
                     Consulta consulta = new Consulta(
                             rs.getInt(1),

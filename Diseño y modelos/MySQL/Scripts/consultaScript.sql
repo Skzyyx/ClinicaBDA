@@ -24,13 +24,13 @@ BEGIN
 	SELECT 
 		idConsulta,
         estadoConsulta,
-        IFNULL("N/A", diagnostico) AS diagnostico,
-        IFNULL("N/A", tratamiento) AS tratamiento,
-        IFNULL("N/A", notas) AS notas,
+        IFNULL(diagnostico, "N/A") AS diagnostico,
+        IFNULL(tratamiento, "N/A") AS tratamiento,
+        IFNULL(notas, "N/A") AS notas,
         idCita,
         fechaHoraInicio,
         estadoCita,
-        IFNULL("Sin folio", folio) AS folio,
+        IFNULL(folio, "Sin folio") AS folio,
         tipo,
         idPaciente,
 		idMedico,
@@ -67,6 +67,7 @@ INNER JOIN medicos AS m
 	ON c.idMedico = m.idMedico;
 
 -- Función obtenerEstadoConsulta
+-- Obtiene el estado de una consulta específica
 DELIMITER $$
 CREATE FUNCTION obtenerEstadoConsulta(id_cita INT)
 RETURNS VARCHAR(50)
@@ -85,6 +86,8 @@ WHERE
 END$$
 DELIMITER ;
 
+-- Procedimiento almacenado obtenerConsultaPorIdCita
+-- Obtiene la consulta relacionada a una cita específica
 DELIMITER $$
 CREATE PROCEDURE obtenerConsultaPorIdCita(
 IN id_cita INT
@@ -96,6 +99,9 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- Evento actualizarConsultasNoAsistidas
+-- Cambia el estado de la cita y su consulta relacionada si ya se pasó el tiempo de tolerancia establecido
+-- Se ejecuta cada minuto
 DELIMITER $$
 CREATE EVENT IF NOT EXISTS actualizarConsultasNoAsistidas
 ON SCHEDULE EVERY 1 MINUTE -- Se ejecuta cada minuto
@@ -129,6 +135,8 @@ BEGIN
 END $$
 DELIMITER ;
 
+-- Procedimiento almacenado editarDatosConsulta
+-- Edita los datos de una consulta (descripciones) y cambia su estado y el de su cita relacionada.
 DELIMITER $$
 CREATE PROCEDURE editarDatosConsulta(
 	IN id_consulta INT,

@@ -20,30 +20,59 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
 /**
+ * Frame RegistrarPaciente. Representa la presentación para el formulario de
+ * registro de paciente en la aplicación.
  *
- * @author j_ama
+ * @author 00000207653 Jesus Octavio Amarillas Amaya
+ * @author 00000252574 Jose Luis Islas Molina
+ * @author 00000253301 Isabel Valenzuela Rocha
  */
 public class RegistrarPacienteForm extends javax.swing.JFrame {
-    
+
     private PacienteBO pacienteBO = DependencyInjector.crearPacienteBO();
-
     private static RegistrarPacienteForm instance; // Instancia única
-
     private InicioDeSesion inicioSesionFrame;
 
-    // Constructor privado para evitar instanciación directa
+    /**
+     * Constructor privado para evitar instanciación directa.
+     */
     private RegistrarPacienteForm() {
         initComponents();
         this.setTitle("Registrarse como paciente");
         this.setSize(860, 510);
     }
 
-    // Método estático para obtener la instancia única
+    /**
+     * Obtiene la instancia estática de la clase. Se utiliza para poder cambiar
+     * entre ventanas con una única instancia.
+     *
+     * @return Intancia estática de la clase.
+     */
     public static RegistrarPacienteForm getInstance() {
         if (instance == null) {
             instance = new RegistrarPacienteForm();
         }
         return instance;
+    }
+
+    /**
+     * Obtiene la ventana de inicio de sesión.
+     *
+     * @return Ventana de inicio de sesión.
+     */
+    public InicioDeSesion getInicioSesionFrame() {
+        return inicioSesionFrame;
+    }
+
+    /**
+     * Asigna el valor de la ventana de inicio de sesión al valor de su
+     * parámetro.
+     *
+     * @param inicioSesionFrame Valor a asignar a la ventana de inicio de
+     * sesión.
+     */
+    public void setInicioSesionFrame(InicioDeSesion inicioSesionFrame) {
+        this.inicioSesionFrame = inicioSesionFrame;
     }
 
     /**
@@ -449,21 +478,16 @@ public class RegistrarPacienteForm extends javax.swing.JFrame {
     private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
 
-    public InicioDeSesion getInicioSesionFrame() {
-        return inicioSesionFrame;
-    }
-
-    public void setInicioSesionFrame(InicioDeSesion inicioSesionFrame) {
-        this.inicioSesionFrame = inicioSesionFrame;
-    }
-
+    /**
+     * Registra un nuevo paciente.
+     */
     private void registrarPaciente() {
         try {
             if (!txtContrasenia.getText().equals(txtConfirmarContrasenia.getText())) {
                 JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden");
                 return;
             }
-            
+
             PacienteNuevoDTO pacienteNuevo = new PacienteNuevoDTO();
             pacienteNuevo.setNombre(txtNombreCompleto.getText());
             pacienteNuevo.setApellidoPaterno(txtApellidoP.getText());
@@ -472,18 +496,18 @@ public class RegistrarPacienteForm extends javax.swing.JFrame {
             pacienteNuevo.setFechaNacimiento(this.txtFechaNacimiento.getDate());
             pacienteNuevo.setTelefono(txtTelefono.getText());
             pacienteNuevo.setDireccion(new DireccionNuevoDTO(
-                    txtCalle.getText(), 
-                    txtNumero.getText(), 
-                    txtColonia.getText(), 
+                    txtCalle.getText(),
+                    txtNumero.getText(),
+                    txtColonia.getText(),
                     txtCodigoPostal.getText())
             );
             pacienteNuevo.setUsuario(new UsuarioNuevoDTO(
-                    txtEmail.getText(), 
+                    txtEmail.getText(),
                     txtConfirmarContrasenia.getText(), "PACIENTE"));
 
             int confirmacion = JOptionPane.showConfirmDialog(this, "¿Estas seguro que deseas registrarte?", "Mensaje de confirmación",
                     JOptionPane.YES_NO_OPTION);
-            
+
             if (confirmacion == JOptionPane.YES_OPTION) {
                 try {
                     boolean resultado = this.pacienteBO.registrarPaciente(pacienteNuevo);
@@ -502,8 +526,6 @@ public class RegistrarPacienteForm extends javax.swing.JFrame {
         } catch (PersistenciaException ex) {
             Logger.getLogger(RegistrarPacienteForm.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, "Ocurrió un error inesperado. Intenta de nuevo.");
-        } 
+        }
     }
-    
-    
 }

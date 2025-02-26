@@ -27,20 +27,24 @@ import javax.swing.table.DefaultTableModel;
 import sesion.SessionManager;
 
 /**
+ * Frame VerHistorialPaciente. Representa la presentación para ver el historial
+ * de consultas del paciente.
  *
- * @author skyro
+ * @author 00000207653 Jesus Octavio Amarillas Amaya
+ * @author 00000252574 Jose Luis Islas Molina
+ * @author 00000253301 Isabel Valenzuela Rocha
  */
 public class VerHistorialPaciente extends javax.swing.JFrame {
+
     private final PacienteBO pacienteBO = DependencyInjector.crearPacienteBO();
     private static VerHistorialPaciente instance;
-
     private MedicoBO medicoBO = DependencyInjector.crearMedicoBO();
     private CitaBO citaBO = DependencyInjector.crearCitaBO();
     private ConsultaBO consultaBO = DependencyInjector.crearConsultaBO();
     // Formateador de fecha
     private DateTimeFormatter formatoFecha;
-    
     private PrincipalPaciente principalPacienteFrame;
+
     /**
      * Creates new form RegistrarCita
      */
@@ -55,21 +59,39 @@ public class VerHistorialPaciente extends javax.swing.JFrame {
         cargarHistorial();
     }
 
-    public static VerHistorialPaciente getInstance() throws NegocioException {
+    /**
+     * Obtiene la instancia estática de la clase. Se utiliza para poder cambiar
+     * entre ventanas con una única instancia.
+     *
+     * @return Intancia estática de la clase.
+     */
+    public static VerHistorialPaciente getInstance() {
         if (instance == null) {
             instance = new VerHistorialPaciente();
         }
         return instance;
     }
 
+    /**
+     * Obtiene la ventana de menú principal del paciente.
+     *
+     * @return Ventana de menú principal del paciente.
+     */
     public PrincipalPaciente getPrincipalPacienteFrame() {
         return principalPacienteFrame;
     }
 
+    /**
+     * Asigna el valor de la ventana de menú principal del paciente al valor de
+     * su parámetro.
+     *
+     * @param principalPacienteFrame Valor a asignar a la ventana de menú
+     * principal del paciente.
+     */
     public void setPrincipalPacienteFrame(PrincipalPaciente principalPacienteFrame) {
         this.principalPacienteFrame = principalPacienteFrame;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -315,13 +337,16 @@ public class VerHistorialPaciente extends javax.swing.JFrame {
     private javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Carga las especialidades en el choice
+     */
     private void cargarEspecialidades() {
         try {
             // Obtener la lista de activistas desde la capa de negocio (BO)
             List<ConsultaViejoDTO> consultas = pacienteBO.obtenerConsultasPaciente(SessionManager.getInstance().getUser());
             // Filtra las especialidades
             List<String> especialidades = consultaBO.especialidadesConsultas(consultas);
-            
+
             for (String especialidad : especialidades) {
                 chEspecialidad.addItem(especialidad);
             }
@@ -331,6 +356,9 @@ public class VerHistorialPaciente extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Carga el historial de consultas.
+     */
     public void cargarHistorial() {
         // Obtener el modelo de la tabla y limpiar cualquier dato previo
         DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
@@ -339,9 +367,9 @@ public class VerHistorialPaciente extends javax.swing.JFrame {
         try {
             // Obtener la lista de activistas desde la capa de negocio (BO)
             List<ConsultaViejoDTO> consultas = pacienteBO.obtenerConsultasPaciente(SessionManager.getInstance().getUser());
-            
+
             String filtro = chEspecialidad.getSelectedItem(); // Obtiene la especialidad seleccionada
-            
+
             // Recorrer la lista de activistas y agregarlos como filas en la tabla
             for (ConsultaViejoDTO consulta : consultas) {
                 // Si el filtro es "Ninguno" (mostrar todos) o la especialidad coincide, agregar al modelo
@@ -364,7 +392,10 @@ public class VerHistorialPaciente extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error al cargar consulta: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
+    /**
+     * Carga los listeners de los componentes.
+     */
     private void cargarListener() {
         DateChangeListener listenerPeriodo = new DateChangeListener() {
             @Override

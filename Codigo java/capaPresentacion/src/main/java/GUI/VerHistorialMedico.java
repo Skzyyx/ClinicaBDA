@@ -27,21 +27,24 @@ import javax.swing.table.DefaultTableModel;
 import sesion.SessionManager;
 
 /**
+ * Frame VerHistorialMedico. Representa la presentación para ver el historial de
+ * consultas realizadas por el médico.
  *
- * @author skyro
+ * @author 00000207653 Jesus Octavio Amarillas Amaya
+ * @author 00000252574 Jose Luis Islas Molina
+ * @author 00000253301 Isabel Valenzuela Rocha
  */
 public class VerHistorialMedico extends javax.swing.JFrame {
+
     private final PacienteBO pacienteBO = DependencyInjector.crearPacienteBO();
     private static VerHistorialMedico instance;
-
     private MedicoBO medicoBO = DependencyInjector.crearMedicoBO();
     private CitaBO citaBO = DependencyInjector.crearCitaBO();
     private ConsultaBO consultaBO = DependencyInjector.crearConsultaBO();
     // Formateador de fecha
     DateTimeFormatter formatoFecha;
-    
     private PrincipalMedico principalMedicoFrame;
-    
+
     /**
      * Creates new form RegistrarCita
      */
@@ -55,6 +58,12 @@ public class VerHistorialMedico extends javax.swing.JFrame {
         cargarHistorial();
     }
 
+    /**
+     * Obtiene la instancia estática de la clase. Se utiliza para poder cambiar
+     * entre ventanas con una única instancia.
+     *
+     * @return Intancia estática de la clase.
+     */
     public static VerHistorialMedico getInstance() throws NegocioException {
         if (instance == null) {
             instance = new VerHistorialMedico();
@@ -62,10 +71,22 @@ public class VerHistorialMedico extends javax.swing.JFrame {
         return instance;
     }
 
+    /**
+     * Obtiene la ventana de menú principal del médico.
+     *
+     * @return Ventana de menú principal del médico.
+     */
     public PrincipalMedico getPrincipalMedicoFrame() {
         return principalMedicoFrame;
     }
 
+    /**
+     * Asigna el valor de la ventana de menú principal del médico al valor de su
+     * parámetro.
+     *
+     * @param principalMedicoFrame Valor a asignar a la ventana de menú principal del
+     * médico.
+     */
     public void setPrincipalMedicoFrame(PrincipalMedico principalMedicoFrame) {
         this.principalMedicoFrame = principalMedicoFrame;
     }
@@ -291,15 +312,18 @@ public class VerHistorialMedico extends javax.swing.JFrame {
     private javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Carga los nombres de los pacientes en el choice.
+     */
     public void cargarNombres() {
         try {
             // Obtener la lista de activistas desde la capa de negocio (BO)
             List<ConsultaViejoDTO> consultas = medicoBO.obtenerConsultasPorMedico(SessionManager.getInstance().getUser());
             // Filtra los nombres
             List<String> nombres = consultaBO.nombresPacientesConsultas(consultas);
-            
+
             for (String nombre : nombres) {
-                
+
                 chNombre.addItem(nombre);
             }
         } catch (NegocioException ex) {
@@ -309,6 +333,9 @@ public class VerHistorialMedico extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Carga el historial de consultas.
+     */
     public void cargarHistorial() {
         // Obtener el modelo de la tabla y limpiar cualquier dato previo
         DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
@@ -317,16 +344,16 @@ public class VerHistorialMedico extends javax.swing.JFrame {
         try {
             // Obtener la lista de activistas desde la capa de negocio (BO)
             List<ConsultaViejoDTO> consultas = medicoBO.obtenerConsultasPorMedico(SessionManager.getInstance().getUser());
-            
+
             String filtro = chNombre.getSelectedItem(); // Obtiene el nombre seleccionado
-            
+
             // Recorrer la lista de activistas y agregarlos como filas en la tabla
             for (ConsultaViejoDTO consulta : consultas) {
                 String apellidoMaterno = consulta.getCita().getPaciente().getApellidoMaterno();
                 if (apellidoMaterno == null) {
                     apellidoMaterno = "";
                 }
-                
+
                 String nombreCompleto = consulta.getCita().getPaciente().getNombre() + " " + consulta.getCita().getPaciente().getApellidoPaterno() + " " + apellidoMaterno;
                 // Si el filtro es "Ninguno" (mostrar todos) o la especialidad coincide, agregar al modelo
                 if ("Ninguno".equals(filtro) || nombreCompleto.equals(filtro)) {
@@ -346,7 +373,10 @@ public class VerHistorialMedico extends javax.swing.JFrame {
             volver();
         }
     }
-    
+
+    /**
+     * Carga los listeners de los componentes.
+     */
     private void cargarListener() {
         DateChangeListener listenerFecha = new DateChangeListener() {
             @Override
@@ -407,7 +437,7 @@ public class VerHistorialMedico extends javax.swing.JFrame {
 
         dpFecha.addDateChangeListener(listenerFecha);
     }
-    
+
     /**
      * Envía al menú principal de medico
      */

@@ -50,7 +50,7 @@ public class PruebasPersistencia {
         //pruebaVerPerfilPaciente();
         //pruebaConsultarPacientePorEmail();
         //pruebaConsultarUsuario();
-        pruebaPrimerMedicoDisponible();
+        //pruebaPrimerMedicoDisponible();
     }
     
     /**
