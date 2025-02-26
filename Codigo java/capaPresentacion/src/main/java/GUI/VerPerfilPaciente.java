@@ -22,15 +22,20 @@ import javax.swing.JOptionPane;
 import sesion.SessionManager;
 
 /**
+ * Frame VerPerfilPaciente. Representa la presentación para ver el perfil de un
+ * paciente.
  *
- * @author j_ama
+ * @author 00000207653 Jesus Octavio Amarillas Amaya
+ * @author 00000252574 Jose Luis Islas Molina
+ * @author 00000253301 Isabel Valenzuela Rocha
  */
 public class VerPerfilPaciente extends javax.swing.JFrame {
+
     private PacienteBO pacienteBO = DependencyInjector.crearPacienteBO();
     private static VerPerfilPaciente instance;
     private PrincipalPaciente principalPacienteFrame;
     private EditarDatosPaciente editarDatosFrame;
-    
+
     /**
      * Creates new form InicioDeSesion
      */
@@ -41,26 +46,56 @@ public class VerPerfilPaciente extends javax.swing.JFrame {
         setTitle("Paciente - Ver perfil");
         mostrarPerfil();
     }
-    
+
+    /**
+     * Obtiene la instancia estática de la clase. Se utiliza para poder cambiar
+     * entre ventanas con una única instancia.
+     *
+     * @return Intancia estática de la clase.
+     */
     public static VerPerfilPaciente getInstance() throws NegocioException {
-         if (instance == null) {
+        if (instance == null) {
             instance = new VerPerfilPaciente();
         }
         return instance;
     }
 
+    /**
+     * Obtiene la ventana de menú principal del paciente..
+     *
+     * @return Ventana de menú principal del paciente..
+     */
     public PrincipalPaciente getPrincipalPacienteFrame() {
         return principalPacienteFrame;
     }
 
+    /**
+     * Asigna el valor de la ventana de menú principal del paciente al valor de
+     * su parámetro.
+     *
+     * @param principalPacienteFrame Valor a asignar a la ventana de menú
+     * principal del paciente.
+     */
     public void setPrincipalPacienteFrame(PrincipalPaciente principalPacienteFrame) {
         this.principalPacienteFrame = principalPacienteFrame;
     }
 
+    /**
+     * Obtiene la ventana de editar datos del paciente..
+     *
+     * @return Ventana de menú principal del paciente..
+     */
     public EditarDatosPaciente getEditarDatosFrame() {
         return editarDatosFrame;
     }
 
+    /**
+     * Asigna el valor de la ventana de editar datos del paciente al valor de su
+     * parámetro.
+     *
+     * @param editarDatosFrame Valor a asignar a la ventana de editar datos del
+     * paciente.
+     */
     public void setEditarDatosFrame(EditarDatosPaciente editarDatosFrame) {
         this.editarDatosFrame = editarDatosFrame;
     }
@@ -376,7 +411,7 @@ public class VerPerfilPaciente extends javax.swing.JFrame {
     private javax.swing.JLabel lbPerfil;
     private javax.swing.JLabel lbTelefono;
     // End of variables declaration//GEN-END:variables
-    
+
     /**
      * Obtiene los datos de perfil del paciente y los muestra.
      */
@@ -384,12 +419,11 @@ public class VerPerfilPaciente extends javax.swing.JFrame {
         try {
             // Intenta obtener el perfil
             PerfilViejoDTO perfil = pacienteBO.obtenerPerfilPaciente(SessionManager.getInstance().getUser());
-            
+
             // Si no se encontró perfil
             if (perfil == null) {
                 JOptionPane.showMessageDialog(this, "Ocurrió un error al mostrar perfil.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-            // Si se encontró perfil
+            } // Si se encontró perfil
             else {
                 // Mostrar los datos 
                 lbPerfil.setText(perfil.getNombre());
@@ -404,19 +438,20 @@ public class VerPerfilPaciente extends javax.swing.JFrame {
             Logger.getLogger(VerPerfilPaciente.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     /**
      * Envía a pestaña de editar datos
+     *
      * @throws NegocioException Si hubo un error al cambiar de pestaña.
      */
     private void editarDatos() throws NegocioException {
         // Obtiene las citas activas del paciente
         List<CitaViejoDTO> citas = pacienteBO.obtenerCitasActivasPaciente(SessionManager.getInstance().getUser());
-        
+
         // Si tiene citas activas
         if (!citas.isEmpty()) {
             JOptionPane.showMessageDialog(this, "No es posible editar datos si cuentas con citas activas.", "Error", JOptionPane.ERROR_MESSAGE);
-        // Ir a ventana de editar datos
+            // Ir a ventana de editar datos
         } else {
             EditarDatosPaciente editarDatosPaciente = EditarDatosPaciente.getInstance();
             editarDatosPaciente.setVerPerfilPacienteFrame(this);
@@ -424,9 +459,10 @@ public class VerPerfilPaciente extends javax.swing.JFrame {
             this.setVisible(false);
         }
     }
-    
+
     /**
      * Envía a pestaña de menú principal de paciente
+     *
      * @throws NegocioException Si hubo un error al cambiar de pestaña.
      */
     private void volver() throws NegocioException {

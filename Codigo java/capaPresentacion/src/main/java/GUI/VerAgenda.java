@@ -28,18 +28,19 @@ import javax.swing.table.DefaultTableModel;
 import sesion.SessionManager;
 
 /**
+ * Frame VerAgenda. Representa la presentación para la agenda del médico.
  *
- * @author skyro
+ * @author 00000207653 Jesus Octavio Amarillas Amaya
+ * @author 00000252574 Jose Luis Islas Molina
+ * @author 00000253301 Isabel Valenzuela Rocha
  */
 public class VerAgenda extends javax.swing.JFrame {
 
     private static VerAgenda instance;
-
     private MedicoBO medicoBO = DependencyInjector.crearMedicoBO();
     private CitaBO citaBO = DependencyInjector.crearCitaBO();
     private PacienteBO pacienteBO = DependencyInjector.crearPacienteBO();
     private ConsultaBO consultaBO = DependencyInjector.crearConsultaBO();
-
     private PrincipalMedico principalMedico;
     private DescripcionConsulta descripcionConsulta;
 
@@ -49,10 +50,17 @@ public class VerAgenda extends javax.swing.JFrame {
     public VerAgenda() {
         initComponents();
         setLocationRelativeTo(null);
+        setTitle("Médico - Ver mi agenda");
         cargarListeners();
         cargarCitas();
     }
 
+    /**
+     * Obtiene la instancia estática de la clase. Se utiliza para poder cambiar
+     * entre ventanas con una única instancia.
+     *
+     * @return Intancia estática de la clase.
+     */
     public static VerAgenda getInstance() {
         if (instance == null) {
             instance = new VerAgenda();
@@ -60,22 +68,46 @@ public class VerAgenda extends javax.swing.JFrame {
         return instance;
     }
 
+    /**
+     * Obtiene la ventana de descripción de consulta.
+     *
+     * @return Ventana de descripción de consulta.
+     */
     public DescripcionConsulta getDescripcionConsulta() {
         return descripcionConsulta;
     }
 
+    /**
+     * Asigna el valor de la ventana de descripción de consulta al valor de su
+     * parámetro.
+     *
+     * @param descripcionConsulta Valor a asignar a la ventana de descripción de
+     * consulta.
+     */
     public void setDescripcionConsulta(DescripcionConsulta descripcionConsulta) {
         this.descripcionConsulta = descripcionConsulta;
     }
 
+    /**
+     * Obtiene la ventana de menú principal del médico.
+     *
+     * @return Ventana de menú principal del médico.
+     */
     public PrincipalMedico getPrincipalMedico() {
         return principalMedico;
     }
 
+    /**
+     * Asigna el valor de la ventana de menú principal del médico al valor de su
+     * parámetro.
+     *
+     * @param principalMedico Valor a asignar a la ventana de menú principal del
+     * médico.
+     */
     public void setPrincipalMedico(PrincipalMedico principalMedico) {
         this.principalMedico = principalMedico;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -264,18 +296,16 @@ public class VerAgenda extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if (jTable1.getSelectedRow() == -1) {
-                JOptionPane.showMessageDialog(this, "Debes seleccionar una cita.", "Error", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-        
-        try {    
+            JOptionPane.showMessageDialog(this, "Debes seleccionar una cita.", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        try {
             String idCita = String.valueOf(jTable1.getValueAt(jTable1.getSelectedRow(), 0));
-            
-            boolean citaIniciada;
+
             ConsultaViejoDTO consulta = consultaBO.obtenerConsultaPorIdCita(idCita);
 
             DescripcionConsulta descripcionConsulta = DescripcionConsulta.getInstance();
-            
             descripcionConsulta.setConsulta(consulta);
             descripcionConsulta.llenarCampos();
             descripcionConsulta.setVerAgenda(this);
@@ -284,7 +314,6 @@ public class VerAgenda extends javax.swing.JFrame {
         } catch (NegocioException ex) {
             Logger.getLogger(VerAgenda.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -340,6 +369,9 @@ public class VerAgenda extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Carga las citas activas del médico.
+     */
     public void cargarCitas() {
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
         modelo.setRowCount(0);
@@ -364,6 +396,9 @@ public class VerAgenda extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Carga los listeners a los componentes.
+     */
     private void cargarListeners() {
         jTable1.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {

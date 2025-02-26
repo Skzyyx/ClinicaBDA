@@ -24,13 +24,13 @@ BEGIN
 	SELECT 
 		idConsulta,
         estadoConsulta,
-        IFNULL("N/A", diagnostico) AS diagnostico,
-        IFNULL("N/A", tratamiento) AS tratamiento,
-        IFNULL("N/A", notas) AS notas,
+        IFNULL(diagnostico, "N/A") AS diagnostico,
+        IFNULL(tratamiento, "N/A") AS tratamiento,
+        IFNULL(notas, "N/A") AS notas,
         idCita,
         fechaHoraInicio,
         estadoCita,
-        IFNULL("Sin folio", folio) AS folio,
+        IFNULL(folio, "Sin folio") AS folio,
         tipo,
         idPaciente,
 		idMedico,
@@ -66,6 +66,7 @@ LEFT JOIN citas AS c
 INNER JOIN medicos AS m
 	ON c.idMedico = m.idMedico;
 
+SELECT * FROM consultasCitas;
 -- Función obtenerEstadoConsulta
 DELIMITER $$
 CREATE FUNCTION obtenerEstadoConsulta(id_cita INT)

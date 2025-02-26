@@ -19,14 +19,19 @@ import javax.swing.JOptionPane;
 import sesion.SessionManager;
 
 /**
+ * Frame VerPerfilMedico. Representa la presentación para ver el perfil de un
+ * médico.
  *
- * @author j_ama
+ * @author 00000207653 Jesus Octavio Amarillas Amaya
+ * @author 00000252574 Jose Luis Islas Molina
+ * @author 00000253301 Isabel Valenzuela Rocha
  */
 public class VerPerfilMedico extends javax.swing.JFrame {
+
     private MedicoBO medicoBO = DependencyInjector.crearMedicoBO();
     private static VerPerfilMedico instance;
     private PrincipalMedico principalMedicoFrame;
-    
+
     /**
      * Creates new form InicioDeSesion
      */
@@ -37,18 +42,36 @@ public class VerPerfilMedico extends javax.swing.JFrame {
         setTitle("Médico - Ver perfil");
         mostrarPerfil();
     }
-    
+
+    /**
+     * Obtiene la instancia estática de la clase. Se utiliza para poder cambiar
+     * entre ventanas con una única instancia.
+     *
+     * @return Intancia estática de la clase.
+     */
     public static VerPerfilMedico getInstance() throws NegocioException {
-         if (instance == null) {
+        if (instance == null) {
             instance = new VerPerfilMedico();
         }
         return instance;
     }
 
+    /**
+     * Obtiene la ventana de menú principal del médico.
+     *
+     * @return Ventana de menú principal del médico.
+     */
     public PrincipalMedico getPrincipalMedicoFrame() {
         return principalMedicoFrame;
     }
 
+    /**
+     * Asigna el valor de la ventana de menú principal del médico al valor de su
+     * parámetro.
+     *
+     * @param principalMedicoFrame Valor a asignar a la ventana de menú
+     * principal del médico.
+     */
     public void setPrincipalMedicoFrame(PrincipalMedico principalMedicoFrame) {
         this.principalMedicoFrame = principalMedicoFrame;
     }
@@ -307,7 +330,7 @@ public class VerPerfilMedico extends javax.swing.JFrame {
     private javax.swing.JLabel lbNombre8;
     private javax.swing.JLabel lbPerfil;
     // End of variables declaration//GEN-END:variables
-    
+
     /**
      * Obtiene los datos de perfil del medico y los muestra.
      */
@@ -315,12 +338,11 @@ public class VerPerfilMedico extends javax.swing.JFrame {
         try {
             // Intenta obtener el perfil
             MedicoViejoDTO medico = medicoBO.obtenerMedicoPorCedula(SessionManager.getInstance().getUser());
-            
+
             // Si no se encontró perfil
             if (medico == null) {
                 JOptionPane.showMessageDialog(this, "Ocurrió un error al mostrar perfil.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-            // Si se encontró perfil
+            } // Si se encontró perfil
             else {
                 // Mostrar los datos 
                 lbPerfil.setText(medico.getNombre());
@@ -333,9 +355,10 @@ public class VerPerfilMedico extends javax.swing.JFrame {
             Logger.getLogger(VerPerfilPaciente.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     /**
      * Envía a pestaña de menú principal de Medico
+     *
      * @throws NegocioException Si hubo un error al cambiar de pestaña.
      */
     private void volver() throws NegocioException {
