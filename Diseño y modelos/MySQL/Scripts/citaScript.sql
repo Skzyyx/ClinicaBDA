@@ -140,6 +140,9 @@ BEGIN
 END$$
 DELIMITER ;
 
+-- Evento actualizarCitasNoAsistidas
+-- Cambia el estado de la cita y su consulta relacionada si ya se pasó el tiempo de tolerancia establecido
+-- Se ejecuta cada minuto
 DELIMITER $$
 CREATE EVENT IF NOT EXISTS actualizarCitasNoAsistidas
 ON SCHEDULE EVERY 1 MINUTE -- Se ejecuta cada minuto

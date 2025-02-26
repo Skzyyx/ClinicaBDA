@@ -142,7 +142,8 @@ SELECT
     idUsuario
 FROM medicos;
 
--- Procedimiento para obtener todas las citas activas de un medico
+-- Procedimiento almacenado obtenerCitasPorMedico
+-- Obtiene todas las citas activas de un médico
 DELIMITER $$
 CREATE PROCEDURE obtenerCitasPorMedico(
 	IN cedulaMedico VARCHAR(8)

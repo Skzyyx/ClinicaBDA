@@ -376,43 +376,4 @@ BEGIN
     WHERE emailPaciente = p.email
     AND c.estado = 'ACTIVA';
 END $$
-
 DELIMITER ;
-
--- Procedimiento almacena citasActivasPaciente
--- 
--- Pruebas
-CALL registrarPaciente(
-	"Ana",
-    "Sanchez",
-    "Solis",
-    "2000-10-24",
-    "hola@gmail.com",
-    "6444586322",
-    "Tamaulipas",
-    "1654",
-    "Sochiloa",
-    "85120",
-    "$2a$12$Js89fysKM.g1LnzAib/dQO6uNoyVnwLpeIwlzmfceYo2bDHKGfALi"
-);
-SELECT calcularEdad("2005-02-16");
-SELECT * FROM vistaPerfilPaciente;
-CALL consultarPacientePorId(23);
-CALL verPerfilPaciente("maria.gomez@example.com");
-CALL consultarPacientePorEmail("maria.gomez@example.com");
-
-CALL editarDatosPaciente(
-	"hola@gmail.com",
-	"Sonia",
-    "Castillo",
-    "Perez",
-    "1990-10-24",
-    "6444586322",
-    "Tamaulipas",
-    "1654",
-    "Sochiloa",
-    "85120",
-    "$2a$12$Js89fysKM.g1LnzAib/dQO6uNoyVnwLpeIwlzmfceYo2bDHKGfALi"
-);
-
-CALL obtenerCitasActivasPaciente("maria.gomez@example.com");
