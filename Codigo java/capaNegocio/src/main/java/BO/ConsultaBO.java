@@ -22,7 +22,9 @@ import java.util.stream.Collectors;
 
 /**
  *
- * @author Isabel
+ * @author 00000207653 Jesus Octavio Amarillas Amaya
+ * @author 00000252574 Jose Luis Islas Molina
+ * @author 00000253301 Isabel Valenzuela Rocha
  */
 public class ConsultaBO {
     private static final Logger logger = Logger.getLogger(PacienteBO.class.getName());
