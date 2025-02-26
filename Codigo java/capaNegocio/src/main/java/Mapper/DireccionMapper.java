@@ -10,7 +10,9 @@ import entidades.Direccion;
 
 /**
  *
- * @author Isabel
+ * @author 00000207653 Jesus Octavio Amarillas Amaya
+ * @author 00000252574 Jose Luis Islas Molina
+ * @author 00000253301 Isabel Valenzuela Rocha
  */
 public class DireccionMapper {
 
