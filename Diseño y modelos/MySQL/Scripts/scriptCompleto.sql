@@ -1245,15 +1245,6 @@ END$$
 DELIMITER ;
 
 /*-------------------------------- REGISTROS DE HORARIOS - USUARIOS - MEDICOS --------------------------------*/
--- Insertar horarios para médicos
-INSERT INTO horarios (diaSemana, horaEntrada, horaSalida, idMedico) VALUES
-('MONDAY', '08:00:00', '14:00:00', 1),
-('TUESDAY', '10:00:00', '16:00:00', 2),
-('WEDNESDAY', '09:00:00', '15:00:00', 3),
-('THURSDAY', '11:00:00', '17:00:00', 4),
-('FRIDAY', '08:30:00', '14:30:00', 5),
-('SATURDAY', '09:00:00', '13:00:00', 6);
-
 -- Insertar usuarios (médicos)
 INSERT INTO usuarios (usuario, contrasenia, rol) VALUES 
 ('11111111', 'medico111', 'MEDICO'),
@@ -1279,3 +1270,12 @@ INSERT INTO medicos (nombre, apellidoPaterno, apellidoMaterno, especialidad, ced
 ('Diana', 'Hernandez', 'Fuentes', 'Psiquiatría', '88888888', 'ACTIVO', 8),
 ('Manuel', 'Salinas', 'Herrera', 'Ortopedia', '99999999', 'ACTIVO', 9),
 ('Clara', 'Jimenez', 'Mendez', 'Endocrinología', '10101010', 'ACTIVO', 10);
+
+-- Insertar horarios para médicos
+INSERT INTO horarios (diaSemana, horaEntrada, horaSalida, idMedico) VALUES
+('MONDAY', '08:00:00', '14:00:00', 1),
+('TUESDAY', '10:00:00', '16:00:00', 2),
+('WEDNESDAY', '09:00:00', '15:00:00', 3),
+('THURSDAY', '11:00:00', '17:00:00', 4),
+('FRIDAY', '08:30:00', '14:30:00', 5),
+('SATURDAY', '09:00:00', '13:00:00', 6);
